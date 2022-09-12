@@ -6,7 +6,8 @@ import { SysUserModule } from 'src/users/sysUser/sys-user.module';
 // import { UsersModule } from 'src/users/sysUser/users.module';
 import { AuthService } from './auth.service';
 import { AuthJwtStrategy } from './auth.jwt.strategy';
-import { LocalStrategy } from './local.strategy';
+import { AuthLocalStrategy } from './auth.local.strategy';
+import { PrismaService } from 'src/prisma/prisma.service';
 // import { ConfigModule } from '@nestjs/config';
 // ConfigModule.forRoot();
 
@@ -21,7 +22,7 @@ import { LocalStrategy } from './local.strategy';
       }),
     }),
   ],
-  providers: [AuthService, LocalStrategy, AuthJwtStrategy],
+  providers: [PrismaService, AuthService, AuthLocalStrategy, AuthJwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

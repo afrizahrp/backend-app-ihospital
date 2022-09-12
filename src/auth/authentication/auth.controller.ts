@@ -21,7 +21,6 @@ import { Register_Dto, Login_Dto } from './auth.dto';
 
 import { AuthLocalGuard } from './auth.local.guard';
 import { AuthJwtGuard } from './auth.jwt.guard';
-import { JwtAuthGuard } from './jwt.auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -36,15 +35,15 @@ export class AuthController {
   //   }
   // }
 
-  // @Post('/register')
-  // register(@Body() body: Register_Dto) {
-  //   try {
-  //     return this.authService.get_Token(body);
-  //     // return this.authService.register(body);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // }
+  @Post('/register')
+  register(@Body() body: Register_Dto) {
+    try {
+      // return this.authService.get_Token(body);
+      return this.authService.register(body);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   // @Roles(sys_User_Role.ADMIN)
   // @UseGuards(AuthGuard('local'))
@@ -54,10 +53,16 @@ export class AuthController {
   //   return this.authService.get_Token(body);
   // }
 
-  @UseGuards(AuthLocalGuard)
+  // // @UseGuards(AuthLocalGuard)
+  // @Post('/login')
+  // login(@Request() req): any {
+  //   return this.authService.login(req.user);
+  // }
+
+  // @UseGuards(AuthLocalGuard)
   @Post('/login')
-  login(@Request() req): any {
-    return this.authService.login(req.user);
+  login(@Body() body: Login_Dto) {
+    return this.authService.login(body);
   }
 
   // @UseGuards(LocalAuthGuard)
@@ -66,8 +71,8 @@ export class AuthController {
   //   return this.authService.login(req.user);
   // }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('protected')
+  @UseGuards(AuthJwtGuard)
+  @Get('/protected')
   getHello(@Request() req): string {
     return req.user;
   }
