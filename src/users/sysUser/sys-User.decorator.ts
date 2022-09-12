@@ -10,6 +10,6 @@ export interface UserInfo {
 export const sysUser = createParamDecorator(
   (data, context: ExecutionContext) => {
     const request = context.switchToHttp().getRequest();
-    return request.sys_User;
+    return request.sysUser;
   },
 );

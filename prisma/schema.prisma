@@ -74,9 +74,9 @@ model sysDocId {
 
 model sysUser {
   role_id     String      @db.Char(20)
-  isAdmin     Boolean
   id          String      @id @db.Char(20)
   name        String      @db.VarChar(50)
+  isAdmin     Boolean
   email       String      @unique @db.VarChar(30)
   phone       String      @db.VarChar(20)
   password    String      @db.VarChar(255)
