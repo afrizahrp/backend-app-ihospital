@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model sysCompany {
+  id        String      @id @db.Char(5)
+  name      String      @db.VarChar(50)
+  createdBy String      @db.Char(10)
+  createdAt DateTime    @default(now())
+  updatedBy String      @db.Char(10)
+  updatedAt DateTime    @default(now())
+  sysBranch sysBranch[]
+}
+
+model sysBranch {
+  id            String        @id @db.Char(10)
+  name          String        @db.VarChar(50)
+  address       String        @db.VarChar(100)
+  phone         String        @db.VarChar(20)
+  email         String        @db.VarChar(50)
+  contactPerson String        @db.VarChar(50)
+  contactPhone  String        @db.VarChar(20)
+  createdBy     String        @db.Char(10)
+  createdAt     DateTime      @default(now())
+  updatedBy     String        @db.Char(10)
+  updatedAt     DateTime      @default(now())
+  company_id    String        @db.Char(5)
+  sysCompany    sysCompany    @relation(fields: [company_id], references: [id])
+  sysUser       sysUser[]
+  sysUserRole   sysUserRole[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model sysCounter {
+  module_id    String   @db.Char(3)
+  counter_id   String   @id @db.Char(3)
+  lastCounter  Int
+  description  String   @db.VarChar(160)
+  pattern      String   @db.Char(30)
+  combiner     String   @db.Char(20)
+  refreshAt    String   @db.Char(1)
+  firstChar    String   @db.Char(4)
+  secondChar   String   @db.Char(4)
+  digits       Int
+  startYear    String   @db.Char(4)
+  startMonth   String   @db.Char(2)
+  startCount   Int
+  recounter    Int
+  autoGenerate Boolean  @default(false)
+  createdBy    String   @db.Char(10)
+  createdAt    DateTime
+  updatedBy    String   @db.Char(10)
+  updatedAt    DateTime
+  company_id   String   @db.Char(5)
+  branch_id    String   @db.Char(10)
+
+  @@ignore
+}
+
+model sysDocId {
+  module_id  String   @db.Char(3)
+  prefix_id  String   @db.Char(3)
+  doc_id     String   @id @db.Char(20)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime
+  company_id String   @db.Char(5)
+  branch_id  String   @db.Char(10)
+}
+
+model sysUser {
+  role_id     String      @db.Char(20)
+  isAdmin     Boolean
+  id          String      @id @db.Char(20)
+  name        String      @db.VarChar(50)
+  email       String      @unique @db.VarChar(30)
+  phone       String      @db.VarChar(20)
+  password    String      @db.VarChar(255)
+  createdBy   String      @db.Char(10)
+  createdAt   DateTime    @default(now())
+  updatedBy   String      @db.Char(10)
+  updatedAt   DateTime
+  company_id  String      @db.Char(5)
+  branch_id   String      @db.Char(10)
+  sysBranch   sysBranch   @relation(fields: [branch_id], references: [id])
+  sysUserRole sysUserRole @relation(fields: [role_id], references: [id], onUpdate: NoAction, map: "fk_sys_user_role")
+}
+
+model sysUserRole {
+  id          String    @id(map: "sys_User_role_pkey") @db.Char(20)
+  name        String    @unique(map: "sys_user_role_key") @db.VarChar(50)
+  isAdmin     Boolean
+  description String    @db.VarChar(150)
+  createdBy   String    @db.Char(10)
+  createdAt   DateTime  @default(now(), map: "sys_User_Role_createdAt_df")
+  updatedBy   String    @db.Char(10)
+  updatedAt   DateTime
+  company_id  String?   @db.Char(5)
+  branch_id   String    @db.Char(10)
+  sysBranch   sysBranch @relation(fields: [branch_id], references: [id])
+  sysUser     sysUser[]
+}
+
+model tmpPatient {
+  id   String @id @db.Char(20)
+  name String @db.VarChar(100)
+}
+
+model sysDivision {
+  id            String          @id @db.Char(10)
+  name          String          @db.VarChar(100)
+  createdBy     String          @db.Char(10)
+  createdAt     DateTime        @default(now())
+  updatedBy     String          @db.Char(10)
+  updatedAt     DateTime
+  company_id    String?         @db.Char(5)
+  branch_id     String          @db.Char(10)
+  sysDepartment sysDepartment[]
+}
+
+model sysDepartment {
+  division_id String      @db.Char(10)
+  id          String      @id @db.Char(10)
+  name        String      @db.VarChar(100)
+  createdBy   String      @db.Char(10)
+  createdAt   DateTime    @default(now())
+  updatedBy   String      @db.Char(10)
+  updatedAt   DateTime
+  company_id  String?     @db.Char(5)
+  branch_id   String      @db.Char(10)
+  sysDivision sysDivision @relation(fields: [division_id], references: [id])
+}
