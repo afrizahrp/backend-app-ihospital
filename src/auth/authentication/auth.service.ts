@@ -81,7 +81,7 @@ export class AuthService {
 
   async login({ email, password }: Login_Params) {
     const sysUser = await this.prismaService.sysUser.findUnique({
-      where: { email: email },
+      where: { email },
     });
 
     if (!sysUser) {
@@ -96,6 +96,7 @@ export class AuthService {
     if (!is_Password_Matched) {
       throw new Error('Password does not valid');
     }
+    // return sysUser;
 
     return this.generateJWT(sysUser.id, sysUser.email);
   }
@@ -108,9 +109,9 @@ export class AuthService {
   // }
 
   private generateJWT(id: string, email: string) {
-    const jwtPayload = { sub: id, email };
+    const jwtPayload = { sub: id, username: email };
 
-    return this.jwtService.signAsync(jwtPayload, {
+    return this.jwtService.sign(jwtPayload, {
       secret: process.env.AUTH_SECRET,
       expiresIn: '3600s',
     });

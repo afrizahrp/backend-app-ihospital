@@ -60,6 +60,7 @@ export class AuthController {
   // }
 
   // @UseGuards(AuthLocalGuard)
+  // @UseGuards(AuthJwtGuard)
   @Post('/login')
   login(@Body() body: Login_Dto) {
     return this.authService.login(body);
@@ -76,7 +77,7 @@ export class AuthController {
   getHello(@Request() req): string {
     return req.user;
   }
-  @UseGuards(AuthJwtGuard)
+  // @UseGuards(AuthJwtGuard)
   @Get('/me')
   me(@sysUser() sysUser: UserInfo) {
     return sysUser;
