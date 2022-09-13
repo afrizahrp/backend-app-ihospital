@@ -101,13 +101,6 @@ export class AuthService {
     return this.generateJWT(sysUser.id, sysUser.email);
   }
 
-  // async generateJWT(id: string, name: string) {
-  //   const payload = { id, name };
-  //   return {
-  //     access_token: this.jwtService.sign(payload),
-  //   };
-  // }
-
   private generateJWT(id: string, email: string) {
     const jwtPayload = { sub: id, username: email };
 
