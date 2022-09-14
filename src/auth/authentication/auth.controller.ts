@@ -30,14 +30,14 @@ export class AuthController {
   @Post('/logout')
   async logout(@Req() req: Request) {
     const user = req.user;
-    return this.authService.logout(user['id']);
+    return this.authService.logout(user['sub']);
   }
 
   @UseGuards(AuthGuard('jwt-refresh'))
   @Post('/refresh')
   async refresh(@Req() req: Request) {
     const user = req.user;
-    return this.authService.refresh(user['id'], user['refresh']);
+    return this.authService.refresh(user['sub'], user['refresh']);
   }
   // // @UseGuards(AuthLocalGuard)
   // @Post('/login')

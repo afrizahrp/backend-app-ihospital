@@ -171,12 +171,12 @@ export class AuthService {
     });
   }
 
-  async refresh(email: string, refreshToken: string) {
+  async refresh(id: string, refreshToken: string) {
     const userLoggedIn = await this.prismaService.sysUser.findUnique({
-      where: { email },
+      where: { id },
     });
     if (!userLoggedIn) {
-      throw new ForbiddenException('Access denied, you cannot login');
+      throw new ForbiddenException('Access denied, you not logged in');
     }
 
     const rTokenMatched = await bcrypt.compare(
@@ -185,7 +185,7 @@ export class AuthService {
     );
 
     if (!rTokenMatched) {
-      throw new ForbiddenException('Password does not valid');
+      throw new ForbiddenException('Token does not valid');
     }
     const tokens = await this.getTokens(userLoggedIn.id, userLoggedIn.email);
     await this.updateRefreshTokenHash(
