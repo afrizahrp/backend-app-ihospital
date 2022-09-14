@@ -1,58 +1,44 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Controller,
-  Post,
-  Body,
-  Get,
-  UseGuards,
-  Request,
-} from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { sysUser, UserInfo } from '../../users/sysUser/sys-User.decorator';
 // import { Roles } from './roles.decorator';
-import { AuthService } from './auth.service';
-import { Register_Dto, Login_Dto } from './auth.dto';
-//import { AuthGuard } from '../authentication/auth.guard';
-// import { throwError } from 'rxjs';
-// import { Roles } from 'src/authorization/roles.decorator';
-// import { UserType } from '@prisma/client';
-// import { sysUserRole } from '@prisma/client';
-// import { AuthGuard } from '@nestjs/passport';
 
-import { AuthLocalGuard } from './auth.local.guard';
-import { AuthJwtGuard } from './auth.jwt.guard';
+import { Request } from 'express';
+import { AuthService } from './auth.service';
+import { RegisterDto, LoginDto } from './dto/auth.dto';
+import { Tokens } from './types';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // @Get()
-  // get_Users() {
-  //   try {
-  //     return this.authService.get_Users();
-  //   } catch (error) {
-  //     console.dir(error.message);
-  //   }
-  // }
-
   @Post('/register')
-  register(@Body() body: Register_Dto) {
+  register(@Body() body: RegisterDto): Promise<Tokens> {
     try {
-      // return this.authService.get_Token(body);
       return this.authService.register(body);
     } catch (error) {
       console.log(error.message);
     }
   }
 
-  // @Roles(sys_User_Role.ADMIN)
-  // @UseGuards(AuthGuard('local'))
-  // @Post('/login')
-  // @UseGuards(AuthLocalGuard)
-  // async login(@Body() body: Login_Dto) {
-  //   return this.authService.get_Token(body);
-  // }
+  @Post('/login')
+  async login(@Body() body: LoginDto): Promise<Tokens> {
+    return this.authService.login(body);
+  }
 
+  @UseGuards(AuthGuard('jwt-access'))
+  @Post('/logout')
+  async logout(@Req() req: Request) {
+    const user = req.user;
+    return this.authService.logout(user['id']);
+  }
+
+  @UseGuards(AuthGuard('jwt-refresh'))
+  @Post('/refresh')
+  async refresh(@Req() req: Request) {
+    const user = req.user;
+    return this.authService.refresh(user['id'], user['refresh']);
+  }
   // // @UseGuards(AuthLocalGuard)
   // @Post('/login')
   // login(@Request() req): any {
@@ -61,27 +47,27 @@ export class AuthController {
 
   // @UseGuards(AuthLocalGuard)
   // @UseGuards(AuthJwtGuard)
-  @Post('/login')
-  login(@Body() body: Login_Dto) {
-    return this.authService.login(body);
-  }
-
-  // @UseGuards(LocalAuthGuard)
-  // @Post('login')
-  // login(@Request() req): any {
-  //   return this.authService.login(req.user);
+  // @Post('/login')
+  // login(@Body() body: LoginDto) {
+  //   return this.authService.login(body);
   // }
 
-  @UseGuards(AuthJwtGuard)
-  @Get('/protected')
-  getHello(@Request() req): string {
-    return req.user;
-  }
+  // // @UseGuards(LocalAuthGuard)
+  // // @Post('login')
+  // // login(@Request() req): any {
+  // //   return this.authService.login(req.user);
+  // // }
+
   // @UseGuards(AuthJwtGuard)
-  @Get('/me')
-  me(@sysUser() sysUser: UserInfo) {
-    return sysUser;
-  }
+  // @Get('/protected')
+  // getHello(@Request() req): string {
+  //   return req.user;
+  // }
+  // // @UseGuards(AuthJwtGuard)
+  // @Get('/me')
+  // me(@sysUser() sysUser: UserInfo) {
+  //   return sysUser;
+  // }
 
   // eslint-disable-next-line prettier/prettier
 }

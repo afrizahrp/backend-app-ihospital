@@ -8,16 +8,14 @@ import {
   MaxLength,
   Matches,
   IsDate,
+  isBoolean,
 } from 'class-validator';
 import { Exclude } from 'class-transformer';
 
-export class Register_Dto {
+export class RegisterDto {
   @IsString()
   @IsNotEmpty()
   role_id: string;
-
-  @IsNotEmpty()
-  isAdmin: boolean;
 
   @IsString()
   @IsNotEmpty()
@@ -27,6 +25,9 @@ export class Register_Dto {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @IsNotEmpty()
+  isAdmin: boolean;
 
   @IsString()
   @IsNotEmpty()
@@ -55,6 +56,16 @@ export class Register_Dto {
 
   @IsString()
   @IsNotEmpty()
+  accessToken: string;
+
+  @IsString()
+  refreshToken: string;
+
+  @IsNotEmpty()
+  loggedIn: boolean;
+
+  @IsString()
+  @IsNotEmpty()
   createdBy: string;
 
   @IsString()
@@ -76,11 +87,17 @@ export class Register_Dto {
   // @Exclude()
 }
 
-export class Login_Dto {
+export class LoginDto {
   @IsEmail()
   email: string;
 
   @IsString()
   @IsNotEmpty()
   password: string;
+}
+
+export class LogOutDto {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
 }

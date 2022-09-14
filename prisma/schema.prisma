@@ -80,8 +80,9 @@ model sysUser {
   email        String      @unique @db.VarChar(30)
   phone        String      @db.VarChar(20)
   password     String      @db.VarChar(255)
-  activeToken  String      @db.VarChar(255)
-  refreshToken String      @db.VarChar(255)
+  accessToken  String      @db.VarChar(255)
+  refreshToken String?     @db.VarChar(255)
+  loggedIn     Boolean
   createdBy    String      @db.Char(10)
   createdAt    DateTime    @default(now())
   updatedBy    String      @db.Char(10)
