@@ -12,8 +12,7 @@ interface RegisterParams {
   email: string;
   phone: string;
   password: string;
-  accessToken: string;
-  refreshToken: string;
+  tokenForAccess: string;
   loggedIn: boolean;
   createdBy: string;
   updatedBy: string;
@@ -51,7 +50,7 @@ export class AuthService {
       this.jwtService.signAsync(
         { sub: id, email },
         {
-          secret: 'SECRET', //this.config.get<string>('REFRESH_TOKEN_SECRET'),
+          secret: this.config.get<string>('REFRESH_TOKEN_SECRET'),
           expiresIn: '5d',
         },
       ),
@@ -63,14 +62,14 @@ export class AuthService {
     return bcrypt.hash(data, 10);
   }
 
-  async updateRefreshTokenHash(id: string, refreshToken: string) {
-    const hash = await this.hashData(refreshToken);
+  async updateTokenRefreshed(id: string, tokenToRefresh: string) {
+    const hash = await this.hashData(tokenToRefresh);
     await this.prismaService.sysUser.update({
       where: {
         id,
       },
       data: {
-        refreshToken: hash,
+        tokenHasRefreshed: hash,
         loggedIn: true,
       },
     });
@@ -84,8 +83,7 @@ export class AuthService {
     email,
     phone,
     password,
-    accessToken,
-    refreshToken,
+    tokenForAccess,
     loggedIn,
     createdBy,
     updatedBy,
@@ -112,8 +110,7 @@ export class AuthService {
           email,
           phone,
           password: hash,
-          accessToken: hash,
-          refreshToken: hash,
+          tokenForAccess: hash,
           loggedIn: false,
           createdBy,
           updatedBy,
@@ -123,7 +120,7 @@ export class AuthService {
         },
       });
       const tokens = await this.getTokens(newUser.id, newUser.email);
-      await this.updateRefreshTokenHash(newUser.id, newUser.refreshToken);
+      await this.updateTokenRefreshed(newUser.id, newUser.tokenHasRefreshed);
       return tokens;
     } catch (error) {
       console.log(error.message);
@@ -136,7 +133,7 @@ export class AuthService {
     });
 
     if (!sysUser) {
-      throw new ForbiddenException('Access denied, you cannot login');
+      throw new ForbiddenException('Access is denied, you cannot login');
     }
 
     const is_Password_Matched = await bcrypt.compare(
@@ -148,62 +145,44 @@ export class AuthService {
       throw new ForbiddenException('Password does not valid');
     }
     const tokens = await this.getTokens(sysUser.id, sysUser.email);
-    await this.updateRefreshTokenHash(sysUser.id, sysUser.refreshToken);
+    await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
     return tokens;
-
-    // return sysUser;
-
-    // return this.generateJWT(sysUser.id, sysUser.email);
   }
 
   async logout(id: string) {
     await this.prismaService.sysUser.updateMany({
       where: {
         id,
-        refreshToken: {
+        tokenHasRefreshed: {
           not: null,
         },
       },
       data: {
-        refreshToken: '',
+        tokenHasRefreshed: null,
         loggedIn: false,
       },
     });
   }
 
-  async refresh(id: string, refreshToken: string) {
+  async refreshingToken(id: string, tokenWillRefresh: string) {
     const userLoggedIn = await this.prismaService.sysUser.findUnique({
       where: { id },
     });
     if (!userLoggedIn) {
-      throw new ForbiddenException('Access denied, you not logged in');
+      throw new ForbiddenException('Access is denied, you not logged in');
     }
 
     const rTokenMatched = await bcrypt.compare(
-      refreshToken,
-      userLoggedIn.refreshToken,
+      tokenWillRefresh,
+      userLoggedIn.tokenHasRefreshed,
     );
 
     if (!rTokenMatched) {
       throw new ForbiddenException('Token does not valid');
     }
     const tokens = await this.getTokens(userLoggedIn.id, userLoggedIn.email);
-    await this.updateRefreshTokenHash(
-      userLoggedIn.id,
-      userLoggedIn.refreshToken,
-    );
+    await this.updateTokenRefreshed(userLoggedIn.id, tokens.refreshToken);
+
     return tokens;
-  }
-
-  async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.prismaService.sysUser.findUnique({
-      where: { email },
-    });
-
-    if (user && password === user.password) {
-      const { email, password, ...rest } = user;
-      return rest;
-    }
-    return null;
   }
 }

@@ -17,7 +17,7 @@ export class RefreshTokenGuard extends AuthGuard('jwt-refresh') {
 
     return {
       id: payload.sub,
-      name: payload.name,
+      email: payload.name,
       //...user,
     };
   }

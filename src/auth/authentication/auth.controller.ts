@@ -34,10 +34,10 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard('jwt-refresh'))
-  @Post('/refresh')
-  async refresh(@Req() req: Request) {
+  @Post('refresh')
+  async refreshingToken(@Req() req: Request) {
     const user = req.user;
-    return this.authService.refresh(user['sub'], user['refresh']);
+    return this.authService.refreshingToken(user['sub'], user['refreshToken']);
   }
   // // @UseGuards(AuthLocalGuard)
   // @Post('/login')
