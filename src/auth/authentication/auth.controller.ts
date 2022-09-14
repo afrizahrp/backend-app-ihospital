@@ -45,7 +45,7 @@ export class AuthController {
 
   @Public()
   @UseGuards(RefreshTokenGuard)
-  @Post('refresh')
+  @Post('/refresh')
   async refreshingToken(
     @ActiveUserId() id: string,
     @ActiveUser('refreshToken') refreshToken: string,
