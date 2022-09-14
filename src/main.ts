@@ -11,7 +11,9 @@ async function bootstrap() {
       transformOptions: { enableImplicitConversion: true },
     }),
   );
+  // const reflector = new Reflector();
 
+  // app.useGlobalGuards(new AccessTokenGuard(reflector)),
   app.enableCors({
     origin: ['http://localhost:3000', 'https://www.google.com'],
     methods: ['POST', 'PUT', 'DELETE', 'GET'],

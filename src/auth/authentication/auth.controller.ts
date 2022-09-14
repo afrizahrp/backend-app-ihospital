@@ -1,18 +1,23 @@
 import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { sysUser, UserInfo } from '../../users/sysUser/sys-User.decorator';
-// import { Roles } from './roles.decorator';
+import { ActiveUserId } from './decorators/activeUserId.decorator';
+
+import { ActiveUser, UserInfo } from './decorators/activeUser.decorator';
 
 import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { RegisterDto, LoginDto } from './dto/auth.dto';
 import { Tokens } from './types';
+import { AccessTokenGuard } from './guards/accessToken.guard';
+import { RefreshTokenGuard } from './guards/refreshToken.guard';
+import { Public } from './decorators/public.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('/register')
+  @Public()
+  @Post('register')
   register(@Body() body: RegisterDto): Promise<Tokens> {
     try {
       return this.authService.register(body);
@@ -20,54 +25,31 @@ export class AuthController {
       console.log(error.message);
     }
   }
-
-  @Post('/login')
+  @Public()
+  @Post('login')
   async login(@Body() body: LoginDto): Promise<Tokens> {
     return this.authService.login(body);
   }
 
   @UseGuards(AuthGuard('jwt-access'))
-  @Post('/logout')
-  async logout(@Req() req: Request) {
-    const user = req.user;
-    return this.authService.logout(user['sub']);
+  @Get('me')
+  me(@ActiveUser() sysUser: UserInfo) {
+    return sysUser;
   }
 
-  @UseGuards(AuthGuard('jwt-refresh'))
+  @UseGuards(AccessTokenGuard)
+  @Post('logout')
+  async logout(@ActiveUserId() id: string): Promise<boolean> {
+    return this.authService.logout(id);
+  }
+
+  @Public()
+  @UseGuards(RefreshTokenGuard)
   @Post('refresh')
-  async refreshingToken(@Req() req: Request) {
-    const user = req.user;
-    return this.authService.refreshingToken(user['sub'], user['refreshToken']);
+  async refreshingToken(
+    @ActiveUserId() id: string,
+    @ActiveUser('refreshToken') refreshToken: string,
+  ): Promise<Tokens> {
+    return this.authService.refreshingToken(id, refreshToken);
   }
-  // // @UseGuards(AuthLocalGuard)
-  // @Post('/login')
-  // login(@Request() req): any {
-  //   return this.authService.login(req.user);
-  // }
-
-  // @UseGuards(AuthLocalGuard)
-  // @UseGuards(AuthJwtGuard)
-  // @Post('/login')
-  // login(@Body() body: LoginDto) {
-  //   return this.authService.login(body);
-  // }
-
-  // // @UseGuards(LocalAuthGuard)
-  // // @Post('login')
-  // // login(@Request() req): any {
-  // //   return this.authService.login(req.user);
-  // // }
-
-  // @UseGuards(AuthJwtGuard)
-  // @Get('/protected')
-  // getHello(@Request() req): string {
-  //   return req.user;
-  // }
-  // // @UseGuards(AuthJwtGuard)
-  // @Get('/me')
-  // me(@sysUser() sysUser: UserInfo) {
-  //   return sysUser;
-  // }
-
-  // eslint-disable-next-line prettier/prettier
 }

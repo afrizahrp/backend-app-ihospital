@@ -1,24 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ExtractJwt } from 'passport-jwt';
+import { Reflector } from '@nestjs/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AccessTokenGuard extends AuthGuard('jwt-access') {
-  constructor() {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: 'secret', //process.env.JSON_TOKEN_KEY,
-    }); // Protect this, move to env var
+  constructor(private reflector: Reflector) {
+    super();
   }
 
-  async validate(payload: any) {
-    //const user = await this.prisma_Service.getById(payload.sub);
+  canActivate(context: ExecutionContext) {
+    const isPublic = this.reflector.getAllAndOverride('isPublic', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
-    return {
-      id: payload.sub,
-      name: payload.name,
-      //...user,
-    };
+    if (isPublic) return true;
+    return super.canActivate(context);
   }
 }

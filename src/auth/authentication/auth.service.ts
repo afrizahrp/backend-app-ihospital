@@ -149,7 +149,7 @@ export class AuthService {
     return tokens;
   }
 
-  async logout(id: string) {
+  async logout(id: string): Promise<boolean> {
     await this.prismaService.sysUser.updateMany({
       where: {
         id,
@@ -162,13 +162,14 @@ export class AuthService {
         loggedIn: false,
       },
     });
+    return true;
   }
 
-  async refreshingToken(id: string, tokenWillRefresh: string) {
+  async refreshingToken(id: string, tokenWillRefresh: string): Promise<Tokens> {
     const userLoggedIn = await this.prismaService.sysUser.findUnique({
       where: { id },
     });
-    if (!userLoggedIn) {
+    if (!userLoggedIn || !userLoggedIn.tokenHasRefreshed) {
       throw new ForbiddenException('Access is denied, you not logged in');
     }
 
