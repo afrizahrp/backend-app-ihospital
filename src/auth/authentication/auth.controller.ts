@@ -31,6 +31,12 @@ export class AuthController {
     return this.authService.login(body);
   }
 
+  // @Public()
+  // @Post('login')
+  // async login(@Body() body: LoginDto): Promise<Tokens> {
+  //   return this.authService.login(body);
+  // }
+
   @UseGuards(AuthGuard('jwt-access'))
   @Get('me')
   me(@ActiveUser() sysUser: UserInfo) {
