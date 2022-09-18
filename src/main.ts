@@ -17,7 +17,7 @@ async function bootstrap() {
   // app.useGlobalGuards(new AccessTokenGuard(reflector)),
   // app.use(cookieParser());
   app.enableCors({
-    origin: ['http://localhost:3001', 'https://www.google.com'],
+    origin: ['http://localhost:3000', 'https://www.google.com'],
     methods: ['POST', 'PUT', 'DELETE', 'GET'],
   });
 
