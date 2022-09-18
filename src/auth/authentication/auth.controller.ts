@@ -19,6 +19,7 @@ import { Tokens } from './types';
 import { AccessTokenGuard } from './guards/accessToken.guard';
 import { RefreshTokenGuard } from './guards/refreshToken.guard';
 import { Public } from '../decorators/public.decorator';
+import { sysUser } from 'src/users/sysUser/sys-User.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -47,9 +48,16 @@ export class AuthController {
   //   return this.authService.login(body);
   // }
 
-  @UseGuards(AuthGuard('jwt-access'))
-  @Get('me')
-  me(@ActiveUser() sysUser: UserInfo) {
+  // @UseGuards(AuthGuard('jwt-access'))
+  // @Public()
+  // @Get('me')
+  // me(@ActiveUser() sysUser: UserInfo) {
+  //   return sysUser;
+  // }
+  @Public()
+  @UseGuards(AccessTokenGuard)
+  @Get('/me')
+  me(@sysUser() sysUser: UserInfo) {
     return sysUser;
   }
 

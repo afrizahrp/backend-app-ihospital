@@ -33,14 +33,15 @@ export class AuthService {
     private config: ConfigService,
   ) {}
 
-  async getTokens(id: string, email: string): Promise<Tokens> {
+  async getTokens(id: string, name: string): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
       sub: id,
-      email: email,
+      name,
     };
+    // const [accessToken] = await Promise.all([
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { sub: id, email },
+        { sub: id, name },
         {
           secret: this.config.get<string>('ACCESS_TOKEN_SECRET'),
           expiresIn: '15m',
@@ -48,13 +49,14 @@ export class AuthService {
       ),
 
       this.jwtService.signAsync(
-        { sub: id, email },
+        { sub: id, name },
         {
           secret: this.config.get<string>('REFRESH_TOKEN_SECRET'),
           expiresIn: '5d',
         },
       ),
     ]);
+    // return { accessToken };
     return { accessToken, refreshToken };
   }
 
@@ -145,8 +147,8 @@ export class AuthService {
     if (!is_Password_Matched) {
       throw new ForbiddenException('Password does not valid');
     }
-    const tokens = await this.getTokens(sysUser.id, sysUser.email);
-    await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
+    const tokens = await this.getTokens(sysUser.id, sysUser.name);
+    // await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
     return tokens;
   }
 
