@@ -73,24 +73,24 @@ model sysDocId {
 }
 
 model sysUser {
-  role_id      String      @db.Char(20)
-  id           String      @id @db.Char(20)
-  name         String      @db.VarChar(50)
-  isAdmin      Boolean
-  email        String      @unique @db.VarChar(30)
-  phone        String      @db.VarChar(20)
-  password     String      
-  tokenForAccess  String      
-  tokenHasRefreshed String?     
-  loggedIn     Boolean
-  createdBy    String      @db.Char(10)
-  createdAt    DateTime    @default(now())
-  updatedBy    String      @db.Char(10)
-  updatedAt    DateTime
-  company_id   String      @db.Char(5)
-  branch_id    String      @db.Char(10)
-  sysBranch    sysBranch   @relation(fields: [branch_id], references: [id])
-  sysUserRole  sysUserRole @relation(fields: [role_id], references: [id], onUpdate: NoAction, map: "fk_sys_user_role")
+  role_id             String      @db.Char(20)
+  id                  String      @id @db.Char(20)
+  name                String      @db.VarChar(50)
+  isAdmin             Boolean
+  email               String      @unique @db.VarChar(30)
+  phone               String      @db.VarChar(20)
+  password            String      
+  tokenForAccess      String      
+  isLoggedIn          Boolean?
+  tokenHasRefreshed   String?     
+  createdBy           String      @db.Char(10)
+  createdAt           DateTime    @default(now())
+  updatedBy           String      @db.Char(10)
+  updatedAt           DateTime
+  company_id          String      @db.Char(5)
+  branch_id           String      @db.Char(10)
+  sysBranch           sysBranch   @relation(fields: [branch_id], references: [id])
+  sysUserRole         sysUserRole @relation(fields: [role_id], references: [id], onUpdate: NoAction, map: "fk_sys_user_role")
 }
 
 model sysUserRole {

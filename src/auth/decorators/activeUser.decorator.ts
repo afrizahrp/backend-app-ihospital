@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { JwtPayloadWithRefresh } from '../types/jwtPayloadWithRefresh';
+import { JwtPayloadWithRefresh } from '../authentication/types/jwtPayloadWithRefresh';
 
 export interface UserInfo {
   id: string;

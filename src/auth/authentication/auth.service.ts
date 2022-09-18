@@ -13,7 +13,7 @@ interface RegisterParams {
   phone: string;
   password: string;
   tokenForAccess: string;
-  loggedIn: boolean;
+  isLoggedIn: boolean;
   createdBy: string;
   updatedBy: string;
   updatedAt: Date;
@@ -70,7 +70,7 @@ export class AuthService {
       },
       data: {
         tokenHasRefreshed: hash,
-        loggedIn: true,
+        isLoggedIn: true,
       },
     });
   }
@@ -84,7 +84,7 @@ export class AuthService {
     phone,
     password,
     tokenForAccess,
-    loggedIn,
+    isLoggedIn,
     createdBy,
     updatedBy,
     updatedAt,
@@ -111,7 +111,8 @@ export class AuthService {
           phone,
           password: hash,
           tokenForAccess: hash,
-          loggedIn: false,
+          isLoggedIn: false,
+          tokenHasRefreshed: '',
           createdBy,
           updatedBy,
           updatedAt: new Date(),
@@ -159,30 +160,33 @@ export class AuthService {
       },
       data: {
         tokenHasRefreshed: null,
-        loggedIn: false,
+        isLoggedIn: false,
       },
     });
     return true;
   }
 
   async refreshingToken(id: string, tokenWillRefresh: string): Promise<Tokens> {
-    const userLoggedIn = await this.prismaService.sysUser.findUnique({
+    const userisLoggedIn = await this.prismaService.sysUser.findUnique({
       where: { id },
     });
-    if (!userLoggedIn || !userLoggedIn.tokenHasRefreshed) {
+    if (!userisLoggedIn || !userisLoggedIn.tokenHasRefreshed) {
       throw new ForbiddenException('Access is denied, you not logged in');
     }
 
     const rTokenMatched = await bcrypt.compare(
       tokenWillRefresh,
-      userLoggedIn.tokenHasRefreshed,
+      userisLoggedIn.tokenHasRefreshed,
     );
 
     if (!rTokenMatched) {
       throw new ForbiddenException('Token does not valid');
     }
-    const tokens = await this.getTokens(userLoggedIn.id, userLoggedIn.email);
-    await this.updateTokenRefreshed(userLoggedIn.id, tokens.refreshToken);
+    const tokens = await this.getTokens(
+      userisLoggedIn.id,
+      userisLoggedIn.email,
+    );
+    await this.updateTokenRefreshed(userisLoggedIn.id, tokens.refreshToken);
 
     return tokens;
   }

@@ -62,7 +62,7 @@ export class RegisterDto {
   // refreshToken: string;
 
   @IsNotEmpty()
-  loggedIn: boolean;
+  isLoggedIn: boolean;
 
   @IsString()
   @IsNotEmpty()
