@@ -3,6 +3,7 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export interface UserInfo {
   id: string;
+  role: string;
   name: string;
   exp: number;
 }
@@ -13,7 +14,3 @@ export const sysUser = createParamDecorator(
     return request.sysUser;
   },
 );
-
-// const request = context.switchToHttp().getRequest();
-// if (!data) return request.user;
-// return request.user[data];

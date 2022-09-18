@@ -33,15 +33,16 @@ export class AuthService {
     private config: ConfigService,
   ) {}
 
-  async getTokens(id: string, name: string): Promise<Tokens> {
+  async getTokens(id: string, name: string, role: string): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
       sub: id,
       name,
+      role,
     };
     // const [accessToken] = await Promise.all([
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { sub: id, name },
+        { sub: id, name, role },
         {
           secret: this.config.get<string>('ACCESS_TOKEN_SECRET'),
           expiresIn: '15m',
@@ -49,7 +50,7 @@ export class AuthService {
       ),
 
       this.jwtService.signAsync(
-        { sub: id, name },
+        { sub: id, name, role },
         {
           secret: this.config.get<string>('REFRESH_TOKEN_SECRET'),
           expiresIn: '5d',
@@ -122,7 +123,11 @@ export class AuthService {
           branch_id,
         },
       });
-      const tokens = await this.getTokens(newUser.id, newUser.email);
+      const tokens = await this.getTokens(
+        newUser.id,
+        newUser.email,
+        newUser.role_id,
+      );
       await this.updateTokenRefreshed(newUser.id, newUser.tokenHasRefreshed);
       return tokens;
     } catch (error) {
@@ -147,8 +152,12 @@ export class AuthService {
     if (!is_Password_Matched) {
       throw new ForbiddenException('Password does not valid');
     }
-    const tokens = await this.getTokens(sysUser.id, sysUser.name);
-    // await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
+    const tokens = await this.getTokens(
+      sysUser.id,
+      sysUser.name,
+      sysUser.role_id,
+    );
+    await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
     return tokens;
   }
 
@@ -187,6 +196,7 @@ export class AuthService {
     const tokens = await this.getTokens(
       userisLoggedIn.id,
       userisLoggedIn.email,
+      userisLoggedIn.role_id,
     );
     await this.updateTokenRefreshed(userisLoggedIn.id, tokens.refreshToken);
 

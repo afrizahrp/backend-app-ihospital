@@ -54,8 +54,8 @@ export class AuthController {
   // me(@ActiveUser() sysUser: UserInfo) {
   //   return sysUser;
   // }
+  // @UseGuards(AccessTokenGuard)
   @Public()
-  @UseGuards(AccessTokenGuard)
   @Get('/me')
   me(@sysUser() sysUser: UserInfo) {
     return sysUser;

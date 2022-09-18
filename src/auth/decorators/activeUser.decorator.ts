@@ -7,6 +7,7 @@ export interface UserInfo {
   id: string;
   name: string;
   exp: number;
+  role_id: string;
 }
 
 export const ActiveUser = createParamDecorator(
