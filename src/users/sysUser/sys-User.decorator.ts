@@ -4,7 +4,7 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 export interface UserInfo {
   id: string;
   role: string;
-  name: string;
+  username: string;
   exp: number;
 }
 
