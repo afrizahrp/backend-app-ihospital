@@ -33,16 +33,22 @@ export class AuthService {
     private config: ConfigService,
   ) {}
 
-  async getTokens(id: string, username: string, role: string): Promise<Tokens> {
+  async getTokens(
+    id: string,
+    username: string,
+    role: string,
+    email: string,
+  ): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
       sub: id,
       username,
       role,
+      email,
     };
     // const [accessToken] = await Promise.all([
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { sub: id, username, role },
+        { sub: id, username, role, email },
         {
           secret: this.config.get<string>('ACCESS_TOKEN_SECRET'),
           expiresIn: '15m',
@@ -50,7 +56,7 @@ export class AuthService {
       ),
 
       this.jwtService.signAsync(
-        { sub: id, username, role },
+        { sub: id, username, role, email },
         {
           secret: this.config.get<string>('REFRESH_TOKEN_SECRET'),
           expiresIn: '5d',
@@ -125,8 +131,9 @@ export class AuthService {
       });
       const tokens = await this.getTokens(
         newUser.id,
-        newUser.email,
         newUser.role_id,
+        newUser.name,
+        newUser.email,
       );
       await this.updateTokenRefreshed(newUser.id, newUser.tokenHasRefreshed);
       return tokens;
@@ -152,7 +159,12 @@ export class AuthService {
     if (!is_Password_Matched) {
       throw new ForbiddenException('Password does not valid');
     }
-    const tokens = await this.getTokens(sysUser.id, sysUser.name, 'admin');
+    const tokens = await this.getTokens(
+      sysUser.id,
+      sysUser.name,
+      'admin',
+      sysUser.email,
+    );
     await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
     return tokens;
   }
@@ -191,6 +203,7 @@ export class AuthService {
     }
     const tokens = await this.getTokens(
       userisLoggedIn.id,
+      userisLoggedIn.name,
       userisLoggedIn.email,
       userisLoggedIn.role_id,
     );
