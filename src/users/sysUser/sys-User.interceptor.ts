@@ -6,7 +6,10 @@ export class SysUserInterceptor implements NestInterceptor {
   async intercept(context: ExecutionContext, handler: CallHandler) {
     const request = context.switchToHttp().getRequest();
     const token = request?.headers?.authorization?.split('Bearer ')[1];
-    // const sysUser = await JwtService.decode;
+
+    //wirte to content type json
+    request.headers['content-type'] = 'application/json';
+
     const sysUser = await jwt.decode(token);
     request.sys_User = sysUser;
 
