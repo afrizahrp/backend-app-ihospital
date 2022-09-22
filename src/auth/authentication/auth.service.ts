@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { PrismaService } from './../../prisma/prisma.service';
 import { JwtPayload, Tokens } from './types';
+import { sysUser } from 'src/users/sysUser/sys-User.decorator';
 interface RegisterParams {
   role_id: string;
   isAdmin: boolean;
@@ -160,16 +161,10 @@ export class AuthService {
       throw new ForbiddenException('Password does not valid');
     }
     const tokens = await this.getTokens(
-<<<<<<< HEAD
       sysUser.id.trim(),
       sysUser.name.trim(),
       sysUser.role_id.toLowerCase().trim(),
-=======
-      sysUser.id,
-      sysUser.name,
-      'admin',
       sysUser.email,
->>>>>>> c8f0a87a60911894e663096f5f6ac918445c7c7d
     );
     await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
     return tokens;
@@ -208,10 +203,10 @@ export class AuthService {
       throw new ForbiddenException('Token does not valid');
     }
     const tokens = await this.getTokens(
-      userisLoggedIn.id,
-      userisLoggedIn.name,
+      userisLoggedIn.id.trim(),
+      userisLoggedIn.name.trim(),
       userisLoggedIn.email,
-      userisLoggedIn.role_id.toLowerCase(),
+      userisLoggedIn.role_id.toLowerCase().trim(),
     );
     await this.updateTokenRefreshed(userisLoggedIn.id, tokens.refreshToken);
 
