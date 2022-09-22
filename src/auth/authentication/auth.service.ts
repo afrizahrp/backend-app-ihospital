@@ -152,7 +152,11 @@ export class AuthService {
     if (!is_Password_Matched) {
       throw new ForbiddenException('Password does not valid');
     }
-    const tokens = await this.getTokens(sysUser.id, sysUser.name, 'admin');
+    const tokens = await this.getTokens(
+      sysUser.id.trim(),
+      sysUser.name.trim(),
+      sysUser.role_id.toLowerCase().trim(),
+    );
     await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
     return tokens;
   }
@@ -192,7 +196,7 @@ export class AuthService {
     const tokens = await this.getTokens(
       userisLoggedIn.id,
       userisLoggedIn.email,
-      userisLoggedIn.role_id,
+      userisLoggedIn.role_id.toLowerCase(),
     );
     await this.updateTokenRefreshed(userisLoggedIn.id, tokens.refreshToken);
 

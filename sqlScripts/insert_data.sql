@@ -18,6 +18,10 @@ INSERT INTO backendDb.dbo.sysUserRole VALUES('USER','GUEST USER',0,'Restricted a
 'SYSTEM',GETDATE(),'SYSTEM',GETDATE(),'NMS','KLM1-JKT05')
 GO
 
+
+INSERT INTO backendDb.dbo.sysUserRole VALUES('CLIENT','CLIENT USER',0,'Restricted assigned to operate all functions',
+'SYSTEM',GETDATE(),'SYSTEM',GETDATE(),'NMS','KLM1-JKT05')
+
 INSERT INTO backendDb.dbo.sysCounter
 SELECT [module_id]
       ,[counter_id]
