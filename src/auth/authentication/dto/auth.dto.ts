@@ -26,9 +26,6 @@ export class RegisterDto {
   @IsNotEmpty()
   name: string;
 
-  @IsNotEmpty()
-  isAdmin: boolean;
-
   @IsString()
   @IsNotEmpty()
   @MinLength(5)

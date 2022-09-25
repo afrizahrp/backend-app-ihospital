@@ -7,7 +7,6 @@ import { JwtPayload, Tokens } from './types';
 import { sysUser } from 'src/users/sysUser/sys-User.decorator';
 interface RegisterParams {
   role_id: string;
-  isAdmin: boolean;
   id: string;
   name: string;
   email: string;
@@ -87,7 +86,6 @@ export class AuthService {
 
   async register({
     role_id,
-    isAdmin,
     id,
     name,
     email,
@@ -114,7 +112,6 @@ export class AuthService {
       const newUser = await this.prismaService.sysUser.create({
         data: {
           role_id,
-          isAdmin,
           id,
           name,
           email,

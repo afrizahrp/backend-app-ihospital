@@ -8,37 +8,33 @@ datasource db {
 }
 
 model sysCompany {
-  id        String      @id @db.Char(5)
-  name      String      @db.VarChar(50)
-  createdBy String      @db.Char(10)
-  createdAt DateTime    @default(now())
-  updatedBy String      @db.Char(10)
-  updatedAt DateTime    @default(now())
-  sysBranch sysBranch[]
+  id        String   @id @db.Char(5)
+  name      String   @db.VarChar(50)
+  createdBy String   @db.Char(10)
+  createdAt DateTime @default(now())
+  updatedBy String   @db.Char(10)
+  updatedAt DateTime @default(now())
 }
 
 model sysBranch {
-  id            String        @id @db.Char(10)
-  name          String        @db.VarChar(50)
-  address       String        @db.VarChar(100)
-  phone         String        @db.VarChar(20)
-  email         String        @db.VarChar(50)
-  contactPerson String        @db.VarChar(50)
-  contactPhone  String        @db.VarChar(20)
-  createdBy     String        @db.Char(10)
-  createdAt     DateTime      @default(now())
-  updatedBy     String        @db.Char(10)
-  updatedAt     DateTime      @default(now())
-  company_id    String        @db.Char(5)
-  sysCompany    sysCompany    @relation(fields: [company_id], references: [id])
-  sysUser       sysUser[]
-  sysUserRole   sysUserRole[]
+  id            String   @id @db.Char(10)
+  name          String   @db.VarChar(50)
+  address       String   @db.VarChar(100)
+  phone         String   @db.VarChar(20)
+  email         String   @db.VarChar(50)
+  contactPerson String   @db.VarChar(50)
+  contactPhone  String   @db.VarChar(20)
+  createdBy     String   @db.Char(10)
+  createdAt     DateTime @default(now())
+  updatedBy     String   @db.Char(10)
+  updatedAt     DateTime @default(now())
+  company_id    String   @db.Char(5)
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model sysCounter {
   module_id    String   @db.Char(3)
-  counter_id   String   @id @db.Char(3)
+  counter_id   String   @db.Char(3)
   lastCounter  Int
   description  String   @db.VarChar(160)
   pattern      String   @db.Char(30)
@@ -59,6 +55,7 @@ model sysCounter {
   company_id   String   @db.Char(5)
   branch_id    String   @db.Char(10)
 
+  @@id([module_id, counter_id, startYear, startMonth])
   @@ignore
 }
 
@@ -73,82 +70,444 @@ model sysDocId {
 }
 
 model sysUser {
-  role_id           String      @db.Char(20)
-  id                String      @id @db.Char(20)
-  name              String      @db.VarChar(50)
-  isAdmin           Boolean
-  email             String      @unique @db.VarChar(30)
-  phone             String      @db.VarChar(20)
+  role_id           String   @db.Char(20)
+  id                String   @id @db.Char(20)
+  name              String   @db.VarChar(50)
+  email             String   @unique @db.VarChar(30)
+  phone             String   @db.VarChar(20)
   password          String
   tokenForAccess    String
-  isLoggedIn        Boolean?
+  isLoggedIn        Boolean
   tokenHasRefreshed String?
-  createdBy         String      @db.Char(10)
-  createdAt         DateTime    @default(now())
-  updatedBy         String      @db.Char(10)
+  createdBy         String   @db.Char(10)
+  createdAt         DateTime @default(now())
+  updatedBy         String   @db.Char(10)
   updatedAt         DateTime
-  company_id        String      @db.Char(5)
-  branch_id         String      @db.Char(10)
-  sysBranch         sysBranch   @relation(fields: [branch_id], references: [id])
-  sysUserRole       sysUserRole @relation(fields: [role_id], references: [id], onUpdate: NoAction, map: "fk_sys_user_role")
+  company_id        String   @db.Char(5)
+  branch_id         String   @db.Char(10)
 }
 
 model sysUserRole {
-  id          String    @id(map: "sys_User_role_pkey") @db.Char(20)
-  name        String    @unique(map: "sys_user_role_key") @db.VarChar(50)
+  id          String   @id(map: "sys_User_role_pkey") @db.Char(20)
+  name        String   @unique(map: "sys_user_role_key") @db.VarChar(50)
   isAdmin     Boolean
-  description String    @db.VarChar(150)
-  createdBy   String    @db.Char(10)
-  createdAt   DateTime  @default(now(), map: "sys_User_Role_createdAt_df")
-  updatedBy   String    @db.Char(10)
+  description String   @db.VarChar(150)
+  createdBy   String   @db.Char(10)
+  createdAt   DateTime @default(now(), map: "sys_User_Role_createdAt_df")
+  updatedBy   String   @db.Char(10)
   updatedAt   DateTime
-  company_id  String?   @db.Char(5)
-  branch_id   String    @db.Char(10)
-  sysBranch   sysBranch @relation(fields: [branch_id], references: [id])
-  sysUser     sysUser[]
+  company_id  String?  @db.Char(5)
+  branch_id   String   @db.Char(10)
 }
 
-model tmpPatient {
-  id   String @id @db.Char(20)
-  name String @db.VarChar(100)
+model hosCheckSpecDev {
+  id         String   @db.Char(10)
+  seqNo      Int      @default(autoincrement()) @db.TinyInt
+  device_id  String   @db.Char(20)
+  deviceName String   @db.VarChar(50)
+  qty        String   @default("", map: "DF__hosCheckSpe__qty__5812160E") @db.VarChar(50)
+  Uom        Decimal  @default(dbgenerated(), map: "DF__hosCheckSpe__Uom__59063A47") @db.Decimal(9, 6)
+  baseAmt    Decimal  @default(0, map: "DF__hosCheckS__baseA__59FA5E80") @db.Decimal(22, 0)
+  addAmt     Decimal  @default(0, map: "DF__hosCheckS__addAm__5AEE82B9") @db.Decimal(22, 0)
+  discAmt    Decimal  @default(0, map: "DF__hosCheckS__discA__5BE2A6F2") @db.Decimal(22, 0)
+  trxAmt     Decimal  @default(0, map: "DF__hosCheckS__trxAm__5CD6CB2B") @db.Decimal(22, 0)
+  remarks    String   @default("0", map: "DF__hosCheckS__remar__5DCAEF64") @db.VarChar(50)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime @default(now())
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
+
+  @@id([id, seqNo])
+}
+
+model hosCheckSpecDtl {
+  seqNo      Int      @default(autoincrement()) @db.TinyInt
+  id         String   @db.Char(10)
+  name       String   @default("", map: "DF__hosCheckSp__name__5FB337D6") @db.VarChar(50)
+  botValue   Decimal  @default(0, map: "DF__hosCheckS__botVa__60A75C0F") @db.Decimal(9, 6)
+  botValUom  Decimal  @default(dbgenerated(), map: "DF__hosCheckS__botVa__619B8048") @db.Decimal(9, 6)
+  midValue   Decimal  @default(0, map: "DF__hosCheckS__midVa__628FA481") @db.Decimal(9, 6)
+  midValUom  Decimal  @default(dbgenerated(), map: "DF__hosCheckS__midVa__6383C8BA") @db.Decimal(9, 6)
+  topValue   Decimal  @default(0, map: "DF__hosCheckS__topVa__6477ECF3") @db.Decimal(9, 6)
+  topValUom  Decimal  @default(dbgenerated(), map: "DF__hosCheckS__topVa__656C112C") @db.Decimal(9, 6)
+  baseAmt    Decimal  @default(0, map: "DF__hosCheckS__baseA__66603565") @db.Decimal(22, 0)
+  addAmt     Decimal  @default(0, map: "DF__hosCheckS__addAm__6754599E") @db.Decimal(22, 0)
+  discAmt    Decimal  @default(0, map: "DF__hosCheckS__discA__68487DD7") @db.Decimal(22, 0)
+  trxAmt     Decimal  @default(0, map: "DF__hosCheckS__trxAm__693CA210") @db.Decimal(22, 0)
+  remarks    String   @default("0", map: "DF__hosCheckS__remar__6A30C649") @db.VarChar(50)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime @default(now())
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
+
+  @@id([id, seqNo])
+}
+
+model hosCheckSpecHdr {
+  id         String   @id(map: "hosCheckSpecHd_pkey") @db.Char(10)
+  name       String   @default("", map: "DF__hosCheckSp__name__6C190EBB") @db.VarChar(50)
+  remark     String   @default("", map: "DF__hosCheckS__remar__6D0D32F4") @db.VarChar(100)
+  baseAmt    Decimal  @default(0, map: "DF__hosCheckS__baseA__6E01572D") @db.Decimal(22, 0)
+  addAmt     Decimal  @default(0, map: "DF__hosCheckS__addAm__6EF57B66") @db.Decimal(22, 0)
+  discAmt    Decimal  @default(0, map: "DF__hosCheckS__discA__6FE99F9F") @db.Decimal(22, 0)
+  trxAmt     Decimal  @default(0, map: "DF__hosCheckS__trxAm__70DDC3D8") @db.Decimal(22, 0)
+  remarks    String   @default("0", map: "DF__hosCheckS__remar__71D1E811") @db.VarChar(50)
+  createdBy  String   @default("", map: "DF__hosCheckS__creat__72C60C4A") @db.Char(10)
+  createdAt  DateTime @default(now())
+  updatedBy  String   @default("", map: "DF__hosCheckS__updat__74AE54BC") @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
+}
+
+model hosCheckSpecPrs {
+  id          String   @db.Char(10)
+  seqNo       Int      @default(autoincrement()) @db.TinyInt
+  subDept_id  String   @db.Char(10)
+  subDeptName String   @db.Char(10)
+  leader      Boolean
+  emp_id      String   @db.Char(20)
+  empName     String   @db.VarChar(50)
+  rateAmt     Decimal  @default(dbgenerated(), map: "DF__hosCheckS__rateA__75A278F5") @db.Decimal(18, 0)
+  baseAmt     Decimal  @default(0, map: "DF__hosCheckS__baseA__76969D2E") @db.Decimal(22, 0)
+  addAmt      Decimal  @default(0, map: "DF__hosCheckS__addAm__778AC167") @db.Decimal(22, 0)
+  discAmt     Decimal  @default(0, map: "DF__hosCheckS__discA__787EE5A0") @db.Decimal(22, 0)
+  trxAmt      Decimal  @default(0, map: "DF__hosCheckS__trxAm__797309D9") @db.Decimal(22, 0)
+  remarks     String   @default("0", map: "DF__hosCheckS__remar__7A672E12") @db.VarChar(50)
+  createdBy   String   @db.Char(10)
+  createdAt   DateTime @default(now())
+  updatedBy   String   @db.Char(10)
+  updatedAt   DateTime
+  company_id  String?  @db.Char(5)
+  branch_id   String   @db.Char(10)
+
+  @@id([id, seqNo])
+}
+
+model hosDoctor {
+  id           String   @id(map: "PK_hosDoctor") @db.Char(20)
+  birthdate    DateTime
+  gender       Int      @db.TinyInt
+  fullName     String   @db.VarChar(80)
+  nickName     String   @db.VarChar(20)
+  joinDate     DateTime
+  hiredStatus  Int      @db.TinyInt
+  activeStatus Boolean
+  onlineStatus Int      @db.TinyInt
+  mobile       String?  @db.VarChar(20)
+  email        String?  @db.VarChar(50)
+  socMedia_id  String?  @db.VarChar(60)
+  pictUrl      String?  @db.VarChar(80)
+  avatar       String?  @db.VarChar(80)
+  createdBy    String   @db.Char(10)
+  createdAt    DateTime
+  updatedBy    String   @db.Char(10)
+  updatedAt    DateTime
+  company_id   String?  @db.Char(5)
+  branch_id    String   @db.Char(10)
+}
+
+model hosPatient {
+  id             String   @id @db.Char(20)
+  nickname       String   @db.VarChar(30)
+  fullname       String   @db.VarChar(50)
+  birthdate      DateTime @db.Date
+  ageInYear      Int?     @db.TinyInt
+  ageInMonth     Int?     @db.TinyInt
+  gender         Int      @db.TinyInt
+  bloodType      String   @db.VarChar(5)
+  maritalStatus  Int      @db.TinyInt
+  country_id     String   @db.Char(3)
+  Prov_id        String   @db.Char(2)
+  Prov_name      String   @db.VarChar(50)
+  subProv_id     String   @db.Char(2)
+  subProv_name   String   @db.VarChar(50)
+  district_id    String   @db.Char(2)
+  district_name  String   @db.VarChar(50)
+  subdistrict_id String   @db.Char(2)
+  address        String   @db.VarChar(80)
+  mobileNo1      String   @db.VarChar(20)
+  mobileNo2      String   @db.VarChar(20)
+  phoneNo        String   @db.VarChar(15)
+  email          String?  @db.VarChar(80)
+  activity       String?  @db.VarChar(50)
+  createdBy      String   @db.Char(10)
+  createdAt      DateTime
+  updatedBy      String   @db.Char(10)
+  updatedAt      DateTime
+  company_id     String?  @db.Char(5)
+  branch_id      String   @db.Char(10)
+}
+
+model hosPatientCaseDtl {
+  id           String   @db.Char(20)
+  seqNo        Int      @default(autoincrement()) @db.TinyInt
+  trxType      String   @db.Char(3)
+  description  String   @db.VarChar(100)
+  medicine_id  String   @db.Char(20)
+  medicineName String   @db.VarChar(50)
+  qty          Decimal  @default(0, map: "DF__hosPatientC__qty__56E8E7AB") @db.Decimal(9, 6)
+  baseAmt      Decimal? @db.Decimal(22, 0)
+  addedAmt     Decimal? @db.Decimal(22, 0)
+  discAmt      Decimal? @db.Decimal(22, 0)
+  trxAmt       Decimal? @db.Decimal(22, 0)
+  status       Int      @default(0, map: "DF__hosPatien__statu__57DD0BE4") @db.TinyInt
+  createdBy    String   @db.Char(10)
+  createdAt    DateTime @default(now())
+  updatedBy    String   @db.Char(10)
+  updatedAt    DateTime
+  company_id   String?  @db.Char(5)
+  branch_id    String   @db.Char(10)
+
+  @@id([id, seqNo])
+}
+
+model hosPatientCaseHdr {
+  registry_id  String   @db.Char(20)
+  patient_id   String   @db.Char(20)
+  patientName  String   @db.VarChar(50)
+  doctor_id    String   @db.Char(15)
+  doctorName   String   @db.VarChar(50)
+  id           String   @id @db.Char(20)
+  descriptions String?  @default("", map: "DF__hosPatien__descr__37703C52") @db.VarChar(100)
+  caseDate     DateTime @db.DateTime
+  symptom      String?  @db.VarChar(200)
+  firstDiag    String?  @db.VarChar(200)
+  isRefered    Boolean
+  isPatientOk  Int?     @db.TinyInt
+  referedDate  DateTime @db.Date
+  referedTo    Int      @db.TinyInt
+  hospitalName String   @default("", map: "DF__hosPatien__hospi__3864608B") @db.VarChar(20)
+  poly_id      String   @db.Char(10)
+  polyName     String   @db.VarChar(50)
+  status       Int?     @default(0, map: "DF__hosPatien__statu__395884C4") @db.TinyInt
+  createdBy    String   @db.Char(10)
+  createdAt    DateTime @default(now())
+  updatedBy    String   @db.Char(10)
+  updatedAt    DateTime
+  company_id   String?  @db.Char(5)
+  branch_id    String   @db.Char(10)
+}
+
+model hosPatientCheckDtl {
+  seqNo          Int      @default(autoincrement()) @db.TinyInt
+  id             String   @db.Char(20)
+  trxType        String   @db.Char(3)
+  name           String?  @db.VarChar(50)
+  value          Decimal? @db.Decimal(9, 6)
+  uom            String?  @db.Char(5)
+  valueIndicator String?  @db.Char(10)
+  remarks        String?  @db.VarChar(100)
+  baseAmt        Decimal? @db.Decimal(22, 0)
+  addedAmt       Decimal? @db.Decimal(22, 0)
+  discAmt        Decimal? @db.Decimal(22, 0)
+  trxAmt         Decimal? @db.Decimal(22, 0)
+  status         Int?     @db.TinyInt
+  createdBy      String   @db.Char(10)
+  createdAt      DateTime
+  updatedBy      String   @db.Char(10)
+  updatedAt      DateTime
+  company_id     String?  @db.Char(5)
+  branch_id      String   @db.Char(10)
+
+  @@id([id, seqNo])
+}
+
+model hosPatientCheckHdr {
+  trxType        String   @db.Char(3)
+  case_id        String   @db.Char(20)
+  patient_id     String   @db.Char(20)
+  patientName    String   @db.VarChar(50)
+  Doctor_id      String   @db.Char(15)
+  DoctorName     String   @db.VarChar(50)
+  id             String   @id @db.Char(20)
+  reff_id        String   @db.Char(20)
+  SeqNo          Int      @db.TinyInt
+  description    String   @db.VarChar(100)
+  checkDate      DateTime @db.DateTime
+  resultByValue  Decimal  @db.Decimal(18, 6)
+  resultByWords  String   @db.VarChar(50)
+  remarks        String   @db.VarChar(200)
+  recommendation String   @db.VarChar(100)
+  schedule_id    String   @db.Char(20)
+  scheduleN      Int      @db.TinyInt
+  status         Int      @db.TinyInt
+  createdBy      String   @db.Char(10)
+  createdAt      DateTime
+  updatedBy      String   @db.Char(10)
+  updatedAt      DateTime
+  company_id     String?  @db.Char(5)
+  branch_id      String   @db.Char(10)
+}
+
+model hosRegistration {
+  trxType        String   @db.Char(3)
+  appointment_id String   @db.Char(20)
+  id             String   @id(map: "hosRegistrationHdr_pkey") @db.Char(20)
+  registryDate   DateTime @db.Date
+  patient_id     String   @db.Char(20)
+  patientName    String   @db.Char(20)
+  tax_id         String   @db.Char(2)
+  baseAmt        Decimal  @db.Decimal(22, 0)
+  discAmt        Decimal  @db.Decimal(22, 0)
+  taxAmt         Decimal  @db.Decimal(22, 0)
+  trxAmt         Decimal  @db.Decimal(22, 0)
+  payType        Int      @db.TinyInt
+  pay_id         String?  @db.VarChar(20)
+  status         Int?     @db.TinyInt
+  createdBy      String   @db.Char(10)
+  createdAt      DateTime @default(now(), map: "hosRegistrationHdr_createdAt_df")
+  updatedBy      String   @db.Char(10)
+  updatedAt      DateTime
+  company_id     String?  @db.Char(5)
+  branch_id      String   @db.Char(10)
+}
+
+model hosSpecialist {
+  div_id     String   @db.Char(10)
+  dept_id    String   @db.Char(10)
+  subDept_id String   @db.Char(10)
+  id         String   @id(map: "PK_hosSpecialist") @db.Char(10)
+  name       String   @db.VarChar(50)
+  reqCert    String?  @db.VarChar(200)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
+}
+
+model iCtUom {
+  id         String   @id(map: "PK_iCtUom") @db.Char(5)
+  name       String?  @db.VarChar(50)
+  remarks    String   @default("", map: "DF__iCtUom__remarks__0A9D95DB") @db.VarChar(100)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
+}
+
+model plcCountry {
+  id         String   @id @db.Char(3)
+  name       String   @db.VarChar(50)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime @default(now())
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
+}
+
+model plcDirection {
+  id         String   @id(map: "PK_plcDirection") @db.Char(10)
+  name       String?  @db.VarChar(50)
+  direction  String?  @db.VarChar(100)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
+}
+
+model plcDistrict {
+  subProv_id String   @db.Char(2)
+  id         String   @id @db.Char(2)
+  name       String   @db.VarChar(50)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime @default(now())
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
+}
+
+model plcFloor {
+  direction_id String   @db.Char(10)
+  id           String   @id(map: "PK_BuildingFloors") @db.Char(5)
+  name         String?  @db.VarChar(50)
+  createdBy    String   @db.Char(10)
+  createdAt    DateTime
+  updatedBy    String   @default("getdate()", map: "DF__plcFloor__update__0D7A0286") @db.Char(10)
+  updatedAt    DateTime
+  company_id   String?  @db.Char(5)
+  branch_id    String   @db.Char(10)
+}
+
+model plcProv {
+  country_id String   @db.Char(3)
+  id         String   @id @db.Char(2)
+  name       String   @db.VarChar(50)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime @default(now())
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
+}
+
+model plcSubDistrict {
+  district_id String   @db.Char(2)
+  id          String   @id @db.Char(2)
+  name        String   @db.VarChar(50)
+  createdBy   String   @db.Char(10)
+  createdAt   DateTime @default(now())
+  updatedBy   String   @db.Char(10)
+  updatedAt   DateTime
+  company_id  String?  @db.Char(5)
+  branch_id   String   @db.Char(10)
+}
+
+model plcSubProv {
+  Prov_id    String   @db.Char(2)
+  id         String   @id @db.Char(2)
+  name       String   @db.VarChar(50)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime @default(now())
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
+}
+
+model sysDept {
+  Divs_id    String   @db.Char(10)
+  id         String   @id @db.Char(10)
+  name       String   @db.VarChar(100)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime @default(now())
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
+}
+
+model sysSubDept {
+  Dept_id    String   @db.Char(10)
+  id         String   @id @db.Char(10)
+  name       String   @db.VarChar(100)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime @default(now())
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
 }
 
 model sysDivision {
-  id            String          @id @db.Char(10)
-  name          String          @db.VarChar(100)
-  createdBy     String          @db.Char(10)
-  createdAt     DateTime        @default(now())
-  updatedBy     String          @db.Char(10)
-  updatedAt     DateTime
-  company_id    String?         @db.Char(5)
-  branch_id     String          @db.Char(10)
-  sysDepartment sysDepartment[]
-}
-
-model sysDepartment {
-  division_id      String             @db.Char(10)
-  id               String             @id @db.Char(10)
-  name             String             @db.VarChar(100)
-  createdBy        String             @db.Char(10)
-  createdAt        DateTime           @default(now())
-  updatedBy        String             @db.Char(10)
-  updatedAt        DateTime
-  company_id       String?            @db.Char(5)
-  branch_id        String             @db.Char(10)
-  sysSubDepartment sysSubDepartment[]
-  sysDivision      sysDivision        @relation(fields: [division_id], references: [id])
-}
-
-model sysSubDepartment {
-  department_id   String         @db.Char(10)
-  id              String         @id @db.Char(10)
-  name            String         @db.VarChar(100)
-  createdBy       String         @db.Char(10)
-  createdAt       DateTime       @default(now())
-  updatedBy       String         @db.Char(10)
-  updatedAt       DateTime
-  company_id      String?        @db.Char(5)
-  branch_id       String         @db.Char(10)
-  sysDepartment   sysDepartment? @relation(fields: [sysDepartmentId], references: [id])
-  sysDepartmentId String?        @db.Char(10)
+  id         String   @id @db.Char(10)
+  name       String   @db.VarChar(100)
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String?  @db.Char(5)
+  branch_id  String   @db.Char(10)
 }
