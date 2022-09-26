@@ -39,9 +39,11 @@ interface NewPatientParams {
   email: string;
   occupation: string;
   createdBy: string;
+  createdAt: Date;
   updatedBy: string;
-  company_id: string;
-  branch_id: string;
+  updatedAt: Date;
+  company_id?: string;
+  branch_id?: string;
 }
 
 interface UpdatePatientParams {
@@ -49,7 +51,7 @@ interface UpdatePatientParams {
   fullName?: string;
   birthDate?: Date;
   ageInYear?: number;
-  ageInMonth: number;
+  ageInMonth?: number;
   gender?: string;
   religion?: string;
   bloodType?: string;
@@ -75,38 +77,45 @@ interface UpdatePatientParams {
 export class HosPatientService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async newPatient({
-    nickName,
-    fullName,
-    birthDate,
-    ageInYear,
-    ageInMonth,
-    gender,
-    religion,
-    bloodType,
-    maritalStatus,
-    country_id,
-    prov_id,
-    provName,
-    subProv_id,
-    subProvName,
-    district_id,
-    districtName,
-    subdistrict_id,
-    subdistrictName,
-    address,
-    mobileNo1,
-    mobileNo2,
-    phoneNo,
-    email,
-    occupation,
-    createdBy,
-    updatedBy,
-    company_id,
-    branch_id,
-  }: NewPatientParams) {
+  async newPatient(
+    {
+      nickName,
+      fullName,
+      birthDate,
+      ageInYear,
+      ageInMonth,
+      gender,
+      religion,
+      bloodType,
+      maritalStatus,
+      country_id,
+      prov_id,
+      provName,
+      subProv_id,
+      subProvName,
+      district_id,
+      districtName,
+      subdistrict_id,
+      subdistrictName,
+      address,
+      mobileNo1,
+      mobileNo2,
+      phoneNo,
+      email,
+      occupation,
+      createdBy,
+      createdAt,
+      updatedBy,
+      updatedAt,
+      company_id,
+      branch_id,
+    }: NewPatientParams,
+    userId: string,
+    companyId: string,
+    branchId: string,
+  ) {
     const emailExists = await this.prismaService.hosPatient.findUnique({
-      where: { email },
+      where: { email: email },
     });
 
     if (emailExists) {
@@ -143,13 +152,14 @@ export class HosPatientService {
         phoneNo,
         email,
         occupation,
-        createdBy,
-        updatedBy,
-        company_id,
-        branch_id,
+        createdBy: userId,
+        createdAt,
+        updatedBy: userId,
+        updatedAt,
+        company_id: companyId,
+        branch_id: branchId,
       },
     });
-    //return newPatient;
     return new ShowPatientDto(newPatient);
   }
 
@@ -196,11 +206,28 @@ export class HosPatientService {
       throw new BadRequestException('Update Patient Failed');
     }
   }
-}
 
-// const updatedPatient = await this.prismaService.hosPatient.update({
-//   where: {
-//     id: id,
-//   },
-//   data,
-// });
+  // Delete patient
+  async delete_Patient_ById(patientId: string) {
+    const patientWillDelete = await this.prismaService.hosPatient.findUnique({
+      where: {
+        id: patientId,
+      },
+    });
+
+    if (!patientWillDelete) {
+      throw new NotFoundException('Patient not found');
+    }
+
+    try {
+      const patientDeleted = await this.prismaService.hosPatient.delete({
+        where: {
+          id: patientId,
+        },
+      });
+      return patientDeleted;
+    } catch (error) {
+      throw new BadRequestException('Delete Patient Failed');
+    }
+  }
+}

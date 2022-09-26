@@ -15,6 +15,7 @@ interface RegisterParams {
   tokenForAccess: string;
   isLoggedIn: boolean;
   createdBy: string;
+  createdAt: Date;
   updatedBy: string;
   updatedAt: Date;
   company_id: string;
@@ -38,17 +39,21 @@ export class AuthService {
     username: string,
     role: string,
     email: string,
+    company_id: string,
+    branch_id: string,
   ): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
       sub: id,
       username,
       role,
       email,
+      company_id,
+      branch_id,
     };
     // const [accessToken] = await Promise.all([
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
-        { sub: id, username, role, email },
+        { jwtPayload },
         {
           secret: this.config.get<string>('ACCESS_TOKEN_SECRET'),
           expiresIn: '15m',
@@ -56,7 +61,7 @@ export class AuthService {
       ),
 
       this.jwtService.signAsync(
-        { sub: id, username, role, email },
+        { jwtPayload },
         {
           secret: this.config.get<string>('REFRESH_TOKEN_SECRET'),
           expiresIn: '5d',
@@ -94,6 +99,7 @@ export class AuthService {
     tokenForAccess,
     isLoggedIn,
     createdBy,
+    createdAt,
     updatedBy,
     updatedAt,
     company_id,
@@ -121,6 +127,7 @@ export class AuthService {
           isLoggedIn: false,
           tokenHasRefreshed: '',
           createdBy,
+          createdAt,
           updatedBy,
           updatedAt: new Date(),
           company_id,
@@ -132,6 +139,8 @@ export class AuthService {
         newUser.role_id,
         newUser.name,
         newUser.email,
+        newUser.company_id,
+        newUser.branch_id,
       );
       await this.updateTokenRefreshed(newUser.id, newUser.tokenHasRefreshed);
       return tokens;
@@ -162,6 +171,8 @@ export class AuthService {
       sysUser.name.trim(),
       sysUser.role_id.toLowerCase().trim(),
       sysUser.email,
+      sysUser.company_id,
+      sysUser.branch_id,
     );
     await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
     return tokens;
@@ -183,29 +194,34 @@ export class AuthService {
     return true;
   }
 
-  async refreshingToken(id: string, tokenWillRefresh: string): Promise<Tokens> {
-    const userisLoggedIn = await this.prismaService.sysUser.findUnique({
-      where: { id },
+  async refreshingToken(
+    userId: string,
+    tokenWillRefresh: string,
+  ): Promise<Tokens> {
+    const userHasLoggedIn = await this.prismaService.sysUser.findUnique({
+      where: { id: userId },
     });
-    if (!userisLoggedIn || !userisLoggedIn.tokenHasRefreshed) {
+    if (!userHasLoggedIn || !userHasLoggedIn.tokenHasRefreshed) {
       throw new ForbiddenException('Access is denied, you not logged in');
     }
 
     const rTokenMatched = await bcrypt.compare(
       tokenWillRefresh,
-      userisLoggedIn.tokenHasRefreshed,
+      userHasLoggedIn.tokenHasRefreshed,
     );
 
     if (!rTokenMatched) {
       throw new ForbiddenException('Token does not valid');
     }
     const tokens = await this.getTokens(
-      userisLoggedIn.id.trim(),
-      userisLoggedIn.name.trim(),
-      userisLoggedIn.email,
-      userisLoggedIn.role_id.toLowerCase().trim(),
+      userHasLoggedIn.id.trim(),
+      userHasLoggedIn.name.trim(),
+      userHasLoggedIn.email,
+      userHasLoggedIn.role_id.toLowerCase().trim(),
+      userHasLoggedIn.company_id.toLowerCase().trim(),
+      userHasLoggedIn.branch_id.toLocaleUpperCase().trim(),
     );
-    await this.updateTokenRefreshed(userisLoggedIn.id, tokens.refreshToken);
+    await this.updateTokenRefreshed(userHasLoggedIn.id, tokens.refreshToken);
 
     return tokens;
   }

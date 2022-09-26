@@ -11,10 +11,14 @@ import {
   HttpCode,
   ParseUUIDPipe,
   ParseEnumPipe,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { json } from 'express';
-import { Public } from 'src/auth/decorators';
-import { sysUser } from 'src/users/sysUser/sys-User.decorator';
+import { AccessTokenGuard } from 'src/auth/authentication/guards';
+import { ActiveUser, Public, ActiveUserId } from 'src/auth/decorators';
+import { sysUser, UserInfo } from 'src/users/sysUser/sys-User.decorator';
+// import { sysUser, UserInfo } from 'src/users/sysUser/sys-User.decorator';
 import {
   NewPatientDto,
   ShowPatientDto,
@@ -27,15 +31,28 @@ import { HosPatientService } from './hos-patient.service';
 export class HosPatientController {
   constructor(private readonly hosPatientService: HosPatientService) {}
 
+  @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Post('register')
-  register(@Body() body: NewPatientDto, @sysUser() sysUser) {
+  newPatient(@Body() body: NewPatientDto, @sysUser() sysUser: UserInfo) {
     try {
-      return this.hosPatientService.newPatient(body);
+      return this.hosPatientService.newPatient(
+        body,
+        sysUser.sub,
+        sysUser.company_id,
+        sysUser.branch_id,
+      );
     } catch (error) {
       console.log(error.message);
     }
   }
+
+  // @UseGuards(AccessTokenGuard)
+  // @Post('logout')
+  // async logout(@ActiveUserId() id: string): Promise<boolean> {
+  //   return this.authService.logout(id);
+  // }
+
   @Public()
   @Get()
   getPatients(): Promise<ShowPatientDto[]> {
@@ -52,5 +69,11 @@ export class HosPatientController {
   @Put(':id')
   update_Patient(@Param('id') id: string, @Body() body: UpdatePatientDto) {
     return this.hosPatientService.update_Patient_ById(id, body);
+  }
+
+  @Public()
+  @Delete(':id')
+  delete_Patient(@Param('id') id: string) {
+    return this.hosPatientService.delete_Patient_ById(id);
   }
 }

@@ -8,7 +8,7 @@ export class SysUserInterceptor implements NestInterceptor {
     const token = request?.headers?.authorization?.split('Bearer ')[1];
     // const sysUser = await JwtService.decode;
     const sysUser = await jwt.decode(token);
-    request.sys_User = sysUser;
+    request.sysUser = sysUser;
 
     return handler.handle();
   }

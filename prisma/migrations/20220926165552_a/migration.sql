@@ -1,0 +1,21 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- AlterTable
+ALTER TABLE [dbo].[hosPatient] ALTER COLUMN [createdBy] CHAR(10) NULL;
+ALTER TABLE [dbo].[hosPatient] ALTER COLUMN [updatedBy] CHAR(10) NULL;
+ALTER TABLE [dbo].[hosPatient] ALTER COLUMN [branch_id] CHAR(10) NULL;
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH

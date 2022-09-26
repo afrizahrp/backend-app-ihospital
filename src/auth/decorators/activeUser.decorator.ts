@@ -8,6 +8,9 @@ export interface UserInfo {
   name: string;
   exp: number;
   role_id: string;
+  email: string;
+  company_id: string;
+  branch_id: string;
 }
 
 export const ActiveUser = createParamDecorator(
@@ -16,7 +19,7 @@ export const ActiveUser = createParamDecorator(
     context: ExecutionContext,
   ) => {
     const request = context.switchToHttp().getRequest();
-    if (!data) return request.sysUser;
-    return request.sysUser[data];
+    if (!data) return request.user;
+    return request.user[data];
   },
 );

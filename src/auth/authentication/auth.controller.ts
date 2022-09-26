@@ -12,14 +12,14 @@ import { ActiveUserId } from '../decorators/activeUserId.decorator';
 
 import { ActiveUser, UserInfo } from '../decorators/activeUser.decorator';
 
-import { Request, response } from 'express';
+// import { Request, response } from 'express';
 import { AuthService } from './auth.service';
 import { RegisterDto, LoginDto } from './dto/auth.dto';
 import { Tokens } from './types';
 import { AccessTokenGuard } from './guards/accessToken.guard';
 import { RefreshTokenGuard } from './guards/refreshToken.guard';
 import { Public } from '../decorators/public.decorator';
-import { sysUser } from 'src/users/sysUser/sys-User.decorator';
+// import { sysUser } from 'src/users/sysUser/sys-User.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -48,18 +48,19 @@ export class AuthController {
   //   return this.authService.login(body);
   // }
 
-  // @UseGuards(AuthGuard('jwt-access'))
-  // @Public()
-  // @Get('me')
-  // me(@ActiveUser() sysUser: UserInfo) {
-  //   return sysUser;
-  // }
-  // @UseGuards(AccessTokenGuard)
+  @UseGuards(AuthGuard('jwt-access'))
   @Public()
-  @Get('/me')
-  me(@sysUser() sysUser: UserInfo) {
+  @Get('me')
+  me(@ActiveUser() sysUser: UserInfo) {
     return sysUser;
   }
+  // @UseGuards(AccessTokenGuard)
+
+  // @Public()
+  // @Get('/me')
+  // me(@sysUser() sysUser: UserInfo) {
+  //   return sysUser;
+  // }
 
   @UseGuards(AccessTokenGuard)
   @Post('logout')
@@ -71,9 +72,9 @@ export class AuthController {
   @UseGuards(RefreshTokenGuard)
   @Post('/refresh')
   async refreshingToken(
-    @ActiveUserId() id: string,
+    @ActiveUserId() sub: string,
     @ActiveUser('refreshToken') refreshToken: string,
   ): Promise<Tokens> {
-    return this.authService.refreshingToken(id, refreshToken);
+    return this.authService.refreshingToken(sub, refreshToken);
   }
 }

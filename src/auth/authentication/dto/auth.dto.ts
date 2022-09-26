@@ -65,6 +65,10 @@ export class RegisterDto {
   @IsNotEmpty()
   createdBy: string;
 
+  @IsDate()
+  @IsNotEmpty()
+  createdAt: Date;
+
   @IsString()
   @IsNotEmpty()
   updatedBy: string;

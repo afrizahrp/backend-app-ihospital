@@ -3,4 +3,6 @@ export type JwtPayload = {
   username: string;
   role: string;
   email: string;
+  company_id: string;
+  branch_id: string;
 };

@@ -132,9 +132,13 @@ export class NewPatientDto {
   @IsString()
   updatedBy: string;
 
-  // @IsDate()
-  // @IsNotEmpty()
-  // updatedAt: Date;
+  @IsDate()
+  @IsNotEmpty()
+  createdAt: Date;
+
+  @IsDate()
+  @IsNotEmpty()
+  updatedAt: Date;
 
   @IsString()
   company_id: string;
