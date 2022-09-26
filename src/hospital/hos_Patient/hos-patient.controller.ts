@@ -15,7 +15,7 @@ import {
 import { json } from 'express';
 import { Public } from 'src/auth/decorators';
 import { sysUser } from 'src/users/sysUser/sys-User.decorator';
-import { RegisterDto } from './hos-patient.dto';
+import { NewPatientDto } from './hos-patient.dto';
 // import { CompanyType } from 'src/data/data';
 import { HosPatientService } from './hos-patient.service';
 
@@ -40,9 +40,9 @@ export class HosPatientController {
 
   @Public()
   @Post('register')
-  register(@Body() body: RegisterDto, @sysUser() sysUser) {
+  register(@Body() body: NewPatientDto, @sysUser() sysUser) {
     try {
-      return this.hosPatientService.register(body);
+      return this.hosPatientService.insertPatient(body);
     } catch (error) {
       console.log(error.message);
     }

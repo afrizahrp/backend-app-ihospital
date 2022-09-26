@@ -212,35 +212,37 @@ model hosDoctor {
 }
 
 model hosPatient {
-  id             String   @id @db.Char(20)
-  nickname       String   @db.VarChar(30)
-  fullname       String   @db.VarChar(50)
-  birthdate      DateTime @db.Date
-  ageInYear      Int?     @db.TinyInt
-  ageInMonth     Int?     @db.TinyInt
-  gender         Int      @db.TinyInt
-  bloodType      String   @db.VarChar(5)
-  maritalStatus  Int      @db.TinyInt
-  country_id     String   @db.Char(3)
-  Prov_id        String   @db.Char(2)
-  Prov_name      String   @db.VarChar(50)
-  subProv_id     String   @db.Char(2)
-  subProv_name   String   @db.VarChar(50)
-  district_id    String   @db.Char(2)
-  district_name  String   @db.VarChar(50)
-  subdistrict_id String   @db.Char(2)
-  address        String   @db.VarChar(80)
-  mobileNo1      String   @db.VarChar(20)
-  mobileNo2      String   @db.VarChar(20)
-  phoneNo        String   @db.VarChar(15)
-  email          String?  @db.VarChar(80)
-  activity       String?  @db.VarChar(50)
-  createdBy      String   @db.Char(10)
-  createdAt      DateTime
-  updatedBy      String   @db.Char(10)
-  updatedAt      DateTime
-  company_id     String?  @db.Char(5)
-  branch_id      String   @db.Char(10)
+  id              String   @id @db.Char(20)
+  nickName        String   @db.VarChar(30)
+  fullName        String   @db.VarChar(50)
+  birthDate       DateTime @db.Date
+  ageInYear       Int?     @default(0, map: "DF__hosPatien__ageIn__14E61A24") @db.TinyInt
+  ageInMonth      Int?     @default(0, map: "DF__hosPatien__ageIn__15DA3E5D") @db.TinyInt
+  gender          String   @db.Char(6)
+  bloodType       String   @db.VarChar(5)
+  religion        String   @db.VarChar(15)
+  maritalStatus   String   @db.Char(7)
+  country_id      String   @db.Char(3)
+  prov_id         String   @db.Char(2)
+  provName        String   @db.VarChar(50)
+  subProv_id      String   @db.Char(2)
+  subProvName     String   @db.VarChar(50)
+  district_id     String   @db.Char(2)
+  districtName    String   @db.VarChar(50)
+  subdistrict_id  String   @db.Char(2)
+  subdistrictName String   @db.Char(2)
+  address         String   @db.VarChar(80)
+  mobileNo1       String   @db.VarChar(20)
+  mobileNo2       String   @db.VarChar(20)
+  phoneNo         String   @db.VarChar(15)
+  email           String?  @db.VarChar(80)
+  occupation      String?  @db.VarChar(50)
+  createdBy       String   @db.Char(10)
+  createdAt       DateTime @default(now(), map: "DF__hosPatien__creat__16CE6296")
+  updatedBy       String   @db.Char(10)
+  updatedAt       DateTime @default(now(), map: "DF__hosPatien__updat__17C286CF")
+  company_id      String?  @db.Char(5)
+  branch_id       String   @db.Char(10)
 }
 
 model hosPatientCaseDtl {
