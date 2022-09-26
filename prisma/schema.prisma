@@ -35,7 +35,7 @@ model sysBranch {
 model sysCounter {
   module_id    String   @db.Char(3)
   counter_id   String   @db.Char(3)
-  lastCounter  Int
+  lastCounter  Int?
   description  String   @db.VarChar(160)
   pattern      String   @db.Char(30)
   combiner     String   @db.Char(20)
@@ -230,12 +230,12 @@ model hosPatient {
   district_id     String   @db.Char(2)
   districtName    String   @db.VarChar(50)
   subdistrict_id  String   @db.Char(2)
-  subdistrictName String   @db.Char(2)
+  subdistrictName String?  @db.VarChar(50)
   address         String   @db.VarChar(80)
   mobileNo1       String   @db.VarChar(20)
   mobileNo2       String   @db.VarChar(20)
   phoneNo         String   @db.VarChar(15)
-  email           String?  @db.VarChar(80)
+  email           String?  @unique(map: "UQ__hosPatie__AB6E6164B31B4C23") @db.VarChar(80)
   occupation      String?  @db.VarChar(50)
   createdBy       String   @db.Char(10)
   createdAt       DateTime @default(now(), map: "DF__hosPatien__creat__16CE6296")
