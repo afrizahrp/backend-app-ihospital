@@ -52,21 +52,15 @@ export class AuthService {
     };
     // const [accessToken] = await Promise.all([
     const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(
-        { jwtPayload },
-        {
-          secret: this.config.get<string>('ACCESS_TOKEN_SECRET'),
-          expiresIn: '15m',
-        },
-      ),
+      this.jwtService.signAsync(jwtPayload, {
+        secret: this.config.get<string>('ACCESS_TOKEN_SECRET'),
+        expiresIn: '1d',
+      }),
 
-      this.jwtService.signAsync(
-        { jwtPayload },
-        {
-          secret: this.config.get<string>('REFRESH_TOKEN_SECRET'),
-          expiresIn: '5d',
-        },
-      ),
+      this.jwtService.signAsync(jwtPayload, {
+        secret: this.config.get<string>('REFRESH_TOKEN_SECRET'),
+        expiresIn: '5d',
+      }),
     ]);
     // return { accessToken };
     return { accessToken, refreshToken };
@@ -214,7 +208,7 @@ export class AuthService {
       throw new ForbiddenException('Token does not valid');
     }
     const tokens = await this.getTokens(
-      userHasLoggedIn.id.trim(),
+      userHasLoggedIn.id,
       userHasLoggedIn.name.trim(),
       userHasLoggedIn.email,
       userHasLoggedIn.role_id.toLowerCase().trim(),

@@ -16,7 +16,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { json } from 'express';
 import { AccessTokenGuard } from 'src/auth/authentication/guards';
-import { ActiveUser, Public, ActiveUserId } from 'src/auth/decorators';
+import { ActiveUser, Public, ActiveUserInfo } from 'src/auth/decorators';
 import { sysUser, UserInfo } from 'src/users/sysUser/sys-User.decorator';
 // import { sysUser, UserInfo } from 'src/users/sysUser/sys-User.decorator';
 import {
@@ -34,7 +34,10 @@ export class HosPatientController {
   @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Post('register')
-  newPatient(@Body() body: NewPatientDto, @sysUser() sysUser: UserInfo) {
+  newPatient(
+    @Body() body: NewPatientDto,
+    @ActiveUser() sysUser: ActiveUserInfo,
+  ) {
     try {
       return this.hosPatientService.newPatient(
         body,

@@ -10,7 +10,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { ActiveUserId } from '../decorators/activeUserId.decorator';
 
-import { ActiveUser, UserInfo } from '../decorators/activeUser.decorator';
+import { ActiveUser, ActiveUserInfo } from '../decorators/activeUser.decorator';
 
 // import { Request, response } from 'express';
 import { AuthService } from './auth.service';
@@ -51,7 +51,7 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Get('me')
-  me(@ActiveUser() sysUser: UserInfo) {
+  me(@ActiveUser() sysUser: ActiveUserInfo) {
     return sysUser;
   }
   // @UseGuards(AccessTokenGuard)
@@ -72,9 +72,9 @@ export class AuthController {
   @UseGuards(RefreshTokenGuard)
   @Post('/refresh')
   async refreshingToken(
-    @ActiveUserId() sub: string,
+    @ActiveUserId() userId: string,
     @ActiveUser('refreshToken') refreshToken: string,
   ): Promise<Tokens> {
-    return this.authService.refreshingToken(sub, refreshToken);
+    return this.authService.refreshingToken(userId, refreshToken);
   }
 }
