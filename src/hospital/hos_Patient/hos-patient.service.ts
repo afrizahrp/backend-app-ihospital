@@ -38,12 +38,6 @@ interface NewPatientParams {
   phoneNo: string;
   email: string;
   occupation: string;
-  // createdBy: string;
-  // createdAt: Date;
-  // updatedBy: string;
-  // updatedAt: Date;
-  // company_id?: string;
-  // branch_id?: string;
 }
 
 interface UpdatePatientParams {
@@ -103,13 +97,7 @@ export class HosPatientService {
       phoneNo,
       email,
       occupation,
-    }: // createdBy,
-    // createdAt,
-    // updatedBy,
-    // updatedAt,
-    // company_id,
-    // branch_id,
-    NewPatientParams,
+    }: NewPatientParams,
     userId: string,
     companyId: string,
     branchId: string,
@@ -165,7 +153,30 @@ export class HosPatientService {
 
   async update_Patient_ById(
     id: string,
-    { nickName, fullName, email }: UpdatePatientParams,
+    {
+      nickName,
+      fullName,
+      birthDate,
+      gender,
+      religion,
+      bloodType,
+      maritalStatus,
+      country_id,
+      prov_id,
+      provName,
+      subProv_id,
+      subProvName,
+      district_id,
+      districtName,
+      subdistrict_id,
+      subdistrictName,
+      address,
+      mobileNo1,
+      mobileNo2,
+      phoneNo,
+      email,
+      occupation,
+    }: UpdatePatientParams,
     userId: string,
     companyId: string,
     branchId: string,
@@ -188,15 +199,32 @@ export class HosPatientService {
         data: {
           nickName,
           fullName,
+          birthDate,
+          gender,
+          religion,
+          bloodType,
+          maritalStatus,
+          country_id,
+          prov_id,
+          provName,
+          subProv_id,
+          subProvName,
+          district_id,
+          districtName,
+          subdistrict_id,
+          subdistrictName,
+          address,
+          mobileNo1,
+          mobileNo2,
+          phoneNo,
           email,
-          updatedBy: userId,
-          // get date with time zone local
+          occupation,
           updatedAt: new Date(),
+          updatedBy: userId,
           company_id: companyId,
           branch_id: branchId,
         },
       });
-      // return updatedPatient;
       return new ShowPatientDto(updatedPatient);
     } catch (error) {
       throw new BadRequestException('Update Patient Failed');
