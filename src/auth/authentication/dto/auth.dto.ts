@@ -12,7 +12,7 @@ import {
 } from 'class-validator';
 import { Exclude } from 'class-transformer';
 
-export class RegisterDto {
+export class NewUserDto {
   @IsString()
   @IsNotEmpty()
   role_id: string;

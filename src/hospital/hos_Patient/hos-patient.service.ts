@@ -38,12 +38,12 @@ interface NewPatientParams {
   phoneNo: string;
   email: string;
   occupation: string;
-  createdBy: string;
-  createdAt: Date;
-  updatedBy: string;
-  updatedAt: Date;
-  company_id?: string;
-  branch_id?: string;
+  // createdBy: string;
+  // createdAt: Date;
+  // updatedBy: string;
+  // updatedAt: Date;
+  // company_id?: string;
+  // branch_id?: string;
 }
 
 interface UpdatePatientParams {
@@ -103,13 +103,13 @@ export class HosPatientService {
       phoneNo,
       email,
       occupation,
-      createdBy,
-      createdAt,
-      updatedBy,
-      updatedAt,
-      company_id,
-      branch_id,
-    }: NewPatientParams,
+    }: // createdBy,
+    // createdAt,
+    // updatedBy,
+    // updatedAt,
+    // company_id,
+    // branch_id,
+    NewPatientParams,
     userId: string,
     companyId: string,
     branchId: string,
@@ -122,7 +122,7 @@ export class HosPatientService {
       throw new BadRequestException('Email is already exists');
     }
 
-    const documentId = new DocumentId('NMS', 'KLM1-JKT05', 'afriza');
+    const documentId = new DocumentId(companyId, branchId, userId);
     const docId = await documentId.gen_docId('HOS', 'PNT', '');
 
     const newPatient = await this.prismaService.hosPatient.create({
@@ -152,15 +152,55 @@ export class HosPatientService {
         phoneNo,
         email,
         occupation,
+        createdAt: new Date(),
+        updatedAt: new Date(),
         createdBy: userId,
-        createdAt,
         updatedBy: userId,
-        updatedAt,
         company_id: companyId,
         branch_id: branchId,
       },
     });
     return new ShowPatientDto(newPatient);
+  }
+
+  async update_Patient_ById(
+    id: string,
+    { nickName, fullName, email }: UpdatePatientParams,
+    userId: string,
+    companyId: string,
+    branchId: string,
+  ) {
+    const patient = await this.prismaService.hosPatient.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!patient) {
+      throw new NotFoundException('Patient not found');
+    }
+
+    try {
+      const updatedPatient = await this.prismaService.hosPatient.update({
+        where: {
+          id: id,
+        },
+        data: {
+          nickName,
+          fullName,
+          email,
+          updatedBy: userId,
+          // get date with time zone local
+          updatedAt: new Date(),
+          company_id: companyId,
+          branch_id: branchId,
+        },
+      });
+      // return updatedPatient;
+      return new ShowPatientDto(updatedPatient);
+    } catch (error) {
+      throw new BadRequestException('Update Patient Failed');
+    }
   }
 
   async getPatients(): Promise<ShowPatientDto[]> {
@@ -180,31 +220,6 @@ export class HosPatientService {
       },
     });
     return patient;
-  }
-
-  async update_Patient_ById(id: string, data: UpdatePatientParams) {
-    const patient = await this.prismaService.hosPatient.findUnique({
-      where: {
-        id: id,
-      },
-    });
-
-    if (!patient) {
-      throw new NotFoundException('Patient not found');
-    }
-
-    try {
-      const updatedPatient = await this.prismaService.hosPatient.update({
-        where: {
-          id: id,
-        },
-        data: data,
-      });
-      // return updatedPatient;
-      return new ShowPatientDto(updatedPatient);
-    } catch (error) {
-      throw new BadRequestException('Update Patient Failed');
-    }
   }
 
   // Delete patient

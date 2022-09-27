@@ -10,11 +10,17 @@ import { APP_GUARD } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/authentication/guards';
 import { HosPatientModule } from './hospital/hos_Patient/hos-patient.module';
 // import { SysUserInterceptor } from './users/sysUser/sys-User.interceptor';
-import { HosregistrationModule } from './hospital/hosregistration/hosregistration/hosregistration.module';
-import { HosRegistrationService } from './hospital/hos_registration/hos-registration/hos-registration.service';
+import { HosregistrationModule } from './hospital/hos_registration/hos-registration.module';
+import { HosRegistrationService } from './hospital/hos_registration/hos-registration.service';
 ConfigModule.forRoot();
 @Module({
-  imports: [PrismaModule, AuthModule, SysUserModule, HosPatientModule, HosregistrationModule],
+  imports: [
+    PrismaModule,
+    AuthModule,
+    SysUserModule,
+    HosPatientModule,
+    HosregistrationModule,
+  ],
   controllers: [AppController],
   providers: [
     // { provide: APP_INTERCEPTOR, useClass: SysUserInterceptor },

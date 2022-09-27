@@ -1,20 +1,11 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Get,
-  UseGuards,
-  Req,
-  Res,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
 import { ActiveUserId } from '../decorators/activeUserId.decorator';
 
 import { ActiveUser, ActiveUserInfo } from '../decorators/activeUser.decorator';
 
 // import { Request, response } from 'express';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto } from './dto/auth.dto';
+import { NewUserDto, LoginDto } from './dto/auth.dto';
 import { Tokens } from './types';
 import { AccessTokenGuard } from './guards/accessToken.guard';
 import { RefreshTokenGuard } from './guards/refreshToken.guard';
@@ -27,40 +18,25 @@ export class AuthController {
 
   @Public()
   @Post('register')
-  register(@Body() body: RegisterDto): Promise<Tokens> {
+  register(@Body() body: NewUserDto): Promise<Tokens> {
     try {
       return this.authService.register(body);
     } catch (error) {
       console.log(error.message);
     }
   }
+
   @Public()
   @Post('login')
   async login(@Body() body: LoginDto): Promise<Tokens> {
     return this.authService.login(body);
-    // const jwt = await this.authService.getTokens;
-    // response.cookie('jwt', jwt, { httpOnly: true });
   }
 
-  // @Public()
-  // @Post('login')
-  // async login(@Body() body: LoginDto): Promise<Tokens> {
-  //   return this.authService.login(body);
-  // }
-
-  // @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Get('me')
   me(@ActiveUser() sysUser: ActiveUserInfo) {
     return sysUser;
   }
-  // @UseGuards(AccessTokenGuard)
-
-  // @Public()
-  // @Get('/me')
-  // me(@sysUser() sysUser: UserInfo) {
-  //   return sysUser;
-  // }
 
   @UseGuards(AccessTokenGuard)
   @Post('logout')

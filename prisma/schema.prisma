@@ -272,7 +272,7 @@ model hosPatient {
   createdBy       String?  @db.Char(10)
   createdAt       DateTime
   updatedBy       String?  @db.Char(10)
-  updatedAt       DateTime
+  updatedAt       DateTime @db.DateTime
   company_id      String?  @db.Char(5)
   branch_id       String?  @db.Char(10)
 }
@@ -340,8 +340,8 @@ model hosPatientCheckDtl {
   trxType        String   @db.Char(3)
   name           String?  @db.VarChar(50)
   value          Decimal? @db.Decimal(9, 6)
-  uom            String?  @db.Char(5)
-  valueIndicator String?  @db.Char(10)
+  uomValue       String?  @db.Char(5)
+  IndicatorValue String?  @db.Char(10)
   remarks        String?  @db.VarChar(100)
   curr_id        String   @db.Char(3)
   curr_rate      Decimal  @db.Decimal(9, 0)
@@ -395,11 +395,26 @@ model hosPatientCheckHdr {
 
 model hosRegistration {
   trxType        String   @db.Char(3)
+  isAppointment  Boolean
   appointment_id String   @db.Char(20)
+  isInsurance    Boolean
+  insurance_id   String   @db.Char(20)  
   id             String   @id @db.Char(20)
   registryDate   DateTime @db.Date
   patient_id     String   @db.Char(20)
   patientName    String   @db.Char(20)
+  patientCase   String   @db.Char(100)
+  isReffered     Boolean
+  refferedDate   DateTime @db.Date
+  refferedFrom    String   @db.Char(80)
+  fromPoly_id    String   @db.Char(10)
+  fromPolyName   String   @db.Char(50)
+  fromDoctor_id  String   @db.Char(15)
+  fromDoctorName String   @db.Char(50)
+  toPoly_id      String   @db.Char(10)
+  toPolyName     String   @db.VarChar(50)
+  toDoctor_id      String   @db.Char(15)
+  toDoctorName     String   @db.VarChar(50)
   payType        Int      @db.TinyInt
   pay_id         String?  @db.VarChar(20)
   status         Int?     @db.TinyInt
@@ -409,6 +424,22 @@ model hosRegistration {
   updatedAt      DateTime
   company_id     String?  @db.Char(5)
   branch_id      String   @db.Char(10)
+}
+
+model hosEmergencyNote {
+ id            String   @id @db.Char(20)
+  patient_id    String   @db.Char(20)
+  patientName   String   @db.VarChar(50)
+  doctor_id     String   @db.Char(15)
+  doctorName    String   @db.VarChar(50)
+  descriptions  String   @db.VarChar(250)
+  status        Int      @db.TinyInt
+  createdBy     String   @db.Char(10)
+  createdAt     DateTime
+  updatedBy     String   @db.Char(10)
+  updatedAt     DateTime
+  company_id    String?  @db.Char(5)
+  branch_id     String   @db.Char(10)
 }
 
 model hosInsurance {
@@ -457,7 +488,7 @@ model hosInsuranceAlloc {
   trxDate         DateTime @db.Date
   description     String   @db.VarChar(100)
   curr_id         String   @db.Char(3)
-  currRate        Decimal  @db.Decimal(18, 0)
+  curr_rate        Decimal  @db.Decimal(9, 0)
   baseAmt         Decimal  @db.Decimal(22, 0)
   discAmt         Decimal  @db.Decimal(22, 0)
   tax_id          String   @db.Char(3)
@@ -482,7 +513,7 @@ model hosInsuranceLedger {
   trx_id       String   @db.Char(20)
   trxDate      DateTime @db.Date
   curr_id      String   @db.Char(3)
-  currRate     Decimal  @db.Decimal(18, 0)
+  curr_rate     Decimal  @db.Decimal(9, 0)
   description  String   @db.VarChar(100)
   limitAmt     Decimal  @db.Decimal(22, 0)
   baseAmt      Decimal  @db.Decimal(22, 0)

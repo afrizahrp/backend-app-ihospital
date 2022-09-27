@@ -124,25 +124,25 @@ export class NewPatientDto {
   @IsString()
   occupation: string;
 
-  @IsString()
-  createdBy: string;
+  // @IsString()
+  // createdBy: string;
 
-  @IsString()
-  updatedBy: string;
+  // @IsString()
+  // updatedBy: string;
 
-  @IsDate()
-  @IsNotEmpty()
-  createdAt: Date;
+  // @IsDate()
+  // @IsNotEmpty()
+  // createdAt: Date;
 
-  @IsDate()
-  @IsNotEmpty()
-  updatedAt: Date;
+  // @IsDate()
+  // @IsNotEmpty()
+  // updatedAt: Date;
 
-  @IsString()
-  company_id: string;
+  // @IsString()
+  // company_id: string;
 
-  @IsString()
-  branch_id: string;
+  // @IsString()
+  // branch_id: string;
 }
 
 //generate dto for show patient
@@ -354,21 +354,21 @@ export class UpdatePatientDto {
   @IsString()
   occupation?: string;
 
-  @IsOptional()
-  @Exclude()
-  @IsString()
-  createdBy?: string;
+  // @IsOptional()
+  // @Exclude()
+  // @IsString()
+  // createdBy?: string;
 
-  @IsString()
-  updatedBy?: string;
+  // @IsString()
+  // updatedBy?: string;
 
-  @IsOptional()
-  @IsDate()
-  updatedAt?: Date;
+  // @IsOptional()
+  // @IsDate()
+  // updatedAt?: Date;
 
-  @IsString()
-  company_id?: string;
+  // @IsString()
+  // company_id?: string;
 
-  @IsString()
-  branch_id?: string;
+  // @IsString()
+  // branch_id?: string;
 }
