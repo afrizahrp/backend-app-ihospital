@@ -123,26 +123,6 @@ export class NewPatientDto {
 
   @IsString()
   occupation: string;
-
-  // @IsString()
-  // createdBy: string;
-
-  // @IsString()
-  // updatedBy: string;
-
-  // @IsDate()
-  // @IsNotEmpty()
-  // createdAt: Date;
-
-  // @IsDate()
-  // @IsNotEmpty()
-  // updatedAt: Date;
-
-  // @IsString()
-  // company_id: string;
-
-  // @IsString()
-  // branch_id: string;
 }
 
 //generate dto for show patient

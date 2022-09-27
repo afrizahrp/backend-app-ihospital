@@ -9,8 +9,10 @@ import {
   Matches,
   IsDate,
   IsNumber,
-  isString,
   IsOptional,
+  IsBoolean,
+  isString,
+  isNumber,
 } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import { isDate } from 'util/types';
@@ -18,133 +20,99 @@ import { isDate } from 'util/types';
 export class NewRegistrationDto {
   @IsString()
   @IsNotEmpty()
-  nickName: string;
+  trxType: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isEmergency: boolean;
 
   @IsString()
   @IsNotEmpty()
-  fullName: string;
+  emergency_id: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isAppointment: boolean;
+
+  @IsString()
+  @IsNotEmpty()
+  appointment_id: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isInsurance: boolean;
+
+  @IsString()
+  @IsNotEmpty()
+  insurance_id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  id: string;
 
   @IsDate()
   @IsNotEmpty()
-  birthDate: Date;
+  registryDate: Date;
+
+  @IsString()
+  @IsNotEmpty()
+  patient_id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  patientName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  patientCase: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isRefer: boolean;
+
+  @IsString()
+  @IsNotEmpty()
+  ref_id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  referredCase: string;
+
+  @IsDate()
+  @IsNotEmpty()
+  referredDate: string;
+
+  @IsString()
+  @IsNotEmpty()
+  referredFrom: string;
+
+  @IsString()
+  @IsNotEmpty()
+  fromPoly_id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  fromPolyName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  fromDoctor_id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  fromDoctorName: string;
 
   @IsNumber()
-  ageInYear: number;
+  @IsNotEmpty()
+  payType: number;
+
+  @IsString()
+  @IsNotEmpty()
+  pay_id: string;
 
   @IsNumber()
-  ageInMonth: number;
-
-  @IsString()
   @IsNotEmpty()
-  gender: string;
-
-  @IsString()
-  @IsNotEmpty()
-  religion: string;
-
-  @IsString()
-  @IsNotEmpty()
-  bloodType: string;
-
-  @IsString()
-  @IsNotEmpty()
-  maritalStatus: string;
-
-  @IsString()
-  @IsNotEmpty()
-  country_id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  prov_id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  provName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  subProv_id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  subProvName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  district_id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  districtName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  subdistrict_id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  subdistrictName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  address: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(5)
-  @MaxLength(20)
-  @Matches(
-    /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
-    {
-      message: 'Invalid mobil phone 1 number format',
-    },
-  )
-  mobileNo1: string;
-
-  @IsString()
-  @MinLength(5)
-  @MaxLength(20)
-  @Matches(
-    /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
-    {
-      message: 'Invalid mobil phone 2 number format',
-    },
-  )
-  mobileNo2: string;
-
-  @IsString()
-  phoneNo: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(5)
-  @MaxLength(80)
-  @IsEmail()
-  email: string;
-
-  @IsString()
-  occupation: string;
-
-  @IsString()
-  createdBy: string;
-
-  @IsString()
-  updatedBy: string;
-
-  @IsDate()
-  @IsNotEmpty()
-  createdAt: Date;
-
-  @IsDate()
-  @IsNotEmpty()
-  updatedAt: Date;
-
-  @IsString()
-  company_id: string;
-
-  @IsString()
-  branch_id: string;
+  status: number;
 }
 
 //generate dto for show Registration
@@ -225,152 +193,119 @@ export class UpdateRegistrationDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  nickName?: string;
+  trxType: string;
+
+  @IsOptional()
+  @IsBoolean()
+  @IsNotEmpty()
+  isEmergency: boolean;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  fullName?: string;
+  emergency_id: string;
+
+  @IsOptional()
+  @IsBoolean()
+  @IsNotEmpty()
+  isAppointment: boolean;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  appointment_id: string;
+
+  @IsOptional()
+  @IsBoolean()
+  @IsNotEmpty()
+  isInsurance: boolean;
+
+  @IsString()
+  @IsNotEmpty()
+  insurance_id: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  id: string;
 
   @IsOptional()
   @IsDate()
   @IsNotEmpty()
-  birthDate?: Date;
-
-  @IsOptional()
-  @IsNumber()
-  ageInYear?: number;
-
-  @IsOptional()
-  @IsNumber()
-  ageInMonth?: number;
+  registryDate: Date;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  gender?: string;
+  patient_id: string;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  religion?: string;
+  patientName: string;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  bloodType?: string;
+  patientCase: string;
+
+  @IsOptional()
+  @IsBoolean()
+  @IsNotEmpty()
+  isRefer: boolean;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  maritalStatus?: string;
+  ref_id: string;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  country_id?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  prov_id?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  provName?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  subProv_id?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  subProvName?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  district_id?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  districtName?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  subdistrict_id?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  subdistrictName?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  address?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(5)
-  @MaxLength(20)
-  @Matches(
-    /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
-    {
-      message: 'Invalid main mobil phone number format',
-    },
-  )
-  mobileNo1?: string;
-
-  @IsOptional()
-  @IsString()
-  @MinLength(5)
-  @MaxLength(20)
-  @Matches(
-    /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
-    {
-      message: 'Invalid additional mobil phone number format',
-    },
-  )
-  mobileNo2?: string;
-
-  @IsOptional()
-  @IsString()
-  phoneNo?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(5)
-  @MaxLength(80)
-  @IsEmail()
-  email?: string;
-
-  @IsOptional()
-  @IsString()
-  occupation?: string;
-
-  @IsOptional()
-  @Exclude()
-  @IsString()
-  createdBy?: string;
-
-  @IsString()
-  updatedBy?: string;
+  referredCase: string;
 
   @IsOptional()
   @IsDate()
-  updatedAt?: Date;
+  @IsNotEmpty()
+  referredDate: string;
 
+  @IsOptional()
   @IsString()
-  company_id?: string;
+  @IsNotEmpty()
+  referredFrom: string;
 
+  @IsOptional()
   @IsString()
-  branch_id?: string;
+  @IsNotEmpty()
+  fromPoly_id: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  fromPolyName: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  fromDoctor_id: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  fromDoctorName: string;
+
+  @IsOptional()
+  @IsNumber()
+  @IsNotEmpty()
+  payType: number;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  pay_id: string;
+
+  @IsOptional()
+  @IsNumber()
+  @IsNotEmpty()
+  status: number;
 }
