@@ -9,11 +9,13 @@ import {
   Matches,
   IsDate,
   IsNumber,
+  isString,
   IsOptional,
 } from 'class-validator';
 import { Exclude } from 'class-transformer';
+import { isDate } from 'util/types';
 
-export class NewPatientDto {
+export class NewRegistrationDto {
   @IsString()
   @IsNotEmpty()
   nickName: string;
@@ -145,8 +147,8 @@ export class NewPatientDto {
   branch_id: string;
 }
 
-//generate dto for show patient
-export class ShowPatientDto {
+//generate dto for show Registration
+export class ShowRegistrationDto {
   id: string;
 
   nickName: string;
@@ -213,13 +215,13 @@ export class ShowPatientDto {
   @Exclude()
   branch_id: string;
 
-  constructor(partial: Partial<ShowPatientDto>) {
+  constructor(partial: Partial<ShowRegistrationDto>) {
     Object.assign(this, partial);
   }
 }
 
-//generate update patient dto
-export class UpdatePatientDto {
+//generate update Registration dto
+export class UpdateRegistrationDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()

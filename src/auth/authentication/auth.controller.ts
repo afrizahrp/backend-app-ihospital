@@ -48,7 +48,7 @@ export class AuthController {
   //   return this.authService.login(body);
   // }
 
-  @UseGuards(AuthGuard('jwt-access'))
+  // @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Get('me')
   me(@ActiveUser() sysUser: ActiveUserInfo) {
