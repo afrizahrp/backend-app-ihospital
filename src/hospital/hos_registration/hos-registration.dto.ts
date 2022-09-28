@@ -17,7 +17,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { isDate } from 'util/types';
 
-export class NewRegistrationDto {
+export class NewDataDto {
   @IsString()
   @IsNotEmpty()
   trxType: string;
@@ -68,7 +68,7 @@ export class NewRegistrationDto {
 
   @IsBoolean()
   @IsNotEmpty()
-  isRefer: boolean;
+  isrefer: boolean;
 
   @IsString()
   @IsNotEmpty()
@@ -102,6 +102,14 @@ export class NewRegistrationDto {
   @IsNotEmpty()
   fromDoctorName: string;
 
+  @IsString()
+  @IsNotEmpty()
+  toDoctor_id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  toDoctorName: string;
+
   @IsNumber()
   @IsNotEmpty()
   payType: number;
@@ -116,7 +124,7 @@ export class NewRegistrationDto {
 }
 
 //generate dto for show Registration
-export class ShowRegistrationDto {
+export class ShowDataDto {
   id: string;
 
   nickName: string;
@@ -183,13 +191,13 @@ export class ShowRegistrationDto {
   @Exclude()
   branch_id: string;
 
-  constructor(partial: Partial<ShowRegistrationDto>) {
+  constructor(partial: Partial<ShowDataDto>) {
     Object.assign(this, partial);
   }
 }
 
 //generate update Registration dto
-export class UpdateRegistrationDto {
+export class UpdateDataDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
@@ -220,14 +228,10 @@ export class UpdateRegistrationDto {
   @IsNotEmpty()
   isInsurance: boolean;
 
-  @IsString()
-  @IsNotEmpty()
-  insurance_id: string;
-
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  id: string;
+  insurance_id: string;
 
   @IsOptional()
   @IsDate()
@@ -252,7 +256,7 @@ export class UpdateRegistrationDto {
   @IsOptional()
   @IsBoolean()
   @IsNotEmpty()
-  isRefer: boolean;
+  isrefer: boolean;
 
   @IsOptional()
   @IsString()
@@ -293,6 +297,16 @@ export class UpdateRegistrationDto {
   @IsString()
   @IsNotEmpty()
   fromDoctorName: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  toDoctor_id: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  toDoctorName: string;
 
   @IsOptional()
   @IsNumber()
