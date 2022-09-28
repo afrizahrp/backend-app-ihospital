@@ -14,11 +14,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { ActiveUser, Public, ActiveUserInfo } from 'src/auth/decorators';
 // import { sysUser, UserInfo } from 'src/users/sysUser/sys-User.decorator';
-import {
-  NewPatientDto,
-  ShowPatientDto,
-  UpdatePatientDto,
-} from './hos-patient.dto';
+import { NewDataDto, ShowDataDto, UpdateDataDto } from './hos-patient.dto';
 // import { CompanyType } from 'src/data/data';
 import { HosPatientService } from './hos-patient.service';
 
@@ -29,12 +25,9 @@ export class HosPatientController {
   @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Post('register')
-  newPatient(
-    @Body() body: NewPatientDto,
-    @ActiveUser() sysUser: ActiveUserInfo,
-  ) {
+  newPatient(@Body() body: NewDataDto, @ActiveUser() sysUser: ActiveUserInfo) {
     try {
-      return this.hosPatientService.newPatient(
+      return this.hosPatientService.newDataFields(
         body,
         sysUser.sub,
         sysUser.company_id,
@@ -47,14 +40,14 @@ export class HosPatientController {
 
   @Public()
   @Get()
-  getPatients(): Promise<ShowPatientDto[]> {
-    return this.hosPatientService.getPatients();
+  getPatients(): Promise<ShowDataDto[]> {
+    return this.hosPatientService.getAllData();
   }
 
   @Public()
   @Get(':id')
   getOne(@Param('id') id: string) {
-    return this.hosPatientService.get_Patient_ById(id);
+    return this.hosPatientService.getDataById(id);
   }
 
   @UseGuards(AuthGuard('jwt-access'))
@@ -62,10 +55,10 @@ export class HosPatientController {
   @Put(':id')
   update_Patient(
     @Param('id') id: string,
-    @Body() body: UpdatePatientDto,
+    @Body() body: UpdateDataDto,
     @ActiveUser() sysUser: ActiveUserInfo,
   ) {
-    return this.hosPatientService.update_Patient_ById(
+    return this.hosPatientService.updateDataFields(
       id,
       body,
       sysUser.sub,
@@ -77,6 +70,6 @@ export class HosPatientController {
   @Public()
   @Delete(':id')
   delete_Patient(@Param('id') id: string) {
-    return this.hosPatientService.delete_Patient_ById(id);
+    return this.hosPatientService.deleteData(id);
   }
 }

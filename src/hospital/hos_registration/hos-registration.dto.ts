@@ -3,19 +3,12 @@
 import {
   IsString,
   IsNotEmpty,
-  IsEmail,
-  MinLength,
-  MaxLength,
-  Matches,
   IsDate,
   IsNumber,
   IsOptional,
   IsBoolean,
-  isString,
-  isNumber,
 } from 'class-validator';
 import { Exclude } from 'class-transformer';
-import { isDate } from 'util/types';
 
 export class NewDataDto {
   @IsString()

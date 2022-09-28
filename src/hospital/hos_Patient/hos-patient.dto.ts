@@ -13,7 +13,7 @@ import {
 } from 'class-validator';
 import { Exclude } from 'class-transformer';
 
-export class NewPatientDto {
+export class NewDataDto {
   @IsString()
   @IsNotEmpty()
   nickName: string;
@@ -125,8 +125,8 @@ export class NewPatientDto {
   occupation: string;
 }
 
-//generate dto for show patient
-export class ShowPatientDto {
+//generate dto for show Data
+export class ShowDataDto {
   id: string;
 
   nickName: string;
@@ -193,13 +193,13 @@ export class ShowPatientDto {
   @Exclude()
   branch_id: string;
 
-  constructor(partial: Partial<ShowPatientDto>) {
+  constructor(partial: Partial<ShowDataDto>) {
     Object.assign(this, partial);
   }
 }
 
-//generate update patient dto
-export class UpdatePatientDto {
+//generate update Data dto
+export class UpdateDataDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()

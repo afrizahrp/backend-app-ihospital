@@ -167,7 +167,7 @@ export class HosRegistrationService {
   }
 
   async updateDataFields(
-    id: string,
+    doc_id: string,
     {
       trxType,
       isEmergency,
@@ -199,7 +199,7 @@ export class HosRegistrationService {
   ) {
     const foundId = await this.prismaService.hosRegistration.findUnique({
       where: {
-        id: id,
+        id: doc_id,
       },
     });
 
@@ -210,7 +210,7 @@ export class HosRegistrationService {
     try {
       const updatedData = await this.prismaService.hosRegistration.update({
         where: {
-          id: id,
+          id: doc_id,
         },
         data: {
           trxType,
@@ -259,36 +259,35 @@ export class HosRegistrationService {
     return [];
   }
 
-  async getDataById(id: string) {
-    const patient = await this.prismaService.hosPatient.findUnique({
+  async getDataById(doc_id: string) {
+    const foundId = await this.prismaService.hosRegistration.findUnique({
       where: {
-        id: id,
+        id: doc_id,
       },
     });
-    return patient;
+    return foundId;
   }
 
   // Delete patient
-  async deleteData(patientId: string) {
-    const patientWillDelete = await this.prismaService.hosPatient.findUnique({
+  async deleteData(doc_id: string) {
+    const foundId = await this.prismaService.hosRegistration.findUnique({
       where: {
-        id: patientId,
+        id: doc_id,
       },
     });
 
-    if (!patientWillDelete) {
-      throw new NotFoundException('Patient not found');
-    }
-
-    try {
-      const patientDeleted = await this.prismaService.hosPatient.delete({
-        where: {
-          id: patientId,
-        },
-      });
-      return patientDeleted;
-    } catch (error) {
-      throw new BadRequestException('Delete Patient Failed');
+    if (!foundId) {
+      throw new NotFoundException('Registration id is not found');
+      try {
+        const datatDeleted = await this.prismaService.hosRegistration.delete({
+          where: {
+            id: doc_id,
+          },
+        });
+        return datatDeleted;
+      } catch (error) {
+        throw new BadRequestException('Delete Patient Failed');
+      }
     }
   }
 }

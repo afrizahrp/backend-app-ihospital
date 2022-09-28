@@ -11,9 +11,9 @@ import { PrismaService } from '../../prisma/prisma.service';
 // import { Get_DocumentId_Service } from './../../sys-utils/get-document-id/get_DocumentId.service';
 
 import { DocumentId } from '../../classes/DocumentId';
-import { ShowPatientDto } from './hos-patient.dto';
+import { ShowDataDto } from './hos-patient.dto';
 
-interface NewPatientParams {
+interface NewDataParams {
   nickName: string;
   fullName: string;
   birthDate: Date;
@@ -40,7 +40,7 @@ interface NewPatientParams {
   occupation: string;
 }
 
-interface UpdatePatientParams {
+interface UpdateDataParams {
   nickName?: string;
   fullName?: string;
   birthDate?: Date;
@@ -71,7 +71,7 @@ interface UpdatePatientParams {
 export class HosPatientService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async newPatient(
+  async newDataFields(
     {
       nickName,
       fullName,
@@ -97,7 +97,7 @@ export class HosPatientService {
       phoneNo,
       email,
       occupation,
-    }: NewPatientParams,
+    }: NewDataParams,
     userId: string,
     companyId: string,
     branchId: string,
@@ -111,11 +111,11 @@ export class HosPatientService {
     }
 
     const documentId = new DocumentId(companyId, branchId, userId);
-    const docId = await documentId.gen_docId('HOS', 'PNT', '');
+    const patient_id = await documentId.gen_docId('HOS', 'PNT', '');
 
-    const newPatient = await this.prismaService.hosPatient.create({
+    const newData = await this.prismaService.hosPatient.create({
       data: {
-        id: docId,
+        id: patient_id,
         nickName,
         fullName,
         birthDate,
@@ -148,11 +148,11 @@ export class HosPatientService {
         branch_id: branchId,
       },
     });
-    return new ShowPatientDto(newPatient);
+    return new ShowDataDto(newData);
   }
 
-  async update_Patient_ById(
-    id: string,
+  async updateDataFields(
+    patient_id: string,
     {
       nickName,
       fullName,
@@ -176,25 +176,25 @@ export class HosPatientService {
       phoneNo,
       email,
       occupation,
-    }: UpdatePatientParams,
+    }: UpdateDataParams,
     userId: string,
     companyId: string,
     branchId: string,
   ) {
-    const patient = await this.prismaService.hosPatient.findUnique({
+    const foundId = await this.prismaService.hosPatient.findUnique({
       where: {
-        id: id,
+        id: patient_id,
       },
     });
 
-    if (!patient) {
+    if (!foundId) {
       throw new NotFoundException('Patient not found');
     }
 
     try {
-      const updatedPatient = await this.prismaService.hosPatient.update({
+      const updatedData = await this.prismaService.hosPatient.update({
         where: {
-          id: id,
+          id: patient_id,
         },
         data: {
           nickName,
@@ -225,47 +225,47 @@ export class HosPatientService {
           branch_id: branchId,
         },
       });
-      return new ShowPatientDto(updatedPatient);
+      return new ShowDataDto(updatedData);
     } catch (error) {
-      throw new BadRequestException('Update Patient Failed');
+      throw new BadRequestException('Updating patient failed');
     }
   }
 
-  async getPatients(): Promise<ShowPatientDto[]> {
+  async getAllData(): Promise<ShowDataDto[]> {
     try {
-      const patients = await this.prismaService.hosPatient.findMany();
-      return patients.map((patient) => new ShowPatientDto(patient));
+      const allData = await this.prismaService.hosPatient.findMany();
+      return allData.map((data) => new ShowDataDto(data));
     } catch (error) {
       console.log(error.message);
     }
     return [];
   }
 
-  async get_Patient_ById(id: string) {
-    const patient = await this.prismaService.hosPatient.findUnique({
+  async getDataById(patient_id: string) {
+    const foundId = await this.prismaService.hosPatient.findUnique({
       where: {
-        id: id,
+        id: patient_id,
       },
     });
-    return patient;
+    return foundId;
   }
 
   // Delete patient
-  async delete_Patient_ById(patientId: string) {
-    const patientWillDelete = await this.prismaService.hosPatient.findUnique({
+  async deleteData(patient_id: string) {
+    const foundId = await this.prismaService.hosPatient.findUnique({
       where: {
-        id: patientId,
+        id: patient_id,
       },
     });
 
-    if (!patientWillDelete) {
+    if (!foundId) {
       throw new NotFoundException('Patient not found');
     }
 
     try {
       const patientDeleted = await this.prismaService.hosPatient.delete({
         where: {
-          id: patientId,
+          id: patient_id,
         },
       });
       return patientDeleted;
