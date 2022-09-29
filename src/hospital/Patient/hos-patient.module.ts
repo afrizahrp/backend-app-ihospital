@@ -1,8 +1,9 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { PrismaModule } from '../../prisma/prisma.module';
 import { HosPatientController } from './hos-patient.controller';
 import { HosPatientService } from './hos-patient.service';
+import { AccessTokenGuard } from './../../auth/authentication/guards/accessToken.guard';
 
 @Module({
   imports: [PrismaModule],
@@ -10,9 +11,9 @@ import { HosPatientService } from './hos-patient.service';
   providers: [
     HosPatientService,
     {
-      provide: APP_INTERCEPTOR,
+      provide: APP_GUARD,
 
-      useClass: ClassSerializerInterceptor,
+      useClass: AccessTokenGuard,
     },
   ],
 })

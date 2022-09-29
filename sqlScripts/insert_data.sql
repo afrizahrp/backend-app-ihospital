@@ -3,9 +3,6 @@
 INSERT INTO backendDb.dbo.syscompany
 SELECT * FROM  backendDb_old.dbo.syscompany
 
-
-
-
 INSERT INTO backendDb.dbo.sysBranch
 SELECT *
 FROM   backenddb_old.dbo.sysBranch
@@ -23,30 +20,35 @@ INSERT INTO backenddb.dbo.sysUserRole VALUES('USER','GUEST USER',0,'Restricted a
 INSERT INTO backenddb.dbo.sysUserRole VALUES('CLIENT','CLIENT USER',0,'Restricted assigned to operate all functions',
 'SYSTEM',GETDATE(),'SYSTEM',GETDATE(),'NMS','KLM1-JKT05')
 
---ALTER TABLE sys_user
---add constraint fk_sys_user_role  foreign key(role_id)  references sys_user_role(id)
+
+
+INSERT INTO backenddb.dbo.sysUserRole VALUES('MANAGER','MANAGE USER',0,'Restricted assigned to operate all functions',
+'SYSTEM',GETDATE(),'SYSTEM',GETDATE(),'NMS','KLM1-JKT05')
 
 
 
-INSERT INTO backendDb.dbo.syscounter
-SELECT * FROM backendDb_old1.dbo.sysCounter
+  drop table #2
 
+  select * from syscounter
 
+  SELECT * INTO #2 FROM backendDb_old1.dbo.syscounter
 
+  UPDATE #2 set counter_id = 'PTN',   
+  startMonth = right(convert(varchar(3),MONTH(getdate())+100),2), 
+  startYear = convert(varchar(4),YEAR(getdate())),
+  recounter = 0, lastCounter = 0 , firstChar ='.'
 
-INSERT INTO backendDb.dbo.sysUser
-SELECT  role_id, id, name,email, phone, password, tokenForAccess, isLoggedIn, 
-tokenHasRefreshed, createdBy, createdAt, updatedBy, updatedAt, company_id, branch_id
-FROM            sysUser
-
-  SELECT * INTO #2 FROM sysCounter
-
-  UPDATE #2 set counter_id = 'PNT'
+  INSERT INTO SYSCOUNTER
+  SELECT * FROM #2
+    
+  UPDATE #2 set counter_id = 'AMS', 
+  startMonth = right(convert(varchar(3),MONTH(getdate())+100),2), 
+  startYear = convert(varchar(4),YEAR(getdate())),
+  recounter = 0, lastCounter = 0 , firstChar ='.'
 
   INSERT INTO SYSCOUNTER
   SELECT * FROM #2
 
-  UPDATE syscounter set recounter = 0, lastCounter = 0 , firstChar ='.'
 
 
 /*

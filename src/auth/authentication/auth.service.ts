@@ -4,7 +4,6 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { PrismaService } from './../../prisma/prisma.service';
 import { JwtPayload, Tokens } from './types';
-import { sysUser } from 'src/users/sysUser/sys-User.decorator';
 interface RegisterParams {
   role_id: string;
   id: string;

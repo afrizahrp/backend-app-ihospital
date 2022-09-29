@@ -15,33 +15,21 @@ import { ShowDataDto } from './hos-admission.dto';
 // import { hosAdmissionService } from './hos-registration.service';
 
 interface NewDataParams {
-  id: string;
   trxType: string;
-  isEmergency: boolean;
-  emergency_id: string;
-  isAppointment: boolean;
-  appointment_id: string;
-  isInsurance: boolean;
-  insurance_id: string;
-  registryDate: Date;
+  isEmergency?: boolean;
+  emergency_id?: string;
+  isAppointment?: boolean;
+  appointment_id?: string;
+  isInsurance?: boolean;
+  insurance_id?: string;
+  admissionDate: Date;
   patient_id: string;
   patientName: string;
   patientCase: string;
-  isrefer: boolean;
-  ref_id: string;
-  referredCase: string;
-  referredDate: string;
-  referredFrom: string;
-  fromPoly_id: string;
-  fromPolyName: string;
-  fromDoctor_id: string;
-  fromDoctorName: string;
-  toPoly_id: string;
-  toPolyName: string;
-  toDoctor_id: string;
-  toDoctorName: string;
+  isRefer: boolean;
+  ref_id?: string;
   payType: number;
-  pay_id: string;
+  pay_id?: string;
   status: number;
 }
 
@@ -53,23 +41,13 @@ interface UpdateDataParams {
   appointment_id?: string;
   isInsurance?: boolean;
   insurance_id?: string;
-  registryDate?: Date;
+  admissionDate?: Date;
   patient_id: string;
   patientName?: string;
   patientCase?: string;
-  isrefer?: boolean;
+  isRefer?: boolean;
   ref_id?: string;
-  referredCase?: string;
-  referredDate?: string;
-  referredFrom?: string;
-  fromPoly_id?: string;
-  fromPolyName?: string;
-  fromDoctor_id?: string;
-  fromDoctorName?: string;
-  toPoly_id?: string;
-  toPolyName?: string;
-  toDoctor_id?: string;
-  toDoctorName?: string;
+
   payType?: number;
   pay_id?: string;
   status?: number;
@@ -81,7 +59,6 @@ export class HosAdmissionService {
 
   async newDataFields(
     {
-      id,
       trxType,
       isEmergency,
       emergency_id,
@@ -89,23 +66,12 @@ export class HosAdmissionService {
       appointment_id,
       isInsurance,
       insurance_id,
-      registryDate,
+      admissionDate,
       patient_id,
       patientName,
       patientCase,
-      isrefer,
+      isRefer,
       ref_id,
-      referredCase,
-      referredDate,
-      referredFrom,
-      fromPoly_id,
-      fromPolyName,
-      fromDoctor_id,
-      fromDoctorName,
-      toPoly_id,
-      toPolyName,
-      toDoctor_id,
-      toDoctorName,
       payType,
       pay_id,
       status,
@@ -123,7 +89,7 @@ export class HosAdmissionService {
     // }
 
     const documentId = new DocumentId(companyId, branchId, userId);
-    const docId = await documentId.gen_docId('HOS', 'REG', '');
+    const docId = await documentId.gen_docId('HOS', 'AMS', '');
 
     const createNewData = await this.prismaService.hosAdmission.create({
       data: {
@@ -135,23 +101,12 @@ export class HosAdmissionService {
         appointment_id,
         isInsurance,
         insurance_id,
-        registryDate,
+        admissionDate,
         patient_id,
         patientName,
         patientCase,
-        isrefer,
+        isRefer,
         ref_id,
-        referredCase,
-        referredDate,
-        referredFrom,
-        fromPoly_id,
-        fromPolyName,
-        fromDoctor_id,
-        fromDoctorName,
-        toPoly_id,
-        toPolyName,
-        toDoctor_id,
-        toDoctorName,
         payType,
         pay_id,
         status,
@@ -176,19 +131,13 @@ export class HosAdmissionService {
       appointment_id,
       isInsurance,
       insurance_id,
-      registryDate,
+      admissionDate,
       patient_id,
       patientName,
       patientCase,
-      isrefer,
+      isRefer,
       ref_id,
-      referredCase,
-      referredDate,
-      referredFrom,
-      fromPoly_id,
-      fromPolyName,
-      fromDoctor_id,
-      fromDoctorName,
+
       payType,
       pay_id,
       status,
@@ -220,19 +169,12 @@ export class HosAdmissionService {
           appointment_id,
           isInsurance,
           insurance_id,
-          registryDate,
+          admissionDate,
           patient_id,
           patientName,
           patientCase,
-          isrefer,
+          isRefer,
           ref_id,
-          referredCase,
-          referredDate,
-          referredFrom,
-          fromPoly_id,
-          fromPolyName,
-          fromDoctor_id,
-          fromDoctorName,
           payType,
           pay_id,
           status,

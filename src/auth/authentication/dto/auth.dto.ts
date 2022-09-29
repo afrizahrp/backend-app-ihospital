@@ -11,6 +11,7 @@ import {
   isBoolean,
 } from 'class-validator';
 import { Exclude } from 'class-transformer';
+import { ToBoolean } from 'src/toBoolean';
 
 export class NewUserDto {
   @IsString()
@@ -57,7 +58,7 @@ export class NewUserDto {
 
   // @IsString()
   // refreshToken: string;
-
+  @ToBoolean()
   @IsNotEmpty()
   isLoggedIn: boolean;
 

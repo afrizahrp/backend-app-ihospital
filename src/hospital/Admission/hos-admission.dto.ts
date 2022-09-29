@@ -9,43 +9,45 @@ import {
   IsBoolean,
 } from 'class-validator';
 import { Exclude } from 'class-transformer';
+import { ToBoolean } from 'src/toBoolean';
 
 export class NewDataDto {
+  // @Exclude()
+  // @IsString()
+  // @IsNotEmpty()
+  // id: string;
+
   @IsString()
   @IsNotEmpty()
   trxType: string;
 
-  @IsBoolean()
+  @ToBoolean()
   @IsNotEmpty()
-  isEmergency: boolean;
+  isEmergency?: boolean;
 
   @IsString()
   @IsNotEmpty()
-  emergency_id: string;
+  emergency_id?: string;
 
-  @IsBoolean()
+  @ToBoolean()
   @IsNotEmpty()
-  isAppointment: boolean;
-
-  @IsString()
-  @IsNotEmpty()
-  appointment_id: string;
-
-  @IsBoolean()
-  @IsNotEmpty()
-  isInsurance: boolean;
+  isAppointment?: boolean;
 
   @IsString()
   @IsNotEmpty()
-  insurance_id: string;
+  appointment_id?: string;
+
+  @ToBoolean()
+  @IsNotEmpty()
+  isInsurance?: boolean;
 
   @IsString()
   @IsNotEmpty()
-  id: string;
+  insurance_id?: string;
 
   @IsDate()
   @IsNotEmpty()
-  registryDate: Date;
+  admissionDate: Date;
 
   @IsString()
   @IsNotEmpty()
@@ -59,49 +61,13 @@ export class NewDataDto {
   @IsNotEmpty()
   patientCase: string;
 
-  @IsBoolean()
+  @ToBoolean()
   @IsNotEmpty()
-  isrefer: boolean;
+  isRefer: boolean;
 
   @IsString()
   @IsNotEmpty()
   ref_id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  referredCase: string;
-
-  @IsDate()
-  @IsNotEmpty()
-  referredDate: string;
-
-  @IsString()
-  @IsNotEmpty()
-  referredFrom: string;
-
-  @IsString()
-  @IsNotEmpty()
-  fromPoly_id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  fromPolyName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  fromDoctor_id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  fromDoctorName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  toDoctor_id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  toDoctorName: string;
 
   @IsNumber()
   @IsNotEmpty()
@@ -109,7 +75,7 @@ export class NewDataDto {
 
   @IsString()
   @IsNotEmpty()
-  pay_id: string;
+  pay_id?: string;
 
   @IsNumber()
   @IsNotEmpty()
@@ -120,69 +86,37 @@ export class NewDataDto {
 export class ShowDataDto {
   id: string;
 
-  nickName: string;
+  trxType: string;
 
-  fullName: string;
+  isEmergency: boolean;
 
-  birthDate: Date;
+  emergency_id: string;
 
-  ageInYear: number;
+  isAppointment: boolean;
 
-  ageInMonth: number;
+  appointment_id: string;
 
-  gender: string;
+  isInsurance: boolean;
 
-  religion: string;
+  insurance_id: string;
 
-  bloodType: string;
+  admissionDate: Date;
 
-  maritalStatus: string;
+  patient_id: string;
 
-  country_id: string;
+  patientName: string;
 
-  prov_id: string;
+  patientCase: string;
 
-  provName: string;
+  isRefer: boolean;
 
-  subProv_id: string;
+  ref_id: string;
 
-  subProvName: string;
+  payType: number;
 
-  district_id: string;
+  pay_id: string;
 
-  districtName: string;
-
-  subdistrict_id: string;
-
-  subdistrictName: string;
-  address: string;
-
-  mobileNo1: string;
-
-  mobileNo2: string;
-
-  phoneNo: string;
-  email: string;
-
-  occupation: string;
-
-  @Exclude()
-  createdBy: string;
-
-  @Exclude()
-  createdAt: Date;
-
-  @Exclude()
-  updatedBy: string;
-
-  @Exclude()
-  updatedAt: Date;
-
-  @Exclude()
-  company_id: string;
-
-  @Exclude()
-  branch_id: string;
+  status: number;
 
   constructor(partial: Partial<ShowDataDto>) {
     Object.assign(this, partial);
@@ -197,7 +131,7 @@ export class UpdateDataDto {
   trxType: string;
 
   @IsOptional()
-  @IsBoolean()
+  @ToBoolean()
   @IsNotEmpty()
   isEmergency: boolean;
 
@@ -207,7 +141,7 @@ export class UpdateDataDto {
   emergency_id: string;
 
   @IsOptional()
-  @IsBoolean()
+  @ToBoolean()
   @IsNotEmpty()
   isAppointment: boolean;
 
@@ -217,7 +151,7 @@ export class UpdateDataDto {
   appointment_id: string;
 
   @IsOptional()
-  @IsBoolean()
+  @ToBoolean()
   @IsNotEmpty()
   isInsurance: boolean;
 
@@ -229,7 +163,7 @@ export class UpdateDataDto {
   @IsOptional()
   @IsDate()
   @IsNotEmpty()
-  registryDate: Date;
+  admissionDate: Date;
 
   @IsOptional()
   @IsString()
@@ -247,59 +181,14 @@ export class UpdateDataDto {
   patientCase: string;
 
   @IsOptional()
-  @IsBoolean()
+  @ToBoolean()
   @IsNotEmpty()
-  isrefer: boolean;
+  isRefer: boolean;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
   ref_id: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  referredCase: string;
-
-  @IsOptional()
-  @IsDate()
-  @IsNotEmpty()
-  referredDate: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  referredFrom: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  fromPoly_id: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  fromPolyName: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  fromDoctor_id: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  fromDoctorName: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  toDoctor_id: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  toDoctorName: string;
 
   @IsOptional()
   @IsNumber()

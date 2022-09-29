@@ -14,6 +14,8 @@ import { DocumentId } from '../../classes/DocumentId';
 import { ShowDataDto } from './hos-patient.dto';
 
 interface NewDataParams {
+  isReferred: boolean;
+  referredFrom: string;
   nickName: string;
   fullName: string;
   birthDate: Date;
@@ -41,6 +43,8 @@ interface NewDataParams {
 }
 
 interface UpdateDataParams {
+  isReferred?: boolean;
+  referredFrom?: string;
   nickName?: string;
   fullName?: string;
   birthDate?: Date;
@@ -73,6 +77,8 @@ export class HosPatientService {
 
   async newDataFields(
     {
+      isReferred,
+      referredFrom,
       nickName,
       fullName,
       birthDate,
@@ -111,11 +117,13 @@ export class HosPatientService {
     }
 
     const documentId = new DocumentId(companyId, branchId, userId);
-    const patient_id = await documentId.gen_docId('HOS', 'PNT', '');
+    const doc_id = await documentId.gen_docId('HOS', 'PTN', '');
 
     const newData = await this.prismaService.hosPatient.create({
       data: {
-        id: patient_id,
+        id: doc_id,
+        isReferred,
+        referredFrom,
         nickName,
         fullName,
         birthDate,
@@ -154,6 +162,8 @@ export class HosPatientService {
   async updateDataFields(
     patient_id: string,
     {
+      isReferred,
+      referredFrom,
       nickName,
       fullName,
       birthDate,
@@ -197,6 +207,8 @@ export class HosPatientService {
           id: patient_id,
         },
         data: {
+          isReferred,
+          referredFrom,
           nickName,
           fullName,
           birthDate,

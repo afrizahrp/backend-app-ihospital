@@ -10,10 +10,22 @@ import {
   IsDate,
   IsNumber,
   IsOptional,
+  IsBoolean,
 } from 'class-validator';
 import { Exclude } from 'class-transformer';
+import { ToBoolean } from 'src/toBoolean';
 
 export class NewDataDto {
+  // @IsBoolean()
+
+  @ToBoolean()
+  @IsNotEmpty()
+  isReferred: boolean;
+
+  @IsString()
+  @IsNotEmpty()
+  referredFrom: string;
+
   @IsString()
   @IsNotEmpty()
   nickName: string;
@@ -127,6 +139,10 @@ export class NewDataDto {
 
 //generate dto for show Data
 export class ShowDataDto {
+  isReferred: boolean;
+
+  referredFrom: string;
+
   id: string;
 
   nickName: string;
@@ -200,6 +216,17 @@ export class ShowDataDto {
 
 //generate update Data dto
 export class UpdateDataDto {
+  // @IsBoolean()
+  @IsOptional()
+  @ToBoolean()
+  @IsNotEmpty()
+  isReferred: boolean;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  referredFrom: string;
+
   @IsOptional()
   @IsString()
   @IsNotEmpty()

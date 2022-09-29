@@ -24,7 +24,7 @@ export class HosPatientController {
 
   @UseGuards(AuthGuard('jwt-access'))
   @Public()
-  @Post('register')
+  @Post('new')
   newPatient(@Body() body: NewDataDto, @ActiveUser() sysUser: ActiveUserInfo) {
     try {
       return this.hosPatientService.newDataFields(

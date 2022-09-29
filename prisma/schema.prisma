@@ -108,9 +108,9 @@ model hosCheckSpecDev {
   deviceName String   @db.VarChar(50)
   deviceType String   @db.VarChar(50)
   curr_id    String   @db.Char(3)
-  curr_rate  Decimal  @db.Decimal(9, 4)
+  currRate  Decimal  @db.Decimal(9, 4)
   tax_id     String   @db.Char(3)
-  tax_rate   Int      @db.TinyInt
+  taxRate   Int      @db.TinyInt
   price      Decimal  @db.Decimal(18, 0)
   qty        String   @db.VarChar(50)
   Uom        String  @db.Char(10)
@@ -141,9 +141,9 @@ model hosCheckSpecDtl {
   topValue   Decimal  @db.Decimal(9, 6)
   topValUom  String   @db.Char(10)
   curr_id    String   @db.Char(3)
-  curr_rate  Decimal  @db.Decimal(9, 4)
+  currRate  Decimal  @db.Decimal(9, 4)
   tax_id     String   @db.Char(3)
-  tax_rate   Int      @db.TinyInt
+  taxRate   Int      @db.TinyInt
   price      Decimal  @db.Decimal(18, 0)
   qty        String   @db.VarChar(50)
   Uom        String   @db.Char(10)
@@ -168,9 +168,9 @@ model hosCheckSpecHdr {
   name        String   @db.VarChar(50)
   description String   @db.VarChar(100)
   curr_id     String   @db.Char(3)
-  curr_rate   Decimal  @db.Decimal(9, 4)
+  currRate   Decimal  @db.Decimal(9, 4)
   tax_id      String   @db.Char(3)
-  tax_rate    Int      @db.TinyInt
+  taxRate    Int      @db.TinyInt
   price       Decimal  @db.Decimal(18, 0)
   qty         String   @db.VarChar(50)
   Uom        String   @db.Char(10)
@@ -198,9 +198,9 @@ model hosCheckSpecPrs {
   emp_id      String   @db.Char(20)
   empName     String   @db.VarChar(50)
   curr_id     String   @db.Char(3)
-  curr_rate   Decimal  @db.Decimal(9, 4)
+  currRate   Decimal  @db.Decimal(9, 4)
   tax_id      String   @db.Char(3)
-  tax_rate    Int      @db.TinyInt
+  taxRate    Int      @db.TinyInt
   price       Decimal  @db.Decimal(18, 0)
   qty         String   @db.VarChar(50)
   Uom         String   @db.Char(10)
@@ -244,6 +244,8 @@ model hosDoctor {
 }
 
 model hosPatient {
+  isReferred      Boolean
+  referredFrom    String?  @db.Char(20)
   id              String   @id @unique @db.Char(20)
   nickName        String   @db.VarChar(30)
   fullName        String   @db.VarChar(50)
@@ -285,9 +287,9 @@ model hosPatientCaseDtl {
   medicine_id  String   @db.Char(20)
   medicineName String   @db.VarChar(50)
   curr_id      String   @db.Char(3)
-  curr_rate    Decimal  @db.Decimal(9, 4)
+  currRate    Decimal  @db.Decimal(9, 4)
   tax_id       String   @db.Char(3)
-  tax_rate     Int      @db.TinyInt
+  taxRate     Int      @db.TinyInt
   price        Decimal  @db.Decimal(18, 0)
   qty          String   @db.VarChar(50)
   Uom         String   @db.Char(10)
@@ -345,9 +347,9 @@ model hosPatientCheckDtl {
   IndicatorValue String?  @db.Char(10)
   remarks        String?  @db.VarChar(100)
   curr_id        String   @db.Char(3)
-  curr_rate      Decimal  @db.Decimal(9, 4)
+  currRate      Decimal  @db.Decimal(9, 4)
   tax_id         String   @db.Char(3)
-  tax_rate       Int      @db.TinyInt
+  taxRate       Int      @db.TinyInt
   price          Decimal  @db.Decimal(18, 0)
   qty            String   @db.VarChar(50)
   Uom            Decimal  @db.Decimal(9, 6)
@@ -403,23 +405,12 @@ model hosAdmission {
   isInsurance    Boolean
   insurance_id   String   @db.Char(20)  
   id             String   @id @db.Char(20)
-  registryDate   DateTime @db.Date
+  admissionDate  DateTime @db.DateTime
   patient_id     String   @db.Char(20)
   patientName    String   @db.VarChar(50)
-  patientCase   String   @db.Char(100)
-  isrefer       Boolean
-  ref_id        String?   @db.Char(20)
-  referredCase   String   @db.VarChar(200)
-  referredDate   DateTime @db.Date
-  referredFrom    String   @db.VarChar(80)
-  fromPoly_id    String   @db.Char(10)
-  fromPolyName   String   @db.VarChar(50)
-  fromDoctor_id  String   @db.Char(20)
-  fromDoctorName String   @db.VarChar(50)
-  toPoly_id      String   @db.Char(10)
-  toPolyName     String   @db.VarChar(50)
-  toDoctor_id      String   @db.Char(20)
-  toDoctorName     String   @db.VarChar(50)
+  patientCase   String   @db.VarChar(250)
+  isRefer       Boolean
+  ref_id        String?   @db.Char(20) 
   payType        Int      @db.TinyInt
   pay_id         String?  @db.VarChar(20)
   status         Int?     @db.TinyInt
@@ -429,6 +420,37 @@ model hosAdmission {
   updatedAt      DateTime
   company_id     String?  @db.Char(5)
   branch_id      String   @db.Char(10)
+}
+
+model hosPatientReferred {
+  trxType           String   @db.Char(3)
+  isInsurance       Boolean
+  insurance_id      String   @db.Char(20)
+  isEmergency       Boolean
+  emergency_id      String   @db.Char(20)
+  id                String   @id @db.Char(20)
+  referredDate      DateTime @db.Date
+  referredFrom      String   @db.VarChar(80)
+  patientName       String   @db.VarChar(50)
+  referredCase      String   @db.VarChar(250)
+  comeWithCondition String   @db.VarChar(250)
+  patient_id        String   @db.Char(20)
+  fromPoly_id       String   @db.Char(10)
+  fromPolyName      String   @db.VarChar(50)
+  fromDoctor_id     String   @db.Char(20)
+  fromDoctorName    String   @db.VarChar(50)
+  toPoly_id         String   @db.Char(10)
+  toPolyName        String   @db.VarChar(50)
+  toDoctor_id       String   @db.Char(20)
+  toDoctorName      String   @db.VarChar(50)
+  isAccepted        Boolean
+  status            Int?     @db.TinyInt
+  createdBy         String   @db.Char(10)
+  createdAt         DateTime
+  updatedBy         String   @db.Char(10)
+  updatedAt         DateTime
+  company_id        String?  @db.Char(5)
+  branch_id         String   @db.Char(10)
 }
 
 model hosEmergencyNote {
@@ -493,7 +515,7 @@ model hosInsuranceAlloc {
   trxDate         DateTime @db.Date
   description     String   @db.VarChar(100)
   curr_id         String   @db.Char(3)
-  curr_rate        Decimal  @db.Decimal(9, 4)
+  currRate        Decimal  @db.Decimal(9, 4)
   baseAmt         Decimal  @db.Decimal(15,4)
   discAmt         Decimal  @db.Decimal(15,4)
   tax_id          String   @db.Char(3)
@@ -518,7 +540,7 @@ model hosInsuranceLedger {
   trx_id       String   @db.Char(20)
   trxDate      DateTime @db.Date
   curr_id      String   @db.Char(3)
-  curr_rate     Decimal  @db.Decimal(9, 4)
+  currRate     Decimal  @db.Decimal(9, 4)
   description  String   @db.VarChar(100)
   limitAmt     Decimal  @db.Decimal(15,4)
   baseAmt      Decimal  @db.Decimal(15,4)
