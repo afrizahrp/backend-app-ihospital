@@ -8,10 +8,10 @@ import { AuthModule } from './auth/authentication/auth.module';
 import { SysUserModule } from './users/sysUser/sys-user.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/authentication/guards';
-import { HosPatientModule } from './hospital/hos_Patient/hos-patient.module';
+import { HosPatientModule } from './hospital/Patient/hos-patient.module';
 // import { SysUserInterceptor } from './users/sysUser/sys-User.interceptor';
-import { HosregistrationModule } from './hospital/hos_registration/hos-registration.module';
-import { HosRegistrationService } from './hospital/hos_registration/hos-registration.service';
+import { HosAdmissionModule } from './hospital/Admission/hos-admission.module';
+import { HosAdmissionService } from './hospital/Admission/hos-admission.service';
 ConfigModule.forRoot();
 @Module({
   imports: [
@@ -19,14 +19,14 @@ ConfigModule.forRoot();
     AuthModule,
     SysUserModule,
     HosPatientModule,
-    HosregistrationModule,
+    HosAdmissionModule,
   ],
   controllers: [AppController],
   providers: [
     // { provide: APP_INTERCEPTOR, useClass: SysUserInterceptor },
     { provide: APP_GUARD, useClass: AccessTokenGuard },
     AppService,
-    HosRegistrationService,
+    HosAdmissionService,
   ],
 })
 export class AppModule {}

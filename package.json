@@ -1,10 +1,10 @@
 {
-  "name": "auth-passport-jwt",
+  "name": "backend-app-ihospital",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Afriza",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "LICENSED BY NM Solution",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

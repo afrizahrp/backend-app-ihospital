@@ -409,7 +409,7 @@ CREATE TABLE [dbo].[hosPatientCheckHdr] (
 );
 
 -- CreateTable
-CREATE TABLE [dbo].[hosRegistration] (
+CREATE TABLE [dbo].[hosAdmission] (
     [trxType] CHAR(3) NOT NULL,
     [isEmergency] BIT NOT NULL,
     [emergency_id] CHAR(20) NOT NULL,
@@ -444,7 +444,7 @@ CREATE TABLE [dbo].[hosRegistration] (
     [updatedAt] DATETIME2 NOT NULL,
     [company_id] CHAR(5),
     [branch_id] CHAR(10) NOT NULL,
-    CONSTRAINT [hosRegistration_pkey] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [hosAdmission_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -508,7 +508,7 @@ CREATE TABLE [dbo].[hosInsuranceAlloc] (
     [insurance_id] CHAR(20) NOT NULL,
     [id] CHAR(20) NOT NULL,
     [patient_id] CHAR(20) NOT NULL,
-    [registration_id] CHAR(20) NOT NULL,
+    [admission_id] CHAR(20) NOT NULL,
     [trxType] CHAR(3) NOT NULL,
     [class_id] CHAR(20) NOT NULL,
     [trxMode] CHAR(1) NOT NULL,
@@ -651,7 +651,7 @@ CREATE TABLE [dbo].[plcFloor] (
 );
 
 -- CreateTable
-CREATE TABLE [dbo].[plcProv] (
+CREATE TABLE [dbo].[plcProvince] (
     [country_id] CHAR(3) NOT NULL,
     [id] CHAR(2) NOT NULL,
     [name] VARCHAR(50) NOT NULL,
@@ -661,7 +661,7 @@ CREATE TABLE [dbo].[plcProv] (
     [updatedAt] DATETIME2 NOT NULL,
     [company_id] CHAR(5),
     [branch_id] CHAR(10) NOT NULL,
-    CONSTRAINT [plcProv_pkey] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [plcProvince_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable
@@ -679,7 +679,7 @@ CREATE TABLE [dbo].[plcSubDistrict] (
 );
 
 -- CreateTable
-CREATE TABLE [dbo].[plcSubProv] (
+CREATE TABLE [dbo].[plcSubProvince] (
     [Prov_id] CHAR(2) NOT NULL,
     [id] CHAR(2) NOT NULL,
     [name] VARCHAR(50) NOT NULL,
@@ -689,7 +689,7 @@ CREATE TABLE [dbo].[plcSubProv] (
     [updatedAt] DATETIME2 NOT NULL,
     [company_id] CHAR(5),
     [branch_id] CHAR(10) NOT NULL,
-    CONSTRAINT [plcSubProv_pkey] PRIMARY KEY CLUSTERED ([id])
+    CONSTRAINT [plcSubProvince_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 -- CreateTable

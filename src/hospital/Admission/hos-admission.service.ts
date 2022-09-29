@@ -11,8 +11,8 @@ import { PrismaService } from '../../prisma/prisma.service';
 // import { Get_DocumentId_Service } from './../../sys-utils/get-document-id/get_DocumentId.service';
 
 import { DocumentId } from '../../classes/DocumentId';
-import { ShowDataDto } from './hos-registration.dto';
-// import { HosRegistrationService } from './hos-registration.service';
+import { ShowDataDto } from './hos-admission.dto';
+// import { hosAdmissionService } from './hos-registration.service';
 
 interface NewDataParams {
   id: string;
@@ -76,7 +76,7 @@ interface UpdateDataParams {
 }
 
 @Injectable()
-export class HosRegistrationService {
+export class HosAdmissionService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async newDataFields(
@@ -125,7 +125,7 @@ export class HosRegistrationService {
     const documentId = new DocumentId(companyId, branchId, userId);
     const docId = await documentId.gen_docId('HOS', 'REG', '');
 
-    const createNewData = await this.prismaService.hosRegistration.create({
+    const createNewData = await this.prismaService.hosAdmission.create({
       data: {
         id: docId,
         trxType,
@@ -197,7 +197,7 @@ export class HosRegistrationService {
     companyId: string,
     branchId: string,
   ) {
-    const foundId = await this.prismaService.hosRegistration.findUnique({
+    const foundId = await this.prismaService.hosAdmission.findUnique({
       where: {
         id: doc_id,
       },
@@ -208,7 +208,7 @@ export class HosRegistrationService {
     }
 
     try {
-      const updatedData = await this.prismaService.hosRegistration.update({
+      const updatedData = await this.prismaService.hosAdmission.update({
         where: {
           id: doc_id,
         },
@@ -250,7 +250,7 @@ export class HosRegistrationService {
 
   async getAllData(): Promise<ShowDataDto[]> {
     try {
-      const allData = await this.prismaService.hosRegistration.findMany();
+      const allData = await this.prismaService.hosAdmission.findMany();
       return allData.map((Data) => new ShowDataDto(Data));
     } catch (error) {
       console.log(error.message);
@@ -260,7 +260,7 @@ export class HosRegistrationService {
   }
 
   async getDataById(doc_id: string) {
-    const foundId = await this.prismaService.hosRegistration.findUnique({
+    const foundId = await this.prismaService.hosAdmission.findUnique({
       where: {
         id: doc_id,
       },
@@ -270,7 +270,7 @@ export class HosRegistrationService {
 
   // Delete patient
   async deleteData(doc_id: string) {
-    const foundId = await this.prismaService.hosRegistration.findUnique({
+    const foundId = await this.prismaService.hosAdmission.findUnique({
       where: {
         id: doc_id,
       },
@@ -279,7 +279,7 @@ export class HosRegistrationService {
     if (!foundId) {
       throw new NotFoundException('Registration id is not found');
       try {
-        const datatDeleted = await this.prismaService.hosRegistration.delete({
+        const datatDeleted = await this.prismaService.hosAdmission.delete({
           where: {
             id: doc_id,
           },

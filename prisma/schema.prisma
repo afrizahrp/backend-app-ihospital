@@ -394,7 +394,7 @@ model hosPatientCheckHdr {
   branch_id      String   @db.Char(10)
 }
 
-model hosRegistration {
+model hosAdmission {
   trxType        String   @db.Char(3)
   isEmergency    Boolean
   emergency_id   String   @db.Char(20)
@@ -485,7 +485,7 @@ model hosInsuranceAlloc {
   insurance_id    String   @db.Char(20)
   id              String   @id @db.Char(20)
   patient_id      String   @db.Char(20)
-  registration_id String   @db.Char(20)
+  admission_id String   @db.Char(20)
   trxType         String   @db.Char(3)
   class_id        String   @db.Char(20) //I - Invoice, P - Payment / Claim , R - Refund
   trxMode         String   @db.Char(1) // D - For DEBIT, C - For CREDIT
@@ -612,7 +612,7 @@ model plcFloor {
   branch_id    String   @db.Char(10)
 }
 
-model plcProv {
+model plcProvince {
   country_id String   @db.Char(3)
   id         String   @id @db.Char(2)
   name       String   @db.VarChar(50)
@@ -636,7 +636,7 @@ model plcSubDistrict {
   branch_id   String   @db.Char(10)
 }
 
-model plcSubProv {
+model plcSubProvince {
   Prov_id    String   @db.Char(2)
   id         String   @id @db.Char(2)
   name       String   @db.VarChar(50)
