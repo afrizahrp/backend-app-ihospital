@@ -85,6 +85,15 @@ model sysUser {
   updatedAt         DateTime
   company_id        String   @db.Char(5)
   branch_id         String   @db.Char(10)
+  nickName          String?  @db.VarChar(50)
+  status            String?  @db.VarChar(20)
+  avatar            String?  @db.VarChar(50)
+  country           String?  @db.VarChar(50)
+  contact           String?  @db.VarChar(50)
+  fullName          String?  @db.VarChar(50)
+  username          String?  @db.VarChar(50)
+  currentPlan       String?  @db.VarChar(50)
+  avatarColor       String?  @db.VarChar(50)
 }
 
 model sysUserRole {
