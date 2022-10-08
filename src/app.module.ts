@@ -12,6 +12,8 @@ import { HosPatientModule } from './hospital/Patient/hos-patient.module';
 // import { SysUserInterceptor } from './users/sysUser/sys-User.interceptor';
 import { HosAdmissionModule } from './hospital/Admission/hos-admission.module';
 import { HosAdmissionService } from './hospital/Admission/hos-admission.service';
+import { SysDeptModule } from './company/Department/sys-dept.module';
+import { SysSubDeptModule } from './company/subDepartment/sys-subDept.module';
 ConfigModule.forRoot();
 @Module({
   imports: [
@@ -20,6 +22,8 @@ ConfigModule.forRoot();
     SysUserModule,
     HosPatientModule,
     HosAdmissionModule,
+    SysDeptModule,
+    SysSubDeptModule,
   ],
   controllers: [AppController],
   providers: [
