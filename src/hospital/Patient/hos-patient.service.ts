@@ -75,39 +75,34 @@ interface UpdateDataParams {
 export class HosPatientService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async newDataFields(
-    {
-      isReferred,
-      referredFrom,
-      nickName,
-      fullName,
-      birthDate,
-      ageInYear,
-      ageInMonth,
-      gender,
-      religion,
-      bloodType,
-      maritalStatus,
-      country_id,
-      prov_id,
-      provName,
-      subProv_id,
-      subProvName,
-      district_id,
-      districtName,
-      subdistrict_id,
-      subdistrictName,
-      address,
-      mobileNo1,
-      mobileNo2,
-      phoneNo,
-      email,
-      occupation,
-    }: NewDataParams,
-    userId: string,
-    companyId: string,
-    branchId: string,
-  ) {
+  async newDataFields({
+    isReferred,
+    referredFrom,
+    nickName,
+    fullName,
+    birthDate,
+    ageInYear,
+    ageInMonth,
+    gender,
+    religion,
+    bloodType,
+    maritalStatus,
+    country_id,
+    prov_id,
+    provName,
+    subProv_id,
+    subProvName,
+    district_id,
+    districtName,
+    subdistrict_id,
+    subdistrictName,
+    address,
+    mobileNo1,
+    mobileNo2,
+    phoneNo,
+    email,
+    occupation,
+  }: NewDataParams) {
     const emailExists = await this.prismaService.hosPatient.findUnique({
       where: { email: email },
     });
@@ -116,6 +111,9 @@ export class HosPatientService {
       throw new BadRequestException('Email is already exists');
     }
 
+    const companyId = 'NMS';
+    const branchId = 'KLM1-JKT05';
+    const userId = 'NMS';
     const documentId = new DocumentId(companyId, branchId, userId);
     const doc_id = await documentId.gen_docId('HOS', 'PTN', '');
 

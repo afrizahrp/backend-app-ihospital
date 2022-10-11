@@ -22,17 +22,29 @@ import { HosPatientService } from './hos-patient.service';
 export class HosPatientController {
   constructor(private readonly hosPatientService: HosPatientService) {}
 
-  @UseGuards(AuthGuard('jwt-access'))
+  // this code is working fine
+  // @UseGuards(AuthGuard('jwt-access'))
+  // @Public()
+  // @Post('new')
+  // newPatient(@Body() body: NewDataDto, @ActiveUser() sysUser: ActiveUserInfo) {
+  //   try {
+  //     return this.hosPatientService.newDataFields(
+  //       body,
+  //       sysUser.sub,
+  //       sysUser.company_id,
+  //       sysUser.branch_id,
+  //     );
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // }
+
+  // @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Post('new')
   newPatient(@Body() body: NewDataDto, @ActiveUser() sysUser: ActiveUserInfo) {
     try {
-      return this.hosPatientService.newDataFields(
-        body,
-        sysUser.sub,
-        sysUser.company_id,
-        sysUser.branch_id,
-      );
+      return this.hosPatientService.newDataFields(body);
     } catch (error) {
       console.log(error.message);
     }
