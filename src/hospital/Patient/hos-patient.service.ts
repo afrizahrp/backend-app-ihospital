@@ -14,32 +14,32 @@ import { DocumentId } from '../../classes/DocumentId';
 import { ShowDataDto } from './hos-patient.dto';
 
 interface NewDataParams {
-  isReferred: boolean;
-  referredFrom: string;
-  nickName: string;
+  isReferred?: boolean;
+  referredFrom?: string;
+  nickName?: string;
   fullName: string;
-  birthDate: Date;
-  ageInYear: number;
-  ageInMonth: number;
-  gender: string;
-  religion: string;
-  bloodType: string;
-  maritalStatus: string;
-  country_id: string;
-  prov_id: string;
-  provName: string;
-  subProv_id: string;
-  subProvName: string;
-  district_id: string;
-  districtName: string;
-  subdistrict_id: string;
-  subdistrictName: string;
-  address: string;
-  mobileNo1: string;
-  mobileNo2: string;
-  phoneNo: string;
-  email: string;
-  occupation: string;
+  birthDate?: Date;
+  ageInYear?: number;
+  ageInMonth?: number;
+  gender?: string;
+  religion?: string;
+  bloodType?: string;
+  maritalStatus?: string;
+  country_id?: string;
+  prov_id?: string;
+  provName?: string;
+  subProv_id?: string;
+  subProvName?: string;
+  district_id?: string;
+  districtName?: string;
+  subdistrict_id?: string;
+  subdistrictName?: string;
+  address?: string;
+  mobileNo1?: string;
+  mobileNo2?: string;
+  phoneNo?: string;
+  email?: string;
+  occupation?: string;
 }
 
 interface UpdateDataParams {
