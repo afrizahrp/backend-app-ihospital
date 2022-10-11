@@ -105,7 +105,7 @@ model sysUserRole {
   createdAt   DateTime
   updatedBy   String   @db.Char(10)
   updatedAt   DateTime
-  company_id  String  @db.Char(5)
+  company_id  String   @db.Char(5)
   branch_id   String   @db.Char(10)
 }
 
@@ -117,17 +117,17 @@ model hosCheckSpecDev {
   deviceName String   @db.VarChar(50)
   deviceType String   @db.VarChar(50)
   curr_id    String   @db.Char(3)
-  currRate  Decimal  @db.Decimal(9, 4)
+  currRate   Decimal  @db.Decimal(9, 4)
   tax_id     String   @db.Char(3)
-  taxRate   Int      @db.TinyInt
+  taxRate    Int      @db.TinyInt
   price      Decimal  @db.Decimal(18, 0)
   qty        String   @db.VarChar(50)
-  Uom        String  @db.Char(10)
-  baseAmt    Decimal  @db.Decimal(15,4)
-  addedAmt   Decimal  @db.Decimal(15,4)
-  discAmt    Decimal  @db.Decimal(15,4)
-  taxAmt     Decimal  @db.Decimal(15,4)
-  trxAmt     Decimal  @db.Decimal(15,4)
+  Uom        String   @db.Char(10)
+  baseAmt    Decimal  @db.Decimal(15, 4)
+  addedAmt   Decimal  @db.Decimal(15, 4)
+  discAmt    Decimal  @db.Decimal(15, 4)
+  taxAmt     Decimal  @db.Decimal(15, 4)
+  trxAmt     Decimal  @db.Decimal(15, 4)
   remarks    String   @db.VarChar(50)
   createdBy  String   @db.Char(10)
   createdAt  DateTime
@@ -150,17 +150,17 @@ model hosCheckSpecDtl {
   topValue   Decimal  @db.Decimal(9, 6)
   topValUom  String   @db.Char(10)
   curr_id    String   @db.Char(3)
-  currRate  Decimal  @db.Decimal(9, 4)
+  currRate   Decimal  @db.Decimal(9, 4)
   tax_id     String   @db.Char(3)
-  taxRate   Int      @db.TinyInt
+  taxRate    Int      @db.TinyInt
   price      Decimal  @db.Decimal(18, 0)
   qty        String   @db.VarChar(50)
   Uom        String   @db.Char(10)
-  baseAmt    Decimal  @db.Decimal(15,4)
-  addedAmt   Decimal  @db.Decimal(15,4)
-  discAmt    Decimal  @db.Decimal(15,4)
-  taxAmt     Decimal  @db.Decimal(15,4)
-  trxAmt     Decimal  @db.Decimal(15,4)
+  baseAmt    Decimal  @db.Decimal(15, 4)
+  addedAmt   Decimal  @db.Decimal(15, 4)
+  discAmt    Decimal  @db.Decimal(15, 4)
+  taxAmt     Decimal  @db.Decimal(15, 4)
+  trxAmt     Decimal  @db.Decimal(15, 4)
   remarks    String   @db.VarChar(250)
   createdBy  String   @db.Char(10)
   createdAt  DateTime
@@ -177,17 +177,17 @@ model hosCheckSpecHdr {
   name        String   @db.VarChar(50)
   description String   @db.VarChar(100)
   curr_id     String   @db.Char(3)
-  currRate   Decimal  @db.Decimal(9, 4)
+  currRate    Decimal  @db.Decimal(9, 4)
   tax_id      String   @db.Char(3)
-  taxRate    Int      @db.TinyInt
+  taxRate     Int      @db.TinyInt
   price       Decimal  @db.Decimal(18, 0)
   qty         String   @db.VarChar(50)
-  Uom        String   @db.Char(10)
-  baseAmt     Decimal  @db.Decimal(15,4)
-  addedAmt    Decimal  @db.Decimal(15,4)
-  discAmt     Decimal  @db.Decimal(15,4)
-  taxAmt      Decimal  @db.Decimal(15,4)
-  trxAmt      Decimal  @db.Decimal(15,4)
+  Uom         String   @db.Char(10)
+  baseAmt     Decimal  @db.Decimal(15, 4)
+  addedAmt    Decimal  @db.Decimal(15, 4)
+  discAmt     Decimal  @db.Decimal(15, 4)
+  taxAmt      Decimal  @db.Decimal(15, 4)
+  trxAmt      Decimal  @db.Decimal(15, 4)
   remarks     String   @db.VarChar(50)
   createdBy   String   @db.Char(10)
   createdAt   DateTime
@@ -207,17 +207,17 @@ model hosCheckSpecPrs {
   emp_id      String   @db.Char(20)
   empName     String   @db.VarChar(50)
   curr_id     String   @db.Char(3)
-  currRate   Decimal  @db.Decimal(9, 4)
+  currRate    Decimal  @db.Decimal(9, 4)
   tax_id      String   @db.Char(3)
-  taxRate    Int      @db.TinyInt
+  taxRate     Int      @db.TinyInt
   price       Decimal  @db.Decimal(18, 0)
   qty         String   @db.VarChar(50)
   Uom         String   @db.Char(10)
-  baseAmt     Decimal  @db.Decimal(15,4)
-  addedAmt    Decimal  @db.Decimal(15,4)
-  discAmt     Decimal  @db.Decimal(15,4)
-  taxAmt      Decimal  @db.Decimal(15,4)
-  trxAmt      Decimal  @db.Decimal(15,4)
+  baseAmt     Decimal  @db.Decimal(15, 4)
+  addedAmt    Decimal  @db.Decimal(15, 4)
+  discAmt     Decimal  @db.Decimal(15, 4)
+  taxAmt      Decimal  @db.Decimal(15, 4)
+  trxAmt      Decimal  @db.Decimal(15, 4)
   remarks     String   @db.VarChar(50)
   createdBy   String   @db.Char(10)
   createdAt   DateTime
@@ -253,39 +253,39 @@ model hosDoctor {
 }
 
 model hosPatient {
-  isReferred      Boolean
-  referredFrom    String?  @db.Char(20)
-  id              String   @id @unique @db.Char(20)
-  nickName        String   @db.VarChar(30)
-  fullName        String   @db.VarChar(50)
-  birthDate       DateTime @db.Date
-  ageInYear       Int?     @db.TinyInt
-  ageInMonth      Int?     @db.TinyInt
-  gender          String   @db.Char(6)
-  bloodType       String   @db.VarChar(5)
-  religion        String   @db.VarChar(15)
-  maritalStatus   String   @db.Char(7)
-  country_id      String   @db.Char(3)
-  prov_id         String   @db.Char(2)
-  provName        String   @db.VarChar(50)
-  subProv_id      String   @db.Char(2)
-  subProvName     String   @db.VarChar(50)
-  district_id     String   @db.Char(2)
-  districtName    String   @db.VarChar(50)
-  subdistrict_id  String   @db.Char(2)
-  subdistrictName String?  @db.VarChar(50)
-  address         String   @db.VarChar(80)
-  mobileNo1       String   @db.VarChar(20)
-  mobileNo2       String   @db.VarChar(20)
-  phoneNo         String   @db.VarChar(15)
-  email           String?  @unique @db.VarChar(80)
-  occupation      String?  @db.VarChar(50)
-  createdBy       String?  @db.Char(10)
-  createdAt       DateTime
-  updatedBy       String?  @db.Char(10)
-  updatedAt       DateTime @db.DateTime
-  company_id      String?  @db.Char(5)
-  branch_id       String?  @db.Char(10)
+  isReferred      Boolean?
+  referredFrom    String?   @db.Char(20)
+  id              String    @id @unique @db.Char(20)
+  nickName        String?   @db.VarChar(30)
+  fullName        String    @db.VarChar(50)
+  birthDate       DateTime? @db.Date
+  ageInYear       Int?      @db.TinyInt
+  ageInMonth      Int?      @db.TinyInt
+  gender          String?   @db.Char(6)
+  bloodType       String?   @db.VarChar(5)
+  religion        String?   @db.VarChar(15)
+  maritalStatus   String?   @db.Char(7)
+  country_id      String?   @db.Char(3)
+  prov_id         String?   @db.Char(2)
+  provName        String?   @db.VarChar(50)
+  subProv_id      String?   @db.Char(2)
+  subProvName     String?   @db.VarChar(50)
+  district_id     String?   @db.Char(2)
+  districtName    String?   @db.VarChar(50)
+  subdistrict_id  String?   @db.Char(2)
+  subdistrictName String?   @db.VarChar(50)
+  address         String?   @db.VarChar(80)
+  mobileNo1       String?   @db.VarChar(20)
+  mobileNo2       String?   @db.VarChar(20)
+  phoneNo         String?   @db.VarChar(15)
+  email           String?   @unique @db.VarChar(80)
+  occupation      String?   @db.VarChar(50)
+  createdBy       String?   @db.Char(10)
+  createdAt       DateTime?
+  updatedBy       String?   @db.Char(10)
+  updatedAt       DateTime? @db.DateTime
+  company_id      String?   @db.Char(5)
+  branch_id       String?   @db.Char(10)
 }
 
 model hosPatientCaseDtl {
@@ -296,17 +296,17 @@ model hosPatientCaseDtl {
   medicine_id  String   @db.Char(20)
   medicineName String   @db.VarChar(50)
   curr_id      String   @db.Char(3)
-  currRate    Decimal  @db.Decimal(9, 4)
+  currRate     Decimal  @db.Decimal(9, 4)
   tax_id       String   @db.Char(3)
-  taxRate     Int      @db.TinyInt
+  taxRate      Int      @db.TinyInt
   price        Decimal  @db.Decimal(18, 0)
   qty          String   @db.VarChar(50)
-  Uom         String   @db.Char(10)
-  baseAmt      Decimal  @db.Decimal(15,4)
-  addedAmt     Decimal  @db.Decimal(15,4)
-  discAmt      Decimal  @db.Decimal(15,4)
-  taxAmt       Decimal  @db.Decimal(15,4)
-  trxAmt       Decimal  @db.Decimal(15,4)
+  Uom          String   @db.Char(10)
+  baseAmt      Decimal  @db.Decimal(15, 4)
+  addedAmt     Decimal  @db.Decimal(15, 4)
+  discAmt      Decimal  @db.Decimal(15, 4)
+  taxAmt       Decimal  @db.Decimal(15, 4)
+  trxAmt       Decimal  @db.Decimal(15, 4)
   status       Int      @db.TinyInt
   createdBy    String   @db.Char(10)
   createdAt    DateTime
@@ -330,13 +330,13 @@ model hosPatientCaseHdr {
   symptom      String?  @db.VarChar(200)
   firstDiag    String?  @db.VarChar(200)
   isPatientOk  Int?     @db.TinyInt
-  isreferred    Boolean
-  ref_id    String?  @db.Char(20)
-  referCase String?  @db.VarChar(100)
-  referDate  DateTime @db.Date
-  referTo    String     @db.VarChar(80)
-  toPoly_id      String   @db.Char(10)
-  toPolyName     String   @db.VarChar(50)
+  isreferred   Boolean
+  ref_id       String?  @db.Char(20)
+  referCase    String?  @db.VarChar(100)
+  referDate    DateTime @db.Date
+  referTo      String   @db.VarChar(80)
+  toPoly_id    String   @db.Char(10)
+  toPolyName   String   @db.VarChar(50)
   status       Int?     @db.TinyInt
   createdBy    String   @db.Char(10)
   createdAt    DateTime
@@ -356,17 +356,17 @@ model hosPatientCheckDtl {
   IndicatorValue String?  @db.Char(10)
   remarks        String?  @db.VarChar(100)
   curr_id        String   @db.Char(3)
-  currRate      Decimal  @db.Decimal(9, 4)
+  currRate       Decimal  @db.Decimal(9, 4)
   tax_id         String   @db.Char(3)
-  taxRate       Int      @db.TinyInt
+  taxRate        Int      @db.TinyInt
   price          Decimal  @db.Decimal(18, 0)
   qty            String   @db.VarChar(50)
   Uom            Decimal  @db.Decimal(9, 6)
-  baseAmt        Decimal  @db.Decimal(15,4)
-  addedAmt       Decimal  @db.Decimal(15,4)
-  discAmt        Decimal  @db.Decimal(15,4)
-  taxAmt         Decimal  @db.Decimal(15,4)
-  trxAmt         Decimal  @db.Decimal(15,4)
+  baseAmt        Decimal  @db.Decimal(15, 4)
+  addedAmt       Decimal  @db.Decimal(15, 4)
+  discAmt        Decimal  @db.Decimal(15, 4)
+  taxAmt         Decimal  @db.Decimal(15, 4)
+  trxAmt         Decimal  @db.Decimal(15, 4)
   status         Int?     @db.TinyInt
   createdBy      String   @db.Char(10)
   createdAt      DateTime
@@ -412,14 +412,14 @@ model hosAdmission {
   isAppointment  Boolean
   appointment_id String   @db.Char(20)
   isInsurance    Boolean
-  insurance_id   String   @db.Char(20)  
+  insurance_id   String   @db.Char(20)
   id             String   @id @db.Char(20)
   admissionDate  DateTime @db.DateTime
   patient_id     String   @db.Char(20)
   patientName    String   @db.VarChar(50)
-  patientCase   String   @db.VarChar(250)
-  isRefer       Boolean
-  ref_id        String?   @db.Char(20) 
+  patientCase    String   @db.VarChar(250)
+  isRefer        Boolean
+  ref_id         String?  @db.Char(20)
   payType        Int      @db.TinyInt
   pay_id         String?  @db.VarChar(20)
   status         Int?     @db.TinyInt
@@ -463,19 +463,19 @@ model hosPatientReferred {
 }
 
 model hosEmergencyNote {
-  id            String   @id @db.Char(20)
-  patient_id    String   @db.Char(20)
-  patientName   String   @db.VarChar(50)
-  doctor_id     String   @db.Char(20)
-  doctorName    String   @db.VarChar(50)
-  descriptions  String   @db.VarChar(250)
-  status        Int      @db.TinyInt
-  createdBy     String   @db.Char(10)
-  createdAt     DateTime
-  updatedBy     String   @db.Char(10)
-  updatedAt     DateTime
-  company_id    String?  @db.Char(5)
-  branch_id     String   @db.Char(10)
+  id           String   @id @db.Char(20)
+  patient_id   String   @db.Char(20)
+  patientName  String   @db.VarChar(50)
+  doctor_id    String   @db.Char(20)
+  doctorName   String   @db.VarChar(50)
+  descriptions String   @db.VarChar(250)
+  status       Int      @db.TinyInt
+  createdBy    String   @db.Char(10)
+  createdAt    DateTime
+  updatedBy    String   @db.Char(10)
+  updatedAt    DateTime
+  company_id   String?  @db.Char(5)
+  branch_id    String   @db.Char(10)
 }
 
 model hosInsurance {
@@ -513,31 +513,31 @@ model hosInsuranceDtl {
 }
 
 model hosInsuranceAlloc {
-  insurance_id    String   @db.Char(20)
-  id              String   @id @db.Char(20)
-  patient_id      String   @db.Char(20)
+  insurance_id String   @db.Char(20)
+  id           String   @id @db.Char(20)
+  patient_id   String   @db.Char(20)
   admission_id String   @db.Char(20)
-  trxType         String   @db.Char(3)
-  class_id        String   @db.Char(20) //I - Invoice, P - Payment / Claim , R - Refund
-  trxMode         String   @db.Char(1) // D - For DEBIT, C - For CREDIT
-  trx_id          String   @db.Char(20)
-  trxDate         DateTime @db.Date
-  description     String   @db.VarChar(100)
-  curr_id         String   @db.Char(3)
-  currRate        Decimal  @db.Decimal(9, 4)
-  baseAmt         Decimal  @db.Decimal(15,4)
-  discAmt         Decimal  @db.Decimal(15,4)
-  tax_id          String   @db.Char(3)
-  taxRate         Int      @db.TinyInt
-  taxAmt          Decimal  @db.Decimal(15,4)
-  trxAmt          Decimal  @db.Decimal(15,4)
-  status          Int      @db.TinyInt
-  createdBy       String   @db.Char(10)
-  createdAt       DateTime
-  updatedBy       String   @db.Char(10)
-  updatedAt       DateTime
-  company_id      String?  @db.Char(5)
-  branch_id       String   @db.Char(10)
+  trxType      String   @db.Char(3)
+  class_id     String   @db.Char(20) //I - Invoice, P - Payment / Claim , R - Refund
+  trxMode      String   @db.Char(1) // D - For DEBIT, C - For CREDIT
+  trx_id       String   @db.Char(20)
+  trxDate      DateTime @db.Date
+  description  String   @db.VarChar(100)
+  curr_id      String   @db.Char(3)
+  currRate     Decimal  @db.Decimal(9, 4)
+  baseAmt      Decimal  @db.Decimal(15, 4)
+  discAmt      Decimal  @db.Decimal(15, 4)
+  tax_id       String   @db.Char(3)
+  taxRate      Int      @db.TinyInt
+  taxAmt       Decimal  @db.Decimal(15, 4)
+  trxAmt       Decimal  @db.Decimal(15, 4)
+  status       Int      @db.TinyInt
+  createdBy    String   @db.Char(10)
+  createdAt    DateTime
+  updatedBy    String   @db.Char(10)
+  updatedAt    DateTime
+  company_id   String?  @db.Char(5)
+  branch_id    String   @db.Char(10)
 }
 
 model hosInsuranceLedger {
@@ -551,15 +551,15 @@ model hosInsuranceLedger {
   curr_id      String   @db.Char(3)
   currRate     Decimal  @db.Decimal(9, 4)
   description  String   @db.VarChar(100)
-  limitAmt     Decimal  @db.Decimal(15,4)
-  baseAmt      Decimal  @db.Decimal(15,4)
-  discAmt      Decimal  @db.Decimal(15,4)
+  limitAmt     Decimal  @db.Decimal(15, 4)
+  baseAmt      Decimal  @db.Decimal(15, 4)
+  discAmt      Decimal  @db.Decimal(15, 4)
   tax_id       String   @db.Char(3)
   taxRate      Int      @db.TinyInt
-  taxAmt       Decimal  @db.Decimal(15,4)
-  trxAmt       Decimal  @db.Decimal(15,4)
-  claimAmt     Decimal  @db.Decimal(15,4)
-  balanceAmt   Decimal  @db.Decimal(15,4)
+  taxAmt       Decimal  @db.Decimal(15, 4)
+  trxAmt       Decimal  @db.Decimal(15, 4)
+  claimAmt     Decimal  @db.Decimal(15, 4)
+  balanceAmt   Decimal  @db.Decimal(15, 4)
   status       Int      @db.TinyInt
   createdBy    String   @db.Char(10)
   createdAt    DateTime
