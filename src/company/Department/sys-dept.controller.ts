@@ -6,10 +6,16 @@ import { AuthGuard } from '@nestjs/passport';
 import { sysUser } from 'src/users/sysUser/sys-User.decorator';
 import { UserInfo } from './../../users/sysUser/sys-User.decorator';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { sysUserRole } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Role } from 'src/auth/decorators/role.enum';
 
 @Controller('dept/')
 export class SysDeptController {
-  constructor(private readonly sysDeptService: SysDeptService) {}
+  constructor(
+    private readonly sysDeptService: SysDeptService,
+    private readonly prismaService: PrismaService,
+  ) {}
 
   @Public()
   @Get()
@@ -17,8 +23,8 @@ export class SysDeptController {
     return this.sysDeptService.getAllData();
   }
 
-  // // @UseGuards(AuthGuard('jwt-access'))
-  // @Roles()
+  @Roles(Role.Admin)
+  @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Post('new')
   newPatient(@Body() body: NewDataDto, @sysUser() sysUser: UserInfo) {
