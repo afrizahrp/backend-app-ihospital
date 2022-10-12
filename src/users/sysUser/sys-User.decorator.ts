@@ -3,12 +3,23 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export interface UserInfo {
   sub: string;
-  role: string;
-  username: string;
+  name: string;
+  exp: number;
+  role_id: string;
+  email: string;
   company_id: string;
   branch_id: string;
-  exp: number;
 }
+
+// export interface ActiveUserInfo {
+//   sub: string;
+//   name: string;
+//   exp: number;
+//   role_id: string;
+//   email: string;
+//   company_id: string;
+//   branch_id: string;
+// }
 
 export const sysUser = createParamDecorator(
   (data, context: ExecutionContext) => {

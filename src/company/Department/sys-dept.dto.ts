@@ -2,6 +2,37 @@
 /* eslint-disable prettier/prettier */
 
 import { Exclude } from 'class-transformer';
+import { IsNotEmpty, IsString } from 'class-validator';
+
+export class NewDataDto {
+  @IsString()
+  @IsNotEmpty()
+  Divs_id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  // createdBy: string;
+
+  // createdAt: Date;
+
+  // @IsString()
+  // updatedBy: string;
+
+  // @Exclude()
+  // updatedAt: Date;
+
+  // @Exclude()
+  // company_id: string;
+
+  // @Exclude()
+  // branch_id: string;
+}
 
 export class ShowDataDto {
   divs_id: string;
