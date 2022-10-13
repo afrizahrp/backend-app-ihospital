@@ -49,7 +49,7 @@ export class NewUserDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(5)
-  @MaxLength(10)
+  @MaxLength(20)
   password: string;
 
   @IsString()
