@@ -8,7 +8,8 @@ SELECT *
 FROM   backenddb_old.dbo.sysBranch
 
 
-
+INSERT INTO backenddb.dbo.sysUser
+SELECT * FROM backenddb_old.dbo.sysUser
 
 INSERT INTO sysDivision values('NMD','NON MEDICAL','AFRIZA',GETDATE(),'AFRIZA',GETDATE(),'NMS','KLM1-JKT05')
 INSERT INTO sysDivision values ('MDC','MEDICAL','AFRIZA', GETDATE(),'AFRIZA',GETDATE(),'NMS','KLM1-JKT05')
