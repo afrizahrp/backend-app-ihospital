@@ -24,7 +24,7 @@ export class SysDeptController {
   }
 
   // @Roles(Role.Admin)
-  // @UseGuards(AuthGuard('jwt-access'))
+  @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Post('new')
   newPatient(@Body() body: NewDataDto, @sysUser() sysUser: UserInfo) {
