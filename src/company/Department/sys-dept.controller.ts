@@ -23,18 +23,18 @@ export class SysDeptController {
     return this.sysDeptService.getAllData();
   }
 
-  @Roles(Role.Admin)
-  @UseGuards(AuthGuard('jwt-access'))
+  // @Roles(Role.Admin)
+  // @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Post('new')
   newPatient(@Body() body: NewDataDto, @sysUser() sysUser: UserInfo) {
     try {
-      return this.sysDeptService.newDataFields(
-        body,
-        sysUser.sub,
-        sysUser.company_id,
-        sysUser.branch_id,
-      );
+      return this.sysDeptService.newDataFields(body);
+      //   ,
+      //   sysUser.sub,
+      //   sysUser.company_id,
+      //   sysUser.branch_id,
+      // );
     } catch (error) {
       console.log(error.message);
     }

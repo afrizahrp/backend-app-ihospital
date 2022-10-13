@@ -680,15 +680,15 @@ model plcSubProvince {
 }
 
 model sysDept {
-  Divs_id    String   @db.Char(10)
-  id         String   @id @db.Char(10)
-  name       String   @db.VarChar(100)
-  createdBy  String   @db.Char(10)
-  createdAt  DateTime
-  updatedBy  String   @db.Char(10)
-  updatedAt  DateTime
-  company_id String?  @db.Char(5)
-  branch_id  String   @db.Char(10)
+  // Divs_id String? @db.Char(10)
+  id   String  @id @db.Char(10)
+  name String? @db.VarChar(100)
+  // createdBy  String?   @db.Char(10)
+  // createdAt  DateTime?
+  // updatedBy  String?   @db.Char(10)
+  // updatedAt  DateTime
+  // company_id String?   @db.Char(5)
+  // branch_id  String?   @db.Char(10)
 }
 
 model sysSubDept {

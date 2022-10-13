@@ -11,7 +11,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { ShowDataDto } from './sys-dept.dto';
 
 interface NewDataParams {
-  Divs_id: string;
+  // Divs_id: string;
   id: string;
   name: string;
 }
@@ -20,12 +20,11 @@ interface NewDataParams {
 export class SysDeptService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async newDataFields(
-    { Divs_id, id, name }: NewDataParams,
-    userId: string,
-    companyId: string,
-    branchId: string,
-  ) {
+  async newDataFields({ id, name }: NewDataParams) // ,
+  // userId: string,
+  // companyId: string,
+  // branchId: string,
+  {
     const idExists = await this.prismaService.sysDept.findUnique({
       where: { id: id },
     });
@@ -39,15 +38,15 @@ export class SysDeptService {
 
     const newData = await this.prismaService.sysDept.create({
       data: {
-        Divs_id,
+        // Divs_id,
         id,
         name,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        createdBy: userId,
-        updatedBy: userId,
-        company_id: companyId,
-        branch_id: branchId,
+        // createdAt: new Date(),
+        // updatedAt: new Date(),
+        // createdBy: userId,
+        // updatedBy: userId,
+        // company_id: companyId,
+        // branch_id: branchId,
       },
     });
     return new ShowDataDto(newData);

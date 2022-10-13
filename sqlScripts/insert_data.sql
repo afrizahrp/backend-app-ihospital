@@ -61,9 +61,11 @@ INSERT INTO backenddb.dbo.sysUserRole VALUES('MANAGER','MANAGE USER',0,'Restrict
 
   select * from syscounter
 
-  SELECT * INTO #2 FROM backendDb_old1.dbo.syscounter
+  SELECT * INTO #2 FROM backendDb_old.dbo.syscounter
 
-  UPDATE #2 set counter_id = 'PTN',   
+  SELECT * FROM #2
+  
+  UPDATE #2 set 
   startMonth = right(convert(varchar(3),MONTH(getdate())+100),2), 
   startYear = convert(varchar(4),YEAR(getdate())),
   recounter = 0, lastCounter = 0 , firstChar ='.'
@@ -71,13 +73,13 @@ INSERT INTO backenddb.dbo.sysUserRole VALUES('MANAGER','MANAGE USER',0,'Restrict
   INSERT INTO SYSCOUNTER
   SELECT * FROM #2
     
-  UPDATE #2 set counter_id = 'AMS', 
-  startMonth = right(convert(varchar(3),MONTH(getdate())+100),2), 
-  startYear = convert(varchar(4),YEAR(getdate())),
-  recounter = 0, lastCounter = 0 , firstChar ='.'
+  --UPDATE #2 set counter_id = 'AMS', 
+  --startMonth = right(convert(varchar(3),MONTH(getdate())+100),2), 
+  --startYear = convert(varchar(4),YEAR(getdate())),
+  --recounter = 0, lastCounter = 0 , firstChar ='.'
 
-  INSERT INTO SYSCOUNTER
-  SELECT * FROM #2
+  --INSERT INTO SYSCOUNTER
+  --SELECT * FROM #2
 
 
 
