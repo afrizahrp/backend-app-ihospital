@@ -20,9 +20,9 @@ interface NewDataParams {
 export class SysDeptService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async newDataFields({ id, name }: NewDataParams) // ,
-  // userId: string,
-  // companyId: string,
+  async newDataFields(
+    { id, name }: NewDataParams, // , // userId: string,
+  ) // companyId: string,
   // branchId: string,
   {
     const idExists = await this.prismaService.sysDept.findUnique({
@@ -62,13 +62,6 @@ export class SysDeptService {
     return [];
   }
 
-  // export class ReportService {
-  //   getAllReports(type: ReportType): ReportResponseDto[] {
-  //     return data.report
-  //       .filter((report) => report.type === type)
-  //       .map((report) => new ReportResponseDto(report));
-  //   }
-
   async getDataById(dept_id: string) {
     const foundId = await this.prismaService.sysDept.findUnique({
       where: {
@@ -77,28 +70,4 @@ export class SysDeptService {
     });
     return foundId;
   }
-
-  // Delete patient
-  // async deleteData(patient_id: string) {
-  //   const foundId = await this.prismaService.hosPatient.findUnique({
-  //     where: {
-  //       id: patient_id,
-  //     },
-  //   });
-
-  //   if (!foundId) {
-  //     throw new NotFoundException('Patient not found');
-  //   }
-
-  //   try {
-  //     const patientDeleted = await this.prismaService.hosPatient.delete({
-  //       where: {
-  //         id: patient_id,
-  //       },
-  //     });
-  //     return patientDeleted;
-  //   } catch (error) {
-  //     throw new BadRequestException('Delete Patient Failed');
-  //   }
-  // }
 }

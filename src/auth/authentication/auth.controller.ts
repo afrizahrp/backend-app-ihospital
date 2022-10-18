@@ -5,7 +5,7 @@ import { ActiveUser, ActiveUserInfo } from '../decorators/activeUser.decorator';
 
 // import { Request, response } from 'express';
 import { AuthService } from './auth.service';
-import { NewUserDto, LoginDto } from './dto/auth.dto';
+import { NewDataDto, LoginDto } from './dto/auth.dto';
 import { Tokens } from './types';
 import { AccessTokenGuard } from './guards/accessToken.guard';
 import { RefreshTokenGuard } from './guards/refreshToken.guard';
@@ -18,7 +18,7 @@ export class AuthController {
 
   @Public()
   @Post('register')
-  register(@Body() body: NewUserDto): Promise<Tokens> {
+  register(@Body() body: NewDataDto): Promise<Tokens> {
     try {
       return this.authService.register(body);
     } catch (error) {

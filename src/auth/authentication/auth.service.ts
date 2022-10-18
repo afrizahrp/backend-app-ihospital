@@ -98,17 +98,17 @@ export class AuthService {
     company_id,
     branch_id,
   }: RegisterParams): Promise<Tokens> {
-    const email_Exists = await this.prismaService.sysUser.findUnique({
+    const idExists = await this.prismaService.sysUser.findUnique({
       where: { email },
     });
 
     const hash = await this.hashData(password);
 
-    if (email_Exists) {
+    if (idExists) {
       throw new Error('Email is already exists');
     }
     try {
-      const newUser = await this.prismaService.sysUser.create({
+      const insertRow = await this.prismaService.sysUser.create({
         data: {
           role_id,
           id,
@@ -128,14 +128,17 @@ export class AuthService {
         },
       });
       const tokens = await this.getTokens(
-        newUser.id,
-        newUser.role_id,
-        newUser.name,
-        newUser.email,
-        newUser.company_id,
-        newUser.branch_id,
+        insertRow.id,
+        insertRow.role_id,
+        insertRow.name,
+        insertRow.email,
+        insertRow.company_id,
+        insertRow.branch_id,
       );
-      await this.updateTokenRefreshed(newUser.id, newUser.tokenHasRefreshed);
+      await this.updateTokenRefreshed(
+        insertRow.id,
+        insertRow.tokenHasRefreshed,
+      );
       return tokens;
     } catch (error) {
       console.log(error.message);

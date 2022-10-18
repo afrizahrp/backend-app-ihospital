@@ -13,7 +13,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { ToBoolean } from 'src/toBoolean';
 
-export class NewUserDto {
+export class NewDataDto {
   @IsString()
   @IsNotEmpty()
   role_id: string;
