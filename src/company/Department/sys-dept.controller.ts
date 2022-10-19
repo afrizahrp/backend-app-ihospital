@@ -27,7 +27,7 @@ export class SysDeptController {
   @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Post('new')
-  newPatient(@Body() body: NewDataDto, @sysUser() sysUser: UserInfo) {
+  newData(@Body() body: NewDataDto, @sysUser() sysUser: UserInfo) {
     try {
       return this.sysDeptService.newDataFields(body);
       //   ,
