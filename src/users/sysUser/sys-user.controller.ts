@@ -9,7 +9,7 @@ export class SysUserController {
 
   @Public()
   @Get()
-  getData(): Promise<ShowDataDto[]> {
+  gettingAll(): Promise<ShowDataDto[]> {
     return this.sysUserService.getAllData();
   }
 

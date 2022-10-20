@@ -70,4 +70,28 @@ export class SysDeptService {
     });
     return foundId;
   }
+
+  async deleteData(_id: string) {
+    const foundId = await this.prismaService.sysDept.findUnique({
+      where: {
+        id: _id,
+      },
+    });
+
+    if (!foundId) {
+      throw new NotFoundException('Patient not found');
+    }
+
+    try {
+      const dataDeleted = await this.prismaService.sysDept.delete({
+        where: {
+          id: _id,
+        },
+      });
+      this.getAllData();
+      return dataDeleted;
+    } catch (error) {
+      throw new BadRequestException('Delete Patient Failed');
+    }
+  }
 }

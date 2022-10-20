@@ -26,7 +26,7 @@ export class HosPatientController {
   @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Post('new')
-  newPatient(@Body() body: NewDataDto, @ActiveUser() sysUser: ActiveUserInfo) {
+  inserting(@Body() body: NewDataDto, @ActiveUser() sysUser: ActiveUserInfo) {
     try {
       return this.hosPatientService.newDataFields(
         body,
@@ -39,33 +39,22 @@ export class HosPatientController {
     }
   }
 
-  // @UseGuards(AuthGuard('jwt-access'))
-  // @Public()
-  // @Post('new')
-  // newPatient(@Body() body: NewDataDto, @ActiveUser() sysUser: ActiveUserInfo) {
-  //   try {
-  //     return this.hosPatientService.newDataFields(body);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // }
-
   @Public()
   @Get()
-  getPatients(): Promise<ShowDataDto[]> {
+  gettingAll(): Promise<ShowDataDto[]> {
     return this.hosPatientService.getAllData();
   }
 
   @Public()
   @Get(':id')
-  getOne(@Param('id') id: string) {
+  gettingOneById(@Param('id') id: string) {
     return this.hosPatientService.getDataById(id);
   }
 
   @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Put(':id')
-  update_Patient(
+  updating(
     @Param('id') id: string,
     @Body() body: UpdateDataDto,
     @ActiveUser() sysUser: ActiveUserInfo,
@@ -81,7 +70,7 @@ export class HosPatientController {
 
   @Public()
   @Delete(':id')
-  delete_Patient(@Param('id') id: string) {
+  deleting(@Param('id') id: string) {
     return this.hosPatientService.deleteData(id);
   }
 }

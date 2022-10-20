@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { NewDataDto, ShowDataDto } from './sys-dept.dto';
 import { SysDeptService } from './sys-dept.service';
 import { ActiveUser, ActiveUserInfo, Public } from 'src/auth/decorators';
@@ -19,7 +27,7 @@ export class SysDeptController {
 
   @Public()
   @Get()
-  getData(): Promise<ShowDataDto[]> {
+  gettingAll(): Promise<ShowDataDto[]> {
     return this.sysDeptService.getAllData();
   }
 
@@ -27,7 +35,7 @@ export class SysDeptController {
   // @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Post('new')
-  newData(@Body() body: NewDataDto, @sysUser() sysUser: UserInfo) {
+  inserting(@Body() body: NewDataDto, @sysUser() sysUser: UserInfo) {
     try {
       return this.sysDeptService.newDataFields(body);
       //   ,
@@ -38,5 +46,11 @@ export class SysDeptController {
     } catch (error) {
       console.log(error.message);
     }
+  }
+
+  @Public()
+  @Delete(':id')
+  deleting(@Param('id') id: string) {
+    return this.sysDeptService.deleteData(id);
   }
 }

@@ -9,7 +9,7 @@ export class SysSubDeptController {
 
   @Public()
   @Get()
-  getData(): Promise<ShowDataDto[]> {
+  gettingAll(): Promise<ShowDataDto[]> {
     return this.sysSubDeptService.getAllData();
   }
 }
