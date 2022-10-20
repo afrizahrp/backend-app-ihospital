@@ -9,9 +9,9 @@ export class NewDataDto {
   // @IsNotEmpty()
   // Divs_id: string;
 
-  @IsString()
-  @IsNotEmpty()
-  id: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // id: string;
 
   @IsString()
   @IsNotEmpty()

@@ -681,7 +681,7 @@ model plcSubProvince {
 
 model sysDept {
   // Divs_id String? @db.Char(10)
-  id   String  @id @db.Char(10)
+  id   String  @id @db.Char(20)
   name String? @db.VarChar(100)
   // createdBy  String?   @db.Char(10)
   // createdAt  DateTime?

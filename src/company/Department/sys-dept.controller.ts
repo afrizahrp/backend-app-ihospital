@@ -24,12 +24,17 @@ export class SysDeptController {
   }
 
   // @Roles(Role.Admin)
-  @UseGuards(AuthGuard('jwt-access'))
+  // @UseGuards(AuthGuard('jwt-access'))
   @Public()
   @Post('new')
   newData(@Body() body: NewDataDto, @sysUser() sysUser: UserInfo) {
     try {
-      return this.sysDeptService.newDataFields(body);
+      return this.sysDeptService.newDataFields(
+        body,
+        sysUser.sub,
+        sysUser.company_id,
+        sysUser.branch_id,
+      );
       //   ,
       //   sysUser.sub,
       //   sysUser.company_id,

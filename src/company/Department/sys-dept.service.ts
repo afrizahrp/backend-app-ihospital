@@ -8,11 +8,13 @@ import {
 } from '@nestjs/common';
 
 import { PrismaService } from '../../prisma/prisma.service';
+import { DocumentId } from '../../classes/DocumentId';
 import { ShowDataDto } from './sys-dept.dto';
+import { NONAME } from 'dns';
 
 interface NewDataParams {
   // Divs_id: string;
-  id: string;
+  // id: string;
   name: string;
 }
 
@@ -21,25 +23,26 @@ export class SysDeptService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async newDataFields(
-    { id, name }: NewDataParams, // , // userId: string,
-  ) // companyId: string,
-  // branchId: string,
-  {
-    const idExists = await this.prismaService.sysDept.findUnique({
-      where: { id: id },
-    });
+    { name }: NewDataParams,
+    userId: string,
+    companyId: string,
+    branchId: string, // , // userId: string, // companyId: string, // branchId: string,
+  ) {
+    // const idExists = await this.prismaService.sysDept.findUnique({
+    //   where: { name: NONAME },
+    // });
 
-    if (idExists) {
-      throw new BadRequestException('Id is already exists');
-    }
+    // if (idExists) {
+    //   throw new BadRequestException('Id is already exists');
+    // }
 
-    // const documentId = new DocumentId(companyId, branchId, userId);
-    // const doc_id = await documentId.gen_docId('HOS', 'PTN', '');
+    const documentId = new DocumentId(companyId, branchId, userId);
+    const doc_id = await documentId.gen_docId('HOS', 'DEP', '');
 
     const newData = await this.prismaService.sysDept.create({
       data: {
         // Divs_id,
-        id,
+        id: doc_id,
         name,
         // createdAt: new Date(),
         // updatedAt: new Date(),
