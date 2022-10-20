@@ -23,10 +23,7 @@ export class SysDeptService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async newDataFields(
-    { name }: NewDataParams,
-    userId: string,
-    companyId: string,
-    branchId: string, // , // userId: string, // companyId: string, // branchId: string,
+    { name }: NewDataParams, // , // userId: string, // companyId: string, // branchId: string,
   ) {
     // const idExists = await this.prismaService.sysDept.findUnique({
     //   where: { name: NONAME },
@@ -36,7 +33,7 @@ export class SysDeptService {
     //   throw new BadRequestException('Id is already exists');
     // }
 
-    const documentId = new DocumentId(companyId, branchId, userId);
+    const documentId = new DocumentId('NMS', 'KLM1-JKT05', 'afriza');
     const doc_id = await documentId.gen_docId('HOS', 'DEP', '');
 
     const newData = await this.prismaService.sysDept.create({

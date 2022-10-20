@@ -29,12 +29,7 @@ export class SysDeptController {
   @Post('new')
   newData(@Body() body: NewDataDto, @sysUser() sysUser: UserInfo) {
     try {
-      return this.sysDeptService.newDataFields(
-        body,
-        sysUser.sub,
-        sysUser.company_id,
-        sysUser.branch_id,
-      );
+      return this.sysDeptService.newDataFields(body);
       //   ,
       //   sysUser.sub,
       //   sysUser.company_id,
