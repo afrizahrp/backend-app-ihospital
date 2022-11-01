@@ -3,7 +3,7 @@ import { ShowDataDto } from './sys-user.dto';
 import { SysUserService } from './sys-user.service';
 import { Public } from 'src/auth/decorators';
 
-@Controller('users/')
+@Controller('user/')
 export class SysUserController {
   constructor(private readonly sysUserService: SysUserService) {}
 

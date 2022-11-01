@@ -15,7 +15,7 @@ import { sysUser } from 'src/users/sysUser/sys-User.decorator';
 import { UserInfo } from '../../users/sysUser/sys-User.decorator';
 import { PrismaService } from 'src/prisma/prisma.service';
 
-@Controller('user/')
+@Controller('users/')
 export class UserController {
   constructor(
     private readonly userService: UserService,

@@ -11,7 +11,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { ShowDataDto } from './user.dto';
 
 interface NewDataParams {
-  id: string;
+  id: number;
   fullName: string;
   company: string;
   role: string;

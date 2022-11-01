@@ -715,7 +715,7 @@ model sysDivision {
 }
 
 model users {
-  id          String   @id @db.Char(20)
+  id          Int      @id @db.TinyInt
   fullName    String   @db.VarChar(60)
   company     String   @db.VarChar(60)
   role        String   @db.VarChar(20)

@@ -2,11 +2,11 @@
 /* eslint-disable prettier/prettier */
 
 import { Exclude } from 'class-transformer';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class NewDataDto {
-  @IsString()
-  id: string;
+  @IsNumber()
+  id: number;
 
   @IsString()
   fullName: string;
@@ -55,7 +55,7 @@ export class NewDataDto {
 export class ShowDataDto {
   // divs_id: string;
 
-  id: string;
+  id: number;
 
   fullName: string;
 
