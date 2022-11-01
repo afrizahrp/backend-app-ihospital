@@ -713,3 +713,21 @@ model sysDivision {
   company_id String?  @db.Char(5)
   branch_id  String   @db.Char(10)
 }
+
+model users {
+  id          String   @id @db.Char(20)
+  fullName    String   @db.VarChar(60)
+  company     String   @db.VarChar(60)
+  role        String   @db.VarChar(20)
+  username    String   @db.VarChar(30)
+  country     String   @db.VarChar(20)
+  contact     String   @db.VarChar(20)
+  email       String   @db.VarChar(20)
+  currentPlan String   @db.VarChar(20)
+  status      String   @db.VarChar(20)
+  avatar      String   @db.VarChar(60)
+  createdBy   String   @db.Char(10)
+  createdAt   DateTime @default(now())
+  updatedBy   String   @db.Char(10)
+  updatedAt   DateTime @default(now())
+}
