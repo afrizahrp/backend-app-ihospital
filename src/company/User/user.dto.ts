@@ -5,8 +5,8 @@ import { Exclude } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class NewDataDto {
-  @IsNumber()
-  id: number;
+  // @IsNumber()
+  // id: number;
 
   @IsString()
   fullName: string;
@@ -32,30 +32,17 @@ export class NewDataDto {
   @IsString()
   currentPlan: string;
 
-  @IsString()
-  status: string;
-
-  @IsString()
-  avatar: string;
-
-  @Exclude()
-  createdAt: Date;
-
-  // @Exclude()
   // @IsString()
-  // createdBy: string;
-  // @Exclude()
-  // @IsString()
-  // updatedBy: string;
+  // status: string;
 
-  @Exclude()
-  updatedAt: Date;
+  // @IsString()
+  // avatar: string;
 }
 
 export class ShowDataDto {
   // divs_id: string;
 
-  id: number;
+  // id: number;
 
   fullName: string;
 

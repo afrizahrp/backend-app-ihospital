@@ -8,10 +8,11 @@ import {
 } from '@nestjs/common';
 
 import { PrismaService } from '../../prisma/prisma.service';
+import { DocumentId } from '../../classes/DocumentId';
 import { ShowDataDto } from './user.dto';
 
 interface NewDataParams {
-  id: number;
+  // id: number;
   fullName: string;
   company: string;
   role: string;
@@ -20,8 +21,8 @@ interface NewDataParams {
   contact: string;
   email: string;
   currentPlan: string;
-  status: string;
-  avatar: string;
+  // status: string;
+  // avatar: string;
 }
 
 @Injectable()
@@ -29,7 +30,6 @@ export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async newDataFields({
-    id,
     fullName,
     company,
     role,
@@ -38,12 +38,15 @@ export class UserService {
     contact,
     email,
     currentPlan,
-    status,
-    avatar,
-  }: NewDataParams) {
+  }: // status,
+  // avatar,
+  NewDataParams) {
+    const documentId = new DocumentId('NMS', 'KLM1-JKT05', 'afriza');
+    const doc_id = await documentId.gen_docId('HOS', 'DEP', '');
+
     const newData = await this.prismaService.users.create({
       data: {
-        id,
+        id: doc_id,
         fullName,
         company,
         role,
@@ -52,12 +55,8 @@ export class UserService {
         contact,
         email,
         currentPlan,
-        status,
-        avatar,
-        createdBy: 'afriza',
-        createdAt: new Date(),
-        updatedBy: 'afriza',
-        updatedAt: new Date(),
+        // status,
+        // avatar,
       },
     });
     return new ShowDataDto(newData);
