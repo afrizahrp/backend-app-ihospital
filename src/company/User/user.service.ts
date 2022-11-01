@@ -28,21 +28,19 @@ interface NewDataParams {
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async newDataFields(
-    {
-      id,
-      fullName,
-      company,
-      role,
-      username,
-      country,
-      contact,
-      email,
-      currentPlan,
-      status,
-      avatar,
-    }: NewDataParams, // , // userId: string, // companyId: string, // branchId: string,
-  ) {
+  async newDataFields({
+    id,
+    fullName,
+    company,
+    role,
+    username,
+    country,
+    contact,
+    email,
+    currentPlan,
+    status,
+    avatar,
+  }: NewDataParams) {
     const newData = await this.prismaService.users.create({
       data: {
         id,
