@@ -85,6 +85,15 @@ CREATE TABLE [dbo].[sysUser] (
     [updatedAt] DATETIME2 NOT NULL,
     [company_id] CHAR(5) NOT NULL,
     [branch_id] CHAR(10) NOT NULL,
+    [nickName] VARCHAR(50),
+    [status] VARCHAR(20),
+    [avatar] VARCHAR(50),
+    [country] VARCHAR(50),
+    [contact] VARCHAR(50),
+    [fullName] VARCHAR(50),
+    [username] VARCHAR(50),
+    [currentPlan] VARCHAR(50),
+    [avatarColor] VARCHAR(50),
     CONSTRAINT [sysUser_pkey] PRIMARY KEY CLUSTERED ([id]),
     CONSTRAINT [sysUser_email_key] UNIQUE NONCLUSTERED ([email])
 );
@@ -251,37 +260,37 @@ CREATE TABLE [dbo].[hosDoctor] (
 
 -- CreateTable
 CREATE TABLE [dbo].[hosPatient] (
-    [isReferred] BIT NOT NULL,
+    [isReferred] BIT,
     [referredFrom] CHAR(20),
     [id] CHAR(20) NOT NULL,
-    [nickName] VARCHAR(30) NOT NULL,
+    [nickName] VARCHAR(30),
     [fullName] VARCHAR(50) NOT NULL,
-    [birthDate] DATE NOT NULL,
+    [birthDate] DATE,
     [ageInYear] TINYINT,
     [ageInMonth] TINYINT,
-    [gender] CHAR(6) NOT NULL,
-    [bloodType] VARCHAR(5) NOT NULL,
-    [religion] VARCHAR(15) NOT NULL,
-    [maritalStatus] CHAR(7) NOT NULL,
-    [country_id] CHAR(3) NOT NULL,
-    [prov_id] CHAR(2) NOT NULL,
-    [provName] VARCHAR(50) NOT NULL,
-    [subProv_id] CHAR(2) NOT NULL,
-    [subProvName] VARCHAR(50) NOT NULL,
-    [district_id] CHAR(2) NOT NULL,
-    [districtName] VARCHAR(50) NOT NULL,
-    [subdistrict_id] CHAR(2) NOT NULL,
+    [gender] CHAR(6),
+    [bloodType] VARCHAR(5),
+    [religion] VARCHAR(15),
+    [maritalStatus] CHAR(7),
+    [country_id] CHAR(3),
+    [prov_id] CHAR(2),
+    [provName] VARCHAR(50),
+    [subProv_id] CHAR(2),
+    [subProvName] VARCHAR(50),
+    [district_id] CHAR(2),
+    [districtName] VARCHAR(50),
+    [subdistrict_id] CHAR(2),
     [subdistrictName] VARCHAR(50),
-    [address] VARCHAR(80) NOT NULL,
-    [mobileNo1] VARCHAR(20) NOT NULL,
-    [mobileNo2] VARCHAR(20) NOT NULL,
-    [phoneNo] VARCHAR(15) NOT NULL,
+    [address] VARCHAR(80),
+    [mobileNo1] VARCHAR(20),
+    [mobileNo2] VARCHAR(20),
+    [phoneNo] VARCHAR(15),
     [email] VARCHAR(80),
     [occupation] VARCHAR(50),
     [createdBy] CHAR(10),
-    [createdAt] DATETIME2 NOT NULL,
+    [createdAt] DATETIME2,
     [updatedBy] CHAR(10),
-    [updatedAt] DATETIME NOT NULL,
+    [updatedAt] DATETIME,
     [company_id] CHAR(5),
     [branch_id] CHAR(10),
     CONSTRAINT [hosPatient_pkey] PRIMARY KEY CLUSTERED ([id]),
@@ -423,7 +432,7 @@ CREATE TABLE [dbo].[hosAdmission] (
     [admissionDate] DATETIME NOT NULL,
     [patient_id] CHAR(20) NOT NULL,
     [patientName] VARCHAR(50) NOT NULL,
-    [patientCase] CHAR(100) NOT NULL,
+    [patientCase] VARCHAR(250) NOT NULL,
     [isRefer] BIT NOT NULL,
     [ref_id] CHAR(20),
     [payType] TINYINT NOT NULL,
@@ -449,7 +458,7 @@ CREATE TABLE [dbo].[hosPatientReferred] (
     [referredDate] DATE NOT NULL,
     [referredFrom] VARCHAR(80) NOT NULL,
     [patientName] VARCHAR(50) NOT NULL,
-    [referredCase] VARCHAR(200) NOT NULL,
+    [referredCase] VARCHAR(250) NOT NULL,
     [comeWithCondition] VARCHAR(250) NOT NULL,
     [patient_id] CHAR(20) NOT NULL,
     [fromPoly_id] CHAR(10) NOT NULL,
@@ -718,15 +727,8 @@ CREATE TABLE [dbo].[plcSubProvince] (
 
 -- CreateTable
 CREATE TABLE [dbo].[sysDept] (
-    [Divs_id] CHAR(10) NOT NULL,
-    [id] CHAR(10) NOT NULL,
-    [name] VARCHAR(100) NOT NULL,
-    [createdBy] CHAR(10) NOT NULL,
-    [createdAt] DATETIME2 NOT NULL,
-    [updatedBy] CHAR(10) NOT NULL,
-    [updatedAt] DATETIME2 NOT NULL,
-    [company_id] CHAR(5),
-    [branch_id] CHAR(10) NOT NULL,
+    [id] CHAR(20) NOT NULL,
+    [name] VARCHAR(100),
     CONSTRAINT [sysDept_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
@@ -755,6 +757,22 @@ CREATE TABLE [dbo].[sysDivision] (
     [company_id] CHAR(5),
     [branch_id] CHAR(10) NOT NULL,
     CONSTRAINT [sysDivision_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[users] (
+    [id] CHAR(20) NOT NULL,
+    [fullName] VARCHAR(60),
+    [company] VARCHAR(60),
+    [role] VARCHAR(20),
+    [username] VARCHAR(30),
+    [country] VARCHAR(20),
+    [contact] VARCHAR(15),
+    [email] VARCHAR(20),
+    [currentPlan] VARCHAR(20),
+    [status] VARCHAR(20),
+    [avatar] VARCHAR(60),
+    CONSTRAINT [users_pkey] PRIMARY KEY CLUSTERED ([id])
 );
 
 COMMIT TRAN;

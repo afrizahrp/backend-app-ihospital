@@ -31,6 +31,12 @@ export class SysDeptController {
     return this.sysDeptService.getAllData();
   }
 
+  @Public()
+  @Get(':id')
+  getDataById(@Param('id') id: string) {
+    return this.sysDeptService.getDataById(id);
+  }
+
   // @Roles(Role.Admin)
   // @UseGuards(AuthGuard('jwt-access'))
   @Public()
