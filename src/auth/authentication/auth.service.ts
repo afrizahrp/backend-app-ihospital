@@ -8,10 +8,8 @@ interface RegisterParams {
   role_id: string;
   id: string;
   name: string;
-  email: string;
-  phone: string;
   password: string;
-  tokenForAccess: string;
+  email: string;
   isLoggedIn: boolean;
   createdBy: string;
   createdAt: Date;
@@ -69,27 +67,25 @@ export class AuthService {
     return bcrypt.hash(data, 10);
   }
 
-  async updateTokenRefreshed(id: string, tokenToRefresh: string) {
-    const hash = await this.hashData(tokenToRefresh);
-    await this.prismaService.sysUser.update({
-      where: {
-        id,
-      },
-      data: {
-        tokenHasRefreshed: hash,
-        isLoggedIn: true,
-      },
-    });
-  }
+  // async updateTokenRefreshed(id: string, tokenToRefresh: string) {
+  //   const hash = await this.hashData(tokenToRefresh);
+  //   await this.prismaService.sysUser.update({
+  //     where: {
+  //       id,
+  //     },
+  //     data: {
+  //       tokenHasRefreshed: hash,
+  //       isLoggedIn: true,
+  //     },
+  //   });
+  // }
 
   async register({
     role_id,
     id,
     name,
     email,
-    phone,
     password,
-    tokenForAccess,
     isLoggedIn,
     createdBy,
     createdAt,
@@ -114,11 +110,8 @@ export class AuthService {
           id,
           name,
           email,
-          phone,
           password: hash,
-          tokenForAccess: hash,
           isLoggedIn: false,
-          tokenHasRefreshed: '',
           createdBy,
           createdAt,
           updatedBy,
@@ -135,10 +128,10 @@ export class AuthService {
         insertRow.company_id,
         insertRow.branch_id,
       );
-      await this.updateTokenRefreshed(
-        insertRow.id,
-        insertRow.tokenHasRefreshed,
-      );
+      // await this.updateTokenRefreshed(
+      //   insertRow.id,
+      //   insertRow.tokenHasRefreshed,
+      // );
       return tokens;
     } catch (error) {
       console.log(error.message);
@@ -170,7 +163,7 @@ export class AuthService {
       sysUser.company_id,
       sysUser.branch_id,
     );
-    await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
+    // await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
     return tokens;
   }
 
@@ -178,47 +171,44 @@ export class AuthService {
     await this.prismaService.sysUser.updateMany({
       where: {
         id,
-        tokenHasRefreshed: {
-          not: null,
-        },
+        isLoggedIn: true,
       },
       data: {
-        tokenHasRefreshed: null,
         isLoggedIn: false,
       },
     });
     return true;
   }
 
-  async refreshingToken(
-    userId: string,
-    tokenWillRefresh: string,
-  ): Promise<Tokens> {
-    const userHasLoggedIn = await this.prismaService.sysUser.findUnique({
-      where: { id: userId },
-    });
-    if (!userHasLoggedIn || !userHasLoggedIn.tokenHasRefreshed) {
-      throw new ForbiddenException('Access is denied, you not logged in');
-    }
+  // async refreshingToken(
+  //   userId: string,
+  //   tokenWillRefresh: string,
+  // ): Promise<Tokens> {
+  //   const userHasLoggedIn = await this.prismaService.sysUser.findUnique({
+  //     where: { id: userId },
+  //   });
+  //   if (!userHasLoggedIn || !userHasLoggedIn.tokenHasRefreshed) {
+  //     throw new ForbiddenException('Access is denied, you not logged in');
+  //   }
 
-    const rTokenMatched = await bcrypt.compare(
-      tokenWillRefresh,
-      userHasLoggedIn.tokenHasRefreshed,
-    );
+  //   const rTokenMatched = await bcrypt.compare(
+  //     tokenWillRefresh,
+  //     userHasLoggedIn.tokenHasRefreshed,
+  //   );
 
-    if (!rTokenMatched) {
-      throw new ForbiddenException('Token does not valid');
-    }
-    const tokens = await this.getTokens(
-      userHasLoggedIn.id,
-      userHasLoggedIn.name.trim(),
-      userHasLoggedIn.email,
-      userHasLoggedIn.role_id.toLowerCase().trim(),
-      userHasLoggedIn.company_id.toLowerCase().trim(),
-      userHasLoggedIn.branch_id.toLocaleUpperCase().trim(),
-    );
-    await this.updateTokenRefreshed(userHasLoggedIn.id, tokens.refreshToken);
+  //   if (!rTokenMatched) {
+  //     throw new ForbiddenException('Token does not valid');
+  //   }
+  //   const tokens = await this.getTokens(
+  //     userHasLoggedIn.id,
+  //     userHasLoggedIn.name.trim(),
+  //     userHasLoggedIn.email,
+  //     userHasLoggedIn.role_id.toLowerCase().trim(),
+  //     userHasLoggedIn.company_id.toLowerCase().trim(),
+  //     userHasLoggedIn.branch_id.toLocaleUpperCase().trim(),
+  //   );
+  //   // await this.updateTokenRefreshed(userHasLoggedIn.id, tokens.refreshToken);
 
-    return tokens;
-  }
+  //   return tokens;
+  // }
 }

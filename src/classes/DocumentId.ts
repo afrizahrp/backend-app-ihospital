@@ -4,8 +4,13 @@ import { BaseClassApp } from './BaseClassApp';
 
 @Injectable()
 export class DocumentId extends BaseClassApp {
-  constructor(companyId: string, branchId: string, userId: string) {
-    super(companyId, branchId, userId);
+  constructor(
+    companyId: string,
+    branchId: string,
+    doc_date: Date,
+    userId: string,
+  ) {
+    super(companyId, branchId, doc_date, userId);
   }
 
   async gen_docId(
@@ -18,7 +23,7 @@ export class DocumentId extends BaseClassApp {
   Promise<string> {
     const prisma_Service = new PrismaService();
     const result =
-      await prisma_Service.$queryRaw`EXEC get_document_id ${this.companyId},${this.branchId},${moduleId},${prefixId},${this.userId},${_docId};`;
+      await prisma_Service.$queryRaw`EXEC get_document_id ${this.companyId},${this.branchId},${moduleId},${prefixId},${this._docDate},${this.userId},${_docId};`;
 
     if (Array.isArray(result)) {
       if (typeof result === 'object') {

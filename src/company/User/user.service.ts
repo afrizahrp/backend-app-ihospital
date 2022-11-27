@@ -41,12 +41,16 @@ export class UserService {
   }: // status,
   // avatar,
   NewDataParams) {
-    const documentId = new DocumentId('NMS', 'KLM1-JKT05', 'afriza');
+    const documentId = new DocumentId(
+      'NMS',
+      'KLM1-JKT05',
+      new Date(),
+      'afriza',
+    );
     const doc_id = await documentId.gen_docId('HOS', 'DEP', '');
 
     const newData = await this.prismaService.users.create({
       data: {
-        id: doc_id,
         fullName,
         company,
         role,

@@ -34,17 +34,17 @@ export class NewDataDto {
   @IsEmail()
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(5)
-  @MaxLength(20)
-  @Matches(
-    /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
-    {
-      message: 'Invalid phone number format',
-    },
-  )
-  phone: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // @MinLength(5)
+  // @MaxLength(20)
+  // @Matches(
+  //   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/,
+  //   {
+  //     message: 'Invalid phone number format',
+  //   },
+  // )
+  // phone: string;
 
   @IsString()
   @IsNotEmpty()
@@ -52,9 +52,9 @@ export class NewDataDto {
   @MaxLength(20)
   password: string;
 
-  @IsString()
-  @IsNotEmpty()
-  tokenForAccess: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // tokenForAccess: string;
 
   // @IsString()
   // refreshToken: string;

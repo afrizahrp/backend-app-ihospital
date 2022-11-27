@@ -70,30 +70,18 @@ model sysDocId {
 }
 
 model sysUser {
-  role_id           String   @db.Char(20)
-  id                String   @id @db.Char(20)
-  name              String   @db.VarChar(50)
-  email             String   @unique @db.VarChar(30)
-  phone             String   @db.VarChar(20)
-  password          String
-  tokenForAccess    String?
-  isLoggedIn        Boolean
-  tokenHasRefreshed String?
-  createdBy         String   @db.Char(10)
-  createdAt         DateTime
-  updatedBy         String   @db.Char(10)
-  updatedAt         DateTime
-  company_id        String   @db.Char(5)
-  branch_id         String   @db.Char(10)
-  nickName          String?  @db.VarChar(50)
-  status            String?  @db.VarChar(20)
-  avatar            String?  @db.VarChar(50)
-  country           String?  @db.VarChar(50)
-  contact           String?  @db.VarChar(50)
-  fullName          String?  @db.VarChar(50)
-  username          String?  @db.VarChar(50)
-  currentPlan       String?  @db.VarChar(50)
-  avatarColor       String?  @db.VarChar(50)
+  role_id    String   @db.Char(20)
+  id         String   @id @db.Char(20)
+  name       String   @db.VarChar(50)
+  email      String   @unique @db.VarChar(50)
+  password   String
+  isLoggedIn Boolean
+  createdBy  String   @db.Char(10)
+  createdAt  DateTime
+  updatedBy  String   @db.Char(10)
+  updatedAt  DateTime
+  company_id String   @db.Char(5)
+  branch_id  String   @db.Char(10)
 }
 
 model sysUserRole {
@@ -109,7 +97,6 @@ model sysUserRole {
   branch_id   String   @db.Char(10)
 }
 
-// What device are used to patient check
 model hosCheckSpecDev {
   id         String   @db.Char(10)
   seqNo      Int      @default(autoincrement()) @db.TinyInt
@@ -197,7 +184,6 @@ model hosCheckSpecHdr {
   branch_id   String   @db.Char(10)
 }
 
-// Personal who is responsible for the check
 model hosCheckSpecPrs {
   id          String   @db.Char(10)
   seqNo       Int      @default(autoincrement()) @db.TinyInt
@@ -518,8 +504,8 @@ model hosInsuranceAlloc {
   patient_id   String   @db.Char(20)
   admission_id String   @db.Char(20)
   trxType      String   @db.Char(3)
-  class_id     String   @db.Char(20) //I - Invoice, P - Payment / Claim , R - Refund
-  trxMode      String   @db.Char(1) // D - For DEBIT, C - For CREDIT
+  class_id     String   @db.Char(20)
+  trxMode      String   @db.Char(1)
   trx_id       String   @db.Char(20)
   trxDate      DateTime @db.Date
   description  String   @db.VarChar(100)
@@ -544,8 +530,8 @@ model hosInsuranceLedger {
   insurance_id String   @db.Char(20)
   id           String   @id @db.Char(20)
   trxType      String   @db.Char(3)
-  class_id     String   @db.Char(20) //I - Invoice, P - Payment / Claim , R - Refund
-  trxMode      String   @db.Char(1) // D - For DEBIT, C - For CREDIT
+  class_id     String   @db.Char(20)
+  trxMode      String   @db.Char(1)
   trx_id       String   @db.Char(20)
   trxDate      DateTime @db.Date
   curr_id      String   @db.Char(3)
@@ -680,15 +666,8 @@ model plcSubProvince {
 }
 
 model sysDept {
-  // Divs_id String? @db.Char(10)
   id   String  @id @db.Char(20)
   name String? @db.VarChar(100)
-  // createdBy  String?   @db.Char(10)
-  // createdAt  DateTime?
-  // updatedBy  String?   @db.Char(10)
-  // updatedAt  DateTime
-  // company_id String?   @db.Char(5)
-  // branch_id  String?   @db.Char(10)
 }
 
 model sysSubDept {
@@ -715,15 +694,37 @@ model sysDivision {
 }
 
 model users {
-  id          String  @id @db.Char(20)
+  id          Int     @id @default(autoincrement())
   fullName    String? @db.VarChar(60)
   company     String? @db.VarChar(60)
   role        String? @db.VarChar(20)
   username    String? @db.VarChar(30)
   country     String? @db.VarChar(20)
   contact     String? @db.VarChar(15)
-  email       String? @db.VarChar(20)
+  email       String? @db.VarChar(50)
   currentPlan String? @db.VarChar(20)
   status      String? @db.VarChar(20)
   avatar      String? @db.VarChar(60)
+  avatarColor String? @db.VarChar(30)
+}
+
+model employee {
+  id        String   @id @db.Char(20)
+  name      String?  @db.VarChar(60)
+  born      DateTime
+  createdAt DateTime
+  createdBy String?  @db.Char(10)
+  dept      String?  @db.Char(20)
+  email     String?  @db.VarChar(30)
+  joined    DateTime
+  phone     String?  @db.VarChar(20)
+  status    String?  @db.VarChar(20)
+  updatedAt DateTime
+  updatedBy String?  @db.Char(10)
+}
+
+model user {
+  email    String  @id @db.VarChar(30)
+  name     String? @db.VarChar(20)
+  password String
 }

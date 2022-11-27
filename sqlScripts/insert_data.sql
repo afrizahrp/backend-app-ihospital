@@ -1,15 +1,15 @@
 
 
 INSERT INTO backendDb.dbo.syscompany
-SELECT * FROM  backendDb_old.dbo.syscompany
+SELECT * FROM  backendDb_new.dbo.syscompany
 
 INSERT INTO backendDb.dbo.sysBranch
 SELECT *
-FROM   backenddb_old.dbo.sysBranch
+FROM   backendDb_new.dbo.sysBranch
 
 
 INSERT INTO backenddb.dbo.sysUser
-SELECT * FROM backenddb_old.dbo.sysUser
+SELECT * FROM backendDb_new.dbo.sysUser
 
 INSERT INTO sysDivision values('NMD','NON MEDICAL','AFRIZA',GETDATE(),'AFRIZA',GETDATE(),'NMS','KLM1-JKT05')
 INSERT INTO sysDivision values ('MDC','MEDICAL','AFRIZA', GETDATE(),'AFRIZA',GETDATE(),'NMS','KLM1-JKT05')
@@ -62,7 +62,7 @@ INSERT INTO backenddb.dbo.sysUserRole VALUES('MANAGER','MANAGE USER',0,'Restrict
 
   select * from syscounter
 
-  SELECT * INTO #2 FROM backendDb_old.dbo.syscounter
+  SELECT * INTO #2 FROM backendDb_new.dbo.syscounter
 
   SELECT * FROM #2
   

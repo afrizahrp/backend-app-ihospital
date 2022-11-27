@@ -3,6 +3,7 @@ export class BaseClassApp {
   constructor(
     public companyId: string,
     public branchId: string,
+    public _docDate: Date,
     public userId: string,
   ) {}
 

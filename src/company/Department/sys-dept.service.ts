@@ -33,7 +33,12 @@ export class SysDeptService {
     //   throw new BadRequestException('Id is already exists');
     // }
 
-    const documentId = new DocumentId('NMS', 'KLM1-JKT05', 'afriza');
+    const documentId = new DocumentId(
+      'NMS',
+      'KLM1-JKT05',
+      new Date(),
+      'afriza',
+    );
     const doc_id = await documentId.gen_docId('HOS', 'DEP', '');
 
     const newData = await this.prismaService.sysDept.create({

@@ -88,7 +88,7 @@ export class HosAdmissionService {
     //   throw new BadRequestException('Email is already exists');
     // }
 
-    const documentId = new DocumentId(companyId, branchId, userId);
+    const documentId = new DocumentId(companyId, branchId, new Date(), userId);
     const docId = await documentId.gen_docId('HOS', 'AMS', '');
 
     const createNewData = await this.prismaService.hosAdmission.create({

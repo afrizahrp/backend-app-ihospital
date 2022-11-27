@@ -44,13 +44,13 @@ export class AuthController {
     return this.authService.logout(id);
   }
 
-  @Public()
-  @UseGuards(RefreshTokenGuard)
-  @Post('/refresh')
-  async refreshingToken(
-    @ActiveUserId() userId: string,
-    @ActiveUser('refreshToken') refreshToken: string,
-  ): Promise<Tokens> {
-    return this.authService.refreshingToken(userId, refreshToken);
-  }
+  // @Public()
+  // @UseGuards(RefreshTokenGuard)
+  // @Post('/refresh')
+  // async refreshingToken(
+  //   @ActiveUserId() userId: string,
+  //   @ActiveUser('refreshToken') refreshToken: string,
+  // ): Promise<Tokens> {
+  //   return this.authService.refreshingToken(userId, refreshToken);
+  // }
 }

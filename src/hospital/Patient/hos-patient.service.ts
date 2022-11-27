@@ -116,7 +116,7 @@ export class HosPatientService {
       throw new BadRequestException('Email is already exists');
     }
 
-    const documentId = new DocumentId(companyId, branchId, userId);
+    const documentId = new DocumentId(companyId, branchId, new Date(), userId);
     const doc_id = await documentId.gen_docId('HOS', 'PTN', '');
 
     const newData = await this.prismaService.hosPatient.create({
