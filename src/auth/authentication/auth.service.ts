@@ -47,7 +47,7 @@ export class AuthService {
       company_id,
       branch_id,
     };
-    // const [accessToken] = await Promise.all([
+
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(jwtPayload, {
         secret: this.config.get<string>('ACCESS_TOKEN_SECRET'),
@@ -67,18 +67,17 @@ export class AuthService {
     return bcrypt.hash(data, 10);
   }
 
-  // async updateTokenRefreshed(id: string, tokenToRefresh: string) {
-  //   const hash = await this.hashData(tokenToRefresh);
-  //   await this.prismaService.sysUser.update({
-  //     where: {
-  //       id,
-  //     },
-  //     data: {
-  //       tokenHasRefreshed: hash,
-  //       isLoggedIn: true,
-  //     },
-  //   });
-  // }
+  async updateTokenRefreshed(id: string, tokenToRefresh: string) {
+    const hash = await this.hashData(tokenToRefresh);
+    await this.prismaService.sysUser.update({
+      where: {
+        id,
+      },
+      data: {
+        isLoggedIn: true,
+      },
+    });
+  }
 
   async register({
     role_id,
@@ -128,10 +127,7 @@ export class AuthService {
         insertRow.company_id,
         insertRow.branch_id,
       );
-      // await this.updateTokenRefreshed(
-      //   insertRow.id,
-      //   insertRow.tokenHasRefreshed,
-      // );
+      // await this.updateTokenRefreshed(insertRow.id);
       return tokens;
     } catch (error) {
       console.log(error.message);
@@ -155,6 +151,16 @@ export class AuthService {
     if (!is_Password_Matched) {
       throw new ForbiddenException('Password does not valid');
     }
+
+    const userData = {
+      id: sysUser.id,
+      username: sysUser.name,
+      role: sysUser.role_id,
+      email: sysUser.email,
+      company_id: sysUser.company_id,
+      branch_id: sysUser.branch_id,
+    };
+
     const tokens = await this.getTokens(
       sysUser.id.trim(),
       sysUser.name.trim(),
@@ -163,7 +169,7 @@ export class AuthService {
       sysUser.company_id,
       sysUser.branch_id,
     );
-    // await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
+    await this.updateTokenRefreshed(sysUser.id, tokens.refreshToken);
     return tokens;
   }
 
@@ -180,35 +186,35 @@ export class AuthService {
     return true;
   }
 
-  // async refreshingToken(
-  //   userId: string,
-  //   tokenWillRefresh: string,
-  // ): Promise<Tokens> {
-  //   const userHasLoggedIn = await this.prismaService.sysUser.findUnique({
-  //     where: { id: userId },
-  //   });
-  //   if (!userHasLoggedIn || !userHasLoggedIn.tokenHasRefreshed) {
-  //     throw new ForbiddenException('Access is denied, you not logged in');
-  //   }
+  async refreshingToken(
+    userId: string,
+    tokenWillRefresh: string,
+  ): Promise<Tokens> {
+    const userHasLoggedIn = await this.prismaService.sysUser.findUnique({
+      where: { id: userId },
+    });
+    if (!userHasLoggedIn) {
+      throw new ForbiddenException('Access is denied, you not logged in');
+    }
 
-  //   const rTokenMatched = await bcrypt.compare(
-  //     tokenWillRefresh,
-  //     userHasLoggedIn.tokenHasRefreshed,
-  //   );
+    // const rTokenMatched = await bcrypt.compare(
+    //   tokenWillRefresh,
+    //   userHasLoggedIn.tokenHasRefreshed,
+    // );
 
-  //   if (!rTokenMatched) {
-  //     throw new ForbiddenException('Token does not valid');
-  //   }
-  //   const tokens = await this.getTokens(
-  //     userHasLoggedIn.id,
-  //     userHasLoggedIn.name.trim(),
-  //     userHasLoggedIn.email,
-  //     userHasLoggedIn.role_id.toLowerCase().trim(),
-  //     userHasLoggedIn.company_id.toLowerCase().trim(),
-  //     userHasLoggedIn.branch_id.toLocaleUpperCase().trim(),
-  //   );
-  //   // await this.updateTokenRefreshed(userHasLoggedIn.id, tokens.refreshToken);
+    // if (!rTokenMatched) {
+    //   throw new ForbiddenException('Token does not valid');
+    // }
+    const tokens = await this.getTokens(
+      userHasLoggedIn.id,
+      userHasLoggedIn.name.trim(),
+      userHasLoggedIn.email,
+      userHasLoggedIn.role_id.toLowerCase().trim(),
+      userHasLoggedIn.company_id.toLowerCase().trim(),
+      userHasLoggedIn.branch_id.toLocaleUpperCase().trim(),
+    );
+    await this.updateTokenRefreshed(userHasLoggedIn.id, tokens.refreshToken);
 
-  //   return tokens;
-  // }
+    return tokens;
+  }
 }
